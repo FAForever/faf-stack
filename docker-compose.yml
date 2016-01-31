@@ -7,6 +7,15 @@ irc:
     - "6667:6667"
     - "6697:6697"
 
+mumble:
+  build: murmur
+  links:
+    - faf-db:db
+  env_file:
+    - /opt/stable/mumble_secrets.env
+  ports:
+    - "64738:64738"
+
 forums:
   image: richarvey/nginx-php-fpm
   volumes:
