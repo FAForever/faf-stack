@@ -1,0 +1,50 @@
+# vim: set ts=2 sw=2 sts=2 et :
+irc:
+  build: irc
+  links:
+    - faf-db:db
+  ports:
+    - "6667:6667"
+    - "6697:6697"
+
+forums:
+  image: richarvey/nginx-php-fpm
+  volumes:
+    - /opt/stable/forums:/usr/share/nginx/html
+  ports:
+    - "8080:80"
+
+faf-db:
+  build: https://github.com/FAForever/db.git
+  env_file:
+    - /opt/stable/db_secrets.env
+  volumes:
+    - /opt/stable/db:/var/lib/mysql
+
+faf-api:
+  build: https://github.com/FAForever/api.git
+  volumes:
+    - /opt/stable/content:/content
+
+faf-server:
+  build: https://github.com/FAForever/server.git
+  volumes:
+    - /opt/stable/content:/content
+  ulimits:
+    nproc: 65535
+    nofile:
+      soft: 40000
+      hard: 80000
+  links:
+    - faf-db:db
+  ports:
+    - "8001:8001"
+    - "30351:30351"
+
+nginx:
+  image: jwilder/nginx-proxy
+  volumes:
+    - /var/run/docker.sock:/tmp/docker.sock
+  ports:
+    - "80:80"
+
