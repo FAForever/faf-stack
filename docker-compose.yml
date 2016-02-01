@@ -23,7 +23,7 @@ app:
     - /opt/stable/app:/usr/share/nginx/html
   environment:
     - TEMPLATE_NGINX_HTML=0
-    - VIRTUAL_HOST=app.dev.faforever.com
+    - VIRTUAL_HOST=app.faforever.com
   ports:
     - "8094:80"
 
