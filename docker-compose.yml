@@ -15,6 +15,7 @@ mumble:
     - /opt/stable/mumble_secrets.env
   ports:
     - "64738:64738"
+    - "64738/udp:64738/udp"
 
 app:
   image: richarvey/nginx-php-fpm
