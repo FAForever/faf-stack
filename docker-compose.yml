@@ -16,6 +16,26 @@ mumble:
   ports:
     - "64738:64738"
 
+app:
+  image: richarvey/nginx-php-fpm
+  volumes:
+    - /opt/stable/app:/usr/share/nginx/html
+  environment:
+    - TEMPLATE_NGINX_HTML=0
+    - VIRTUAL_HOST=app.dev.faforever.com
+  ports:
+    - "8094:80"
+
+wordpress:
+  image: richarvey/nginx-php-fpm
+  volumes:
+    - /opt/stable/wordpress:/usr/share/nginx/html
+  environment:
+    - TEMPLATE_NGINX_HTML=0
+    - VIRTUAL_HOST=www.dev.faforever.com,dev.faforever.com
+  ports:
+    - "8095:80"
+
 forums:
   image: richarvey/nginx-php-fpm
   volumes:
