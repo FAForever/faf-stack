@@ -39,9 +39,36 @@ wordpress:
 forums:
   image: richarvey/nginx-php-fpm
   volumes:
-    - /opt/stable/forums:/usr/share/nginx/html
+    - /opt/stable/forums/phpbb3/www:/usr/share/nginx/html
+    - /opt/stable/forums/phpbb3:/usr/share/phpbb3
+    - /opt/stable/forums/etc/phpbb3:/etc/phpbb3
+  links:
+    - faf-db:db
+  environment:
+    - TEMPLATE_NGINX_HTML=0
+    - VIRTUAL_HOST=forums.dev.faforever.com
   ports:
     - "8080:80"
+
+content:
+  image: richarvey/nginx-php-fpm
+  volumes:
+    - /opt/stable/content:/usr/share/nginx/html
+  environment:
+    - TEMPLATE_NGINX_HTML=0
+    - VIRTUAL_HOST=content.dev.faforever.com
+  ports:
+    - "8090:80"
+
+wiki:
+  image: richarvey/nginx-php-fpm
+  volumes:
+    - /opt/stable/mediawiki:/usr/share/nginx/html
+  environment:
+    - TEMPLATE_NGINX_HTML=0
+    - VIRTUAL_HOST=wiki.dev.faforever.com
+  ports:
+    - "8092:80"
 
 faf-db:
   build: https://github.com/FAForever/db.git
@@ -52,8 +79,17 @@ faf-db:
 
 faf-api:
   build: https://github.com/FAForever/api.git
+  links:
+    - faf-db:db
+  env_file:
+    - /opt/stable/api_secrets.env
+  environment:
+    - VIRTUAL_HOST=api.dev.faforever.com
+    - FAF_API_ENVIRONMENT=stabler
   volumes:
     - /opt/stable/content:/content
+  ports:
+    - "8091:8080"
 
 faf-server:
   build: https://github.com/FAForever/server.git
@@ -64,6 +100,7 @@ faf-server:
     nofile:
       soft: 40000
       hard: 80000
+  env_file: server_secrets.env
   links:
     - faf-db:db
   ports:
