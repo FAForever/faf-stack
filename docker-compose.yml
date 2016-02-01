@@ -27,15 +27,36 @@ app:
   ports:
     - "8094:80"
 
+coturn:
+  image: bprodoehl/turnserver
+  net: "host"
+  environment:
+    - SKIP_AUTO_IP=true
+    - EXTERNAL_IP=37.58.123.3
+
 wordpress:
   image: richarvey/nginx-php-fpm
   volumes:
     - /opt/stable/wordpress:/usr/share/nginx/html
+  links:
+    - faf-db:db
   environment:
     - TEMPLATE_NGINX_HTML=0
-    - VIRTUAL_HOST=www.dev.faforever.com,dev.faforever.com
+    - VIRTUAL_HOST=faforever.com,www.faforever.com
   ports:
     - "8095:80"
+
+clans:
+  image: richarvey/nginx-php-fpm
+  volumes:
+    - /opt/stable/clans:/usr/share/nginx/html
+  links:
+    - faf-db:db
+  environment:
+    - TEMPLATE_NGINX_HTML=0
+    - VIRTUAL_HOST=clans.faforever.com
+  ports:
+    - "8096:80"
 
 forums:
   image: richarvey/nginx-php-fpm
