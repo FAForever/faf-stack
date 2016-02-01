@@ -10,3 +10,4 @@ ADD run_mumble.sh /tmp/run_mumble.sh
 RUN chmod +x /tmp/run_mumble.sh
 CMD bash -c /tmp/run_mumble.sh
 EXPOSE 64738
+EXPOSE 64738/udp
