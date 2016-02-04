@@ -6,6 +6,11 @@ irc:
   ports:
     - "6667:6667"
     - "6697:6697"
+    - "6665:6665"
+    - "6666:6666"
+    - "8067:8067"
+    - "7070:7070"
+    - "8167:8167"
 
 mumble:
   build: murmur
@@ -42,7 +47,7 @@ wordpress:
     - faf-db:db
   environment:
     - TEMPLATE_NGINX_HTML=0
-    - VIRTUAL_HOST=faforever.com,www.faforever.com
+    - VIRTUAL_HOST=faforever.com,www.faforever.com,direct.faforever.com
   ports:
     - "8095:80"
 
@@ -76,9 +81,11 @@ content:
   image: richarvey/nginx-php-fpm
   volumes:
     - /opt/stable/content:/usr/share/nginx/html
+  links:
+    - faf-db:db
   environment:
     - TEMPLATE_NGINX_HTML=0
-    - VIRTUAL_HOST=content.faforever.com
+    - VIRTUAL_HOST=content.faforever.com,content.dev.faforever.com
   ports:
     - "8090:80"
 
@@ -88,7 +95,7 @@ wiki:
     - /opt/stable/mediawiki:/usr/share/nginx/html
   environment:
     - TEMPLATE_NGINX_HTML=0
-    - VIRTUAL_HOST=wiki.dev.faforever.com
+    - VIRTUAL_HOST=wiki.faforever.com
   ports:
     - "8092:80"
 
@@ -100,13 +107,13 @@ faf-db:
     - /opt/stable/db:/var/lib/mysql
 
 faf-api:
-  build: https://github.com/FAForever/api.git
+  build: api
   links:
     - faf-db:db
   env_file:
     - /opt/stable/api_secrets.env
   environment:
-    - VIRTUAL_HOST=api.dev.faforever.com
+    - VIRTUAL_HOST=api.faforever.com,api.dev.faforever.com
     - FAF_API_ENVIRONMENT=stabler
   volumes:
     - /opt/stable/content:/content
@@ -137,8 +144,29 @@ legacy-updater:
     - /opt/stable/content:/content
   links:
     - faf-db:db
+  env_file: server_secrets.env
   ports:
     - "9001:9001"
+
+legacy-livereplayserver:
+  build: legacy-replay-server
+  volumes:
+    - /opt/stable/content:/content
+  links:
+    - faf-db:db
+  env_file: server_secrets.env
+  ports:
+    - "15000:15000"
+
+legacy-secondaryserver:
+  build: legacy-secondaryServer
+  volumes:
+    - /opt/stable/content:/content
+  links:
+    - faf-db:db
+  env_file: server_secrets.env
+  ports:
+    - "11002:11002"
 
 nginx:
   image: jwilder/nginx-proxy
