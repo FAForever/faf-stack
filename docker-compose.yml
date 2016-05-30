@@ -85,7 +85,7 @@ content:
     - faf-db:db
   environment:
     - TEMPLATE_NGINX_HTML=0
-    - VIRTUAL_HOST=content.faforever.com,content.dev.faforever.com
+    - VIRTUAL_HOST=content.faforever.com,content.dev.faforever.com,replay.faforever.com
   ports:
     - "8090:80"
 
@@ -127,16 +127,24 @@ faf-server:
   ulimits:
     nproc: 65535
     nofile:
-      soft: 40000
-      hard: 80000
+      soft: 100000
+      hard: 200000
   env_file: server_secrets.env
   environment:
     - STATSD_SERVER=172.17.0.1:8125
+    - LOBBY_UDP_PORTS=6112,30351,194,7,3535,53,67
+  log_driver: syslog
   links:
     - faf-db:db
   ports:
     - "8001:8001"
+    - "6112:6112/udp"
     - "30351/udp:30351/udp"
+    - "7:7/udp"
+    - "194:194/udp"
+    - "3535:3535/udp"
+    - "53:53/udp"
+    - "67:67/udp"
 
 legacy-updater:
   build: legacy-updater
@@ -173,6 +181,8 @@ nginx:
   volumes:
     - /var/run/docker.sock:/tmp/docker.sock
     - /opt/stable/vhost.d:/etc/nginx/vhost.d:ro
+    - /opt/stable/content:/content
   ports:
     - "80:80"
+    - "443:443"
 
