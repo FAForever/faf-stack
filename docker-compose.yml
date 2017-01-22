@@ -1,0 +1,151 @@
+version: '2.1'
+services:
+
+  #
+  # FAF MySQL database
+  #
+  faf-db:
+    container_name: faf-db
+    build: ../db
+    networks:
+      faf:
+        aliases:
+          - "faf-db"
+    restart: always
+    env_file: faf-db.env
+    volumes:
+      - ./db:/var/lib/mysql
+
+  #
+  # FAF game server for clients to connect to
+  #
+  faf-server:
+    container_name: faf-server
+    image: micheljung/faf-server:0.9.0
+    networks:
+      faf:
+        aliases:
+          - "faf-server"
+    restart: always
+    env_file: faf-server.env
+    volumes:
+      - ./content:/content
+    ports:
+      - "8001:8001" # Server
+      - "8002:8080" # HTTP management
+    depends_on:
+      faf-db:
+        condition: service_healthy
+      faf-api:
+        condition: service_healthy
+    # TODO move to Dockerfile
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 1m
+      timeout: 3s
+      retries: 3
+
+  #
+  # FAF JSON-API to provide data over HTTP
+  #
+  faf-api:
+    container_name: faf-api
+    image: micheljung/faf-api:0.2.0-SNAPSHOT
+    networks:
+      faf:
+        aliases:
+          - "faf-api"
+    restart: always
+    env_file: faf-api.env
+    volumes:
+      - ./content:/content
+    ports:
+      - "8010:8080" # HTTP API
+    depends_on:
+      faf-db:
+        condition: service_healthy
+    # TODO move to Dockerfile
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 1m
+      timeout: 3s
+
+  #
+  # FAF website
+  #
+  faf-website:
+    build: https://github.com/FAForever/website.git
+    env_file: faf-website.env
+    ports:
+      - "8020:3000"
+    depends_on:
+      faf-db:
+        condition: service_healthy
+
+  #
+  # FAF TURN (proxy) server
+  #
+  faf-spring-boot-admin:
+    image: aetas/spring-boot-admin-docker:1.4.1
+    ports:
+      - "8030:8080"
+
+  #
+  # FAF TURN (proxy) server
+  #
+  faf-turn:
+    image: bprodoehl/turnserver
+    container_name: faf-turn
+    network_mode: "host"
+
+  #
+  # InfluxDB stores time-series data
+  #
+  faf-influxdb:
+    container_name: faf-influxdb
+    image: influxdb:1.1.1-alpine
+    networks:
+      - "faf"
+    ports:
+      - "8083:8083" # Administrator interface
+      - "8086:8086" # HTTP API
+    environment:
+      INFLUXDB_DATA_ENGINE: tsm1
+
+  #
+  # Telegraf collects metrics from services and writes them to InfluxDB
+  #
+  faf-telegraf:
+    container_name: faf-telegraf
+    image: telegraf:1.1.2-alpine
+    networks:
+      - "faf"
+    volumes:
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    ports:
+      - "8125:8125"
+    depends_on:
+      faf-influxdb:
+        condition: service_started
+
+  #
+  # Grafana reads data from InfluxDB and draws monitoring dashboards
+  #
+  faf-grafana:
+    container_name: faf-grafana
+    image: grafana/grafana:4.1.1
+    networks:
+      - "faf"
+    volumes:
+      - ./grafana:/etc/grafana/scripts
+    ports:
+      - "8090:3000"
+    depends_on:
+      faf-influxdb:
+        condition: service_started
+      faf-telegraf:
+        condition: service_started
+
+networks:
+  faf:
+    driver: bridge
