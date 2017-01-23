@@ -30,9 +30,10 @@ services:
     env_file: faf-server.env
     volumes:
       - ./content:/content
+    expose:
+      - "8080" # HTTP Management API
     ports:
       - "8001:8001" # Server
-      - "8002:8080" # HTTP management
     depends_on:
       faf-db:
         condition: service_healthy
@@ -57,6 +58,8 @@ services:
     env_file: faf-api.env
     volumes:
       - ./content:/content
+    expose:
+      - "8081" # HTTP Management API
     ports:
       - "8010:8080" # HTTP API
     depends_on:
@@ -119,8 +122,8 @@ services:
       faf:
         aliases:
           - "faf-influxdb"
-    ports:
-      - "8086:8086" # HTTP API
+    expose:
+      - "8086" # HTTP API
     environment:
       INFLUXDB_DATA_ENGINE: tsm1
 
@@ -134,8 +137,8 @@ services:
       - "faf"
     volumes:
       - ./telegraf:/etc/telegraf
-    ports:
-      - "8125:8125"
+    expose:
+      - "8125"
 
   #
   # Grafana reads data from InfluxDB and draws monitoring dashboards
