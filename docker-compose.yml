@@ -6,7 +6,7 @@ services:
   #
   faf-db:
     container_name: faf-db
-    build: https://github.com/FAForever/db.git#feature/docker-improvement
+    build: git://github.com/FAForever/db.git#feature/docker-improvement
     networks:
       faf:
         aliases:
@@ -77,7 +77,7 @@ services:
   #
   faf-website:
     container_name: faf-website
-    build: https://github.com/FAForever/website.git
+    build: git://github.com/FAForever/website.git
     env_file: faf-website.env
     ports:
       - "8020:3000"
