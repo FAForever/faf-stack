@@ -36,13 +36,11 @@ services:
     depends_on:
       faf-db:
         condition: service_healthy
-      faf-api:
-        condition: service_healthy
     # TODO move to Dockerfile
     healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
-      interval: 1m
-      timeout: 3s
+      test: "wget -q -O /dev/null http://localhost:8080/health"
+      interval: 30s
+      timeout: 5s
       retries: 3
 
   #
@@ -66,14 +64,16 @@ services:
         condition: service_healthy
     # TODO move to Dockerfile
     healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
-      interval: 1m
-      timeout: 3s
+      test: "wget -q -O /dev/null http://localhost:8080/management/health"
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
   #
   # FAF website
   #
   faf-website:
+    container_name: faf-website
     build: https://github.com/FAForever/website.git
     env_file: faf-website.env
     ports:
@@ -83,17 +83,28 @@ services:
         condition: service_healthy
 
   #
-  # FAF TURN (proxy) server
+  # Interface to administer Spring Boot applications
   #
   faf-spring-boot-admin:
+    container_name: faf-spring-boot-admin
     image: aetas/spring-boot-admin-docker:1.4.1
     ports:
       - "8030:8080"
+    networks:
+      faf:
+        aliases:
+          - "faf-spring-boot-admin"
+    healthcheck:
+      test: "wget -q -O /dev/null http://localhost:8080"
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
   #
   # FAF TURN (proxy) server
   #
   faf-turn:
+    container_name: faf-turn
     image: bprodoehl/turnserver
     container_name: faf-turn
     network_mode: "host"
@@ -105,9 +116,10 @@ services:
     container_name: faf-influxdb
     image: influxdb:1.1.1-alpine
     networks:
-      - "faf"
+      faf:
+        aliases:
+          - "faf-influxdb"
     ports:
-      - "8083:8083" # Administrator interface
       - "8086:8086" # HTTP API
     environment:
       INFLUXDB_DATA_ENGINE: tsm1
@@ -121,12 +133,9 @@ services:
     networks:
       - "faf"
     volumes:
-      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - ./telegraf:/etc/telegraf
     ports:
       - "8125:8125"
-    depends_on:
-      faf-influxdb:
-        condition: service_started
 
   #
   # Grafana reads data from InfluxDB and draws monitoring dashboards
@@ -140,11 +149,6 @@ services:
       - ./grafana:/etc/grafana/scripts
     ports:
       - "8090:3000"
-    depends_on:
-      faf-influxdb:
-        condition: service_started
-      faf-telegraf:
-        condition: service_started
 
 networks:
   faf:
