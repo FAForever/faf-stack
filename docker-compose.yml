@@ -6,7 +6,7 @@ services:
   #
   faf-db:
     container_name: faf-db
-    build: ../db
+    build: https://github.com/FAForever/db.git#feature/docker-improvements
     networks:
       faf:
         aliases:
