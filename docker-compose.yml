@@ -2,7 +2,7 @@ version: '2.1'
 services:
 
   #
-  # FAF MySQL database
+  # FAF MySQL database.
   #
   faf-db:
     container_name: faf-db
@@ -12,24 +12,24 @@ services:
         aliases:
           - "faf-db"
     restart: always
-    env_file: faf-db.env
+    env_file: ./config/faf-db/faf-db.env
+    ports:
+      - "127.0.0.1:3306:3306"
     volumes:
-      - ./db:/var/lib/mysql
+      - ./data/faf-db:/var/lib/mysql
 
   #
-  # FAF game server for clients to connect to
+  # FAF game server for clients to connect to.
   #
   faf-server:
     container_name: faf-server
-    image: micheljung/faf-server:0.9.0
+    image: micheljung/faf-server:0.9.1
     networks:
       faf:
         aliases:
           - "faf-server"
     restart: always
-    env_file: faf-server.env
-    volumes:
-      - ./content:/content
+    env_file: ./config/faf-server/faf-server.env
     expose:
       - "8080" # HTTP Management API
     ports:
@@ -45,7 +45,7 @@ services:
       retries: 3
 
   #
-  # FAF JSON-API to provide data over HTTP
+  # FAF JSON-API to provide data over HTTP.
   #
   faf-api:
     container_name: faf-api
@@ -55,9 +55,9 @@ services:
         aliases:
           - "faf-api"
     restart: always
-    env_file: faf-api.env
+    env_file: ./config/faf-api/faf-api.env
     volumes:
-      - ./content:/content
+      - ./data/content:/content
     expose:
       - "8081" # HTTP Management API
     ports:
@@ -73,30 +73,34 @@ services:
       retries: 3
 
   #
-  # FAF website
+  # FAF website.
   #
   faf-website:
     container_name: faf-website
     build: git://github.com/FAForever/website.git
-    env_file: faf-website.env
-    ports:
-      - "8020:3000"
+    restart: always
+    env_file: ./config/faf-website/faf-website.env
+    networks:
+      - faf
     depends_on:
       faf-db:
         condition: service_healthy
+    ports:
+      - "127.0.0.1:8020:3000"
 
   #
-  # Interface to administer Spring Boot applications
+  # Interface to administer Spring Boot applications.
   #
   faf-spring-boot-admin:
     container_name: faf-spring-boot-admin
     image: aetas/spring-boot-admin-docker:1.4.1
     ports:
-      - "8030:8080"
+      - "127.0.0.1:8030:8080"
     networks:
       faf:
         aliases:
           - "faf-spring-boot-admin"
+    restart: always
     healthcheck:
       test: "wget -q -O /dev/null http://localhost:8080"
       interval: 30s
@@ -104,16 +108,16 @@ services:
       retries: 3
 
   #
-  # FAF TURN (proxy) server
+  # FAF TURN (proxy) server.
   #
   faf-turn:
     container_name: faf-turn
-    image: bprodoehl/turnserver
+    build: git://github.com/FAForever/docker-coturn.git
     container_name: faf-turn
     network_mode: "host"
 
   #
-  # InfluxDB stores time-series data
+  # InfluxDB stores time-series data.
   #
   faf-influxdb:
     container_name: faf-influxdb
@@ -122,36 +126,310 @@ services:
       faf:
         aliases:
           - "faf-influxdb"
+    restart: always
     expose:
       - "8086" # HTTP API
     environment:
       INFLUXDB_DATA_ENGINE: tsm1
 
   #
-  # Telegraf collects metrics from services and writes them to InfluxDB
+  # Telegraf collects metrics from services and writes them to InfluxDB.
   #
   faf-telegraf:
     container_name: faf-telegraf
     image: telegraf:1.1.2-alpine
+    restart: always
     networks:
       - "faf"
     volumes:
-      - ./telegraf:/etc/telegraf
+      - ./config/faf-telegraf:/etc/telegraf
     expose:
       - "8125"
 
   #
-  # Grafana reads data from InfluxDB and draws monitoring dashboards
+  # Grafana reads data from InfluxDB and draws monitoring dashboards.
   #
   faf-grafana:
     container_name: faf-grafana
     image: grafana/grafana:4.1.1
+    restart: always
     networks:
       - "faf"
     volumes:
-      - ./grafana:/etc/grafana/scripts
+      - ./config/faf-grafana:/etc/grafana/scripts
     ports:
       - "8090:3000"
+
+  #
+  # IRC for FAF chat.
+  #
+  faf-unrealrc:
+    container_name: faf-unrealrc
+    build: git://github.com/FAForever/docker-unrealircd#feature/docker-improvements
+    ulimits:
+      nofile:
+        soft: 8192
+        hard: 8192
+    networks:
+      - faf
+    depends_on:
+      faf-db:
+        condition: service_healthy
+    volumes:
+      - ./config/faf-unrealrc/ssl:/home/unreal/unrealircd/conf/ssl
+    restart: always
+    ports:
+      - "6667:6667"
+      - "6697:6697"
+      - "6665:6665"
+      - "6666:6666"
+      - "8067:8067"
+      - "7070:7070"
+      - "8167:8167"
+
+  #
+  # FAF Mumble server.
+  #
+  faf-murmur:
+    container_name: faf-murmur
+    build: git://github.com/FAForever/murmur
+    networks:
+      - faf
+    depends_on:
+      faf-db:
+        condition: service_healthy
+    restart: always
+    env_file: ./config/faf-murmur/faf-murmur.env
+    ports:
+      - "64738:64738"
+      - "64738/udp:64738/udp"
+
+  #
+  # Legacy FAF "apps" like the "link to steam" or "forgot password" pages which are being replaced.
+  #
+  faf-legacy-apps:
+    container_name: faf-legacy-apps
+    image: richarvey/nginx-php-fpm
+    restart: always
+    volumes:
+      - ./data/content/app:/usr/share/nginx/html
+    env_file: ./config/faf-legacy-apps/faf-legacy-apps.env
+    ports:
+      - "127.0.0.1:8094:80"
+
+  #
+  # The content management system which is still being used as a backend for the website. The website accesses
+  # Wordpress over a JSON API plugin.
+  #
+  faf-wordpress:
+    container_name: faf-wordpress
+    image: richarvey/nginx-php-fpm
+    restart: always
+    volumes:
+      - ./data/faf-wordpress:/usr/share/nginx/html
+    networks:
+      faf:
+        aliases:
+          - "faf-wordpress"
+    depends_on:
+      faf-db:
+        condition: service_healthy
+    env_file: ./config/faf-wordpress/faf-wordpress.env
+    ports:
+      - "127.0.0.1:8095:80"
+
+  #
+  # The FAF clans website.
+  #
+  faf-clans:
+    container_name: faf-clans
+    image: richarvey/nginx-php-fpm
+    volumes:
+      - ./data/faf-clans:/usr/share/nginx/html
+    networks:
+      - faf
+    depends_on:
+      faf-db:
+        condition: service_healthy
+    restart: always
+    env_file: ./config/faf-clans/faf-clans.env
+    ports:
+      - "127.0.0.1:8096:80"
+
+  #
+  # A dirty but effective voting app written by Softly.
+  #
+  faf-softvote:
+    container_name: faf-softvote
+    build: git://github.com/FAForever/softvote.git
+    networks:
+      - faf
+    depends_on:
+      faf-db:
+        condition: service_healthy
+    restart: always
+    env_file: ./config/faf-softvote/faf-softvote.env
+    ports:
+      - "127.0.0.1:8097:80"
+
+  #
+  # FAF forum software.
+  #
+  faf-forums:
+    container_name: faf-forums
+    image: richarvey/nginx-php-fpm
+    volumes:
+      - ./data/faf-forums/phpbb3/www:/usr/share/nginx/html
+      - ./data/faf-forums/phpbb3:/usr/share/phpbb3
+      - ./data/faf-forums/etc/phpbb3:/etc/phpbb3
+    networks:
+      - faf
+    depends_on:
+      faf-db:
+        condition: service_healthy
+    restart: always
+    env_file: ./config/faf-forums/faf-forums.env
+    ports:
+      - "127.0.0.1:8098:80"
+
+  #
+  # Serves static files such as maps, mods, game files etc.
+  #
+  faf-content:
+    container_name: faf-content
+    image: richarvey/nginx-php-fpm
+    volumes:
+      - ./data/content:/usr/share/nginx/html
+    networks:
+      - faf
+    depends_on:
+      faf-db:
+        condition: service_healthy
+    restart: always
+    env_file: ./config/faf-content/faf-content.env
+    ports:
+      - "127.0.0.1:8091:80"
+
+  #
+  # The FAF wiki.
+  #
+  faf-wiki:
+    container_name: faf-wiki
+    image: richarvey/nginx-php-fpm
+    restart: always
+    volumes:
+      - ./data/faf-wiki:/usr/share/nginx/html
+    env_file: ./config/faf-wiki/faf-wiki.env
+    ports:
+      - "127.0.0.1:8092:80"
+
+  #
+  # The legacy update server from which the legacy client gets its update information.
+  #
+  faf-legacy-updater:
+    container_name: faf-legacy-updater
+    build: git://github.com/FAForever/legacy-updater.git
+    restart: always
+    volumes:
+      - ./data/content:/content
+    networks:
+      - faf
+    depends_on:
+      faf-db:
+        condition: service_healthy
+    restart: always
+    env_file: ./config/faf-legacy-updater/faf-legacy-updater.env
+    ports:
+      - "9001:9001"
+
+  #
+  # The legacy "live replay" server.
+  #
+  faf-legacy-live-replay-server:
+    container_name: faf-legacy-live-replay-server
+    build: git://github.com/FAForever/legacy-replay-server.git
+    restart: always
+    volumes:
+      - ./data/content:/content
+    networks:
+      - faf
+    depends_on:
+      faf-db:
+        condition: service_healthy
+    restart: always
+    env_file: ./config/faf-legacy-live-replay-server/faf-legacy-live-replay-server.env
+    ports:
+      - "15000:15000"
+
+  #
+  # The legacy "secondary server" which does many different things, most of which are being replaced.
+  #
+  faf-legacy-secondary-server:
+    container_name: faf-legacy-secondary-server
+    build: git://github.com/FAForever/legacy-secondaryServer.git
+    restart: always
+    volumes:
+      - ./data/content:/content
+    networks:
+      - faf
+    depends_on:
+      faf-db:
+        condition: service_healthy
+    restart: always
+    env_file: ./config/faf-legacy-secondary-server/faf-legacy-secondary-server.env
+    ports:
+      - "11002:11002"
+
+  #
+  # A small web tool that allows users to invite themselves into our Slack group.
+  #
+  faf-slack-invite-automation:
+    container_name: slack-invite-automation
+    build: https://github.com/outsideris/slack-invite-automation.git
+    env_file: ./config/faf-slack-invite-automation/faf-slack-invite-automation.env
+    restart: always
+    ports:
+      - "3001:3000"
+
+  #
+  # An nginx proxy which exposes FAF services such as the website, the API etc. through HTTP. It does so by listening
+  # for docker containers to come online which have the environment variable VIRTUAL_HOST set. Once such a container
+  # comes online, it sets up a virtual host which is forwarded to the only exposed port of that service. If multiple
+  # ports are exposed, VIRTUAL_PORT can be set to pick one.
+  #
+  # For more information, see https://github.com/jwilder/nginx-proxy
+  #
+  faf-nginx:
+    container_name: faf-nginx
+    image: jwilder/nginx-proxy
+    volumes:
+      - ./data/content:/content
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./data/vhost.d:/etc/nginx/vhost.d:ro
+      - ./data/certs:/etc/nginx/certs:ro
+      - /usr/share/nginx/html
+    ports:
+      - "80:80"
+      - "443:443"
+
+  #
+  # An extension of the nginx proxy which converts exposed containers to HTTPS and automatically generates a
+  # Let's Encrypt SSL certificate. It does so by listening for docker containers to come online which have the
+  # environment variable LETSENCRYPT_HOST and LETSENCRYPT_EMAIL set.
+  #
+  # For more information, see https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion
+  #
+  faf-nginx-certs:
+    container_name: faf-nginx-certs
+    # image: jrcs/letsencrypt-nginx-proxy-companion
+    # https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion/pull/135
+    build: https://github.com/ecobytes/nginx-letsencrypt.git
+    volumes_from:
+      - faf-nginx:rw
+    volumes:
+      - ./data/certs:/etc/nginx/certs:rw
+      - ./data/vhost.d:/etc/nginx/vhost.d:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 
 networks:
   faf:
