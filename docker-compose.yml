@@ -23,7 +23,7 @@ services:
   #
   faf-server:
     container_name: faf-server
-    image: micheljung/faf-server:0.9.1
+    image: micheljung/faf-server:0.9.4
     networks:
       faf:
         aliases:
