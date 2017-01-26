@@ -163,8 +163,8 @@ services:
   #
   # IRC for FAF chat.
   #
-  faf-unrealrc:
-    container_name: faf-unrealrc
+  faf-unrealircd:
+    container_name: faf-unrealircd
     build: git://github.com/FAForever/docker-unrealircd#feature/docker-improvements
     ulimits:
       nofile:
@@ -176,7 +176,7 @@ services:
       faf-db:
         condition: service_healthy
     volumes:
-      - ./config/faf-unrealrc/ssl:/home/unreal/unrealircd/conf/ssl
+      - ./config/faf-unrealircd/ssl:/home/unreal/unrealircd/conf/ssl:ro
     restart: always
     ports:
       - "6667:6667"
