@@ -19,6 +19,44 @@ production or your personal configuration files**.
 
 ### Data
 
-Some containers need to persist files in volumes, or read files of other containers. All volumes are created inside 
+Some services need to persist files in volumes, or read files of other services. All volumes are created inside 
 the `data` directory, which is listed in `.gitignore`. It goes without saying that none of these files should ever be
 committed.
+
+## Naming
+
+To keep things easy and avoid conflicts, all services, network aliases, folder names and environment files have
+consistent names.
+
+## Usage
+
+### Prerequisites
+
+* [Docker](https://github.com/docker/docker/releases) v1.13.0 or newer
+* [Docker Compose](https://github.com/docker/compose/releases) v1.10.0 or newer
+
+### Start all at once
+
+```
+docker-compose up -d
+```
+
+### Start a single service
+
+If you start a single service, services it depends on will be started automatically. For instance:
+
+```
+docker-compose up -d faf-server
+```
+
+This also starts `faf-db`.
+
+### Start from local repository
+
+To start a service from your local repository, find its `image` or `build` in the `docker-compose.yml` and change it to:
+
+```
+build: <path>
+```
+
+Where `<path>` is for instance `../faf-server`.
