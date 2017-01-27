@@ -165,18 +165,25 @@ services:
   #
   faf-unrealircd:
     container_name: faf-unrealircd
-    build: git://github.com/FAForever/docker-unrealircd#feature/docker-improvements
+    build: ../docker-unrealircd
     ulimits:
       nofile:
         soft: 8192
         hard: 8192
     networks:
-      - faf
+      faf:
+        aliases:
+          - "faf-irc"
+          - "irc.faforever.com"
+          - "services.faforever.com"
     depends_on:
       faf-db:
         condition: service_healthy
+    env_file: ./config/faf-unrealircd/faf-unrealircd.env
     volumes:
-      - ./config/faf-unrealircd/ssl:/home/unreal/unrealircd/conf/ssl:ro
+      - ./config/faf-unrealircd/ssl:/home/unreal/unrealircd/conf/ssl
+      - ./config/faf-unrealircd/services.conf:/home/unreal/unrealircd/services/conf/services.conf
+      - ./config/faf-unrealircd/unrealircd.conf:/home/unreal/unrealircd/conf/unrealircd.conf
     restart: always
     ports:
       - "6667:6667"
@@ -390,6 +397,16 @@ services:
     restart: always
     ports:
       - "3001:3000"
+
+  #
+  # IRC <-> Discord bot. Connects IRC's #aeolus to Discord's #aeolus
+  #
+  faf-discord-irc:
+    container_name: faf-discord-irc
+    build: git://github.com/FAForever/faf-discord-irc.git
+    volumes:
+      - ./config/faf-discord-irc/config.json:/config/config.json
+    restart: always
 
   #
   # An nginx proxy which exposes FAF services such as the website, the API etc. through HTTP. It does so by listening

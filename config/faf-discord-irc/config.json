@@ -1,0 +1,21 @@
+[
+  {
+    "nickname": "FAFDiscord",
+    "server": "localhost",
+    "discordToken": "banana",
+    "channelMapping": {
+      "#aeolus": "#aeolus"
+    },
+    "ircOptions": {
+      "floodProtection": true,
+      "floodProtectionDelay": 1000
+    },
+    "ircStatusNotices": {
+      "join": false,
+      "leave": false,
+      "autoRejoin": true
+    },
+    "ircNickColor": false,
+    "commandCharacters": ["!", "."]
+  }
+]
