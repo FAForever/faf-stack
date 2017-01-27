@@ -179,7 +179,6 @@ services:
     depends_on:
       faf-db:
         condition: service_healthy
-    env_file: ./config/faf-unrealircd/faf-unrealircd.env
     volumes:
       - ./config/faf-unrealircd/ssl:/home/unreal/unrealircd/conf/ssl
       - ./config/faf-unrealircd/services.conf:/home/unreal/unrealircd/services/conf/services.conf
