@@ -422,8 +422,8 @@ services:
     volumes:
       - ./data/content:/content
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - ./data/vhost.d:/etc/nginx/vhost.d:ro
-      - ./data/certs:/etc/nginx/certs:ro
+      - ./data/faf-nginx/vhost.d:/etc/nginx/vhost.d:ro
+      - ./data/faf-nginx/certs:/etc/nginx/certs:ro
       - /usr/share/nginx/html
     ports:
       - "80:80"
@@ -444,8 +444,8 @@ services:
     volumes_from:
       - faf-nginx:rw
     volumes:
-      - ./data/certs:/etc/nginx/certs:rw
-      - ./data/vhost.d:/etc/nginx/vhost.d:rw
+      - ./data/faf-nginx/certs:/etc/nginx/certs:rw
+      - ./data/faf-nginx/vhost.d:/etc/nginx/vhost.d:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
 networks:
