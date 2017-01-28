@@ -165,7 +165,7 @@ services:
   #
   faf-unrealircd:
     container_name: faf-unrealircd
-    build: ../docker-unrealircd
+    build: git://github.com/FAForever/docker-unrealircd#feature/docker-improvements
     ulimits:
       nofile:
         soft: 8192
