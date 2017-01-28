@@ -1,0 +1,7 @@
+dist: trusty
+
+services:
+  - docker
+
+script:
+  - docker-compose stop
