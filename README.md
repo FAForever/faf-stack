@@ -32,7 +32,7 @@ consistent names.
 
 ### Prerequisites
 
-* [Docker](https://github.com/docker/docker/releases) v1.13.0 or newer
+* [Docker](https://github.com/docker/docker/releases) v1.13.0 or newer (or [Docker Toolbox](https://github.com/docker/toolbox/releases))
 * [Docker Compose](https://github.com/docker/compose/releases) v1.10.0 or newer
 
 ### Start all at once
