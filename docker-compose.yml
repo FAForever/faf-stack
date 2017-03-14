@@ -6,7 +6,7 @@ services:
   #
   faf-db:
     container_name: faf-db
-    build: git://github.com/FAForever/db.git#feature/docker-improvement
+    build: git://github.com/FAForever/db.git
     networks:
       faf:
         aliases:
@@ -49,7 +49,7 @@ services:
   #
   faf-api:
     container_name: faf-api
-    image: micheljung/faf-api:0.2.0
+    image: micheljung/faf-api:0.3.3
     networks:
       faf:
         aliases:
@@ -61,7 +61,7 @@ services:
     expose:
       - "8081" # HTTP Management API
     ports:
-      - "8010:8080" # HTTP API
+      - "8010:8010" # HTTP API
     depends_on:
       faf-db:
         condition: service_healthy
