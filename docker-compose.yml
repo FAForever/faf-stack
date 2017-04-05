@@ -49,7 +49,7 @@ services:
   #
   faf-api:
     container_name: faf-api
-    image: micheljung/faf-api:0.3.3
+    image: micheljung/faf-api:0.4.0
     networks:
       faf:
         aliases:
