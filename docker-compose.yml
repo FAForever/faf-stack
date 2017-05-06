@@ -1,4 +1,5 @@
 version: '2.1'
+
 services:
 
   #
@@ -49,7 +50,7 @@ services:
   #
   faf-api:
     container_name: faf-api
-    image: micheljung/faf-api:0.4.0
+    image: micheljung/faf-api:0.5.3
     networks:
       faf:
         aliases:
@@ -67,7 +68,7 @@ services:
         condition: service_healthy
     # TODO move to Dockerfile
     healthcheck:
-      test: "wget -q -O /dev/null http://localhost:8080/management/health"
+      test: "wget -q -O /dev/null http://localhost:8010/management/health"
       interval: 30s
       timeout: 5s
       retries: 3
