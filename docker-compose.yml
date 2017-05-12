@@ -246,13 +246,11 @@ services:
       - "127.0.0.1:8095:80"
 
   #
-  # The FAF clans website.
+  # The new FAF clanapp.
   #
-  faf-clans:
-    container_name: faf-clans
-    image: richarvey/nginx-php-fpm
-    volumes:
-      - ./data/faf-clans:/usr/share/nginx/html
+  faf-clanapp:
+    container_name: faf-clanapp
+    image: dragonfire/clans
     networks:
       - faf
     depends_on:
@@ -261,7 +259,7 @@ services:
     restart: always
     env_file: ./config/faf-clans/faf-clans.env
     ports:
-      - "127.0.0.1:8096:80"
+      - "127.0.0.1:8096:8080"
 
   #
   # A dirty but effective voting app written by Softly.
