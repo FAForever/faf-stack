@@ -7,7 +7,7 @@ services:
   #
   faf-db:
     container_name: faf-db
-    build: git://github.com/FAForever/db.git
+    build: git://github.com/FAForever/db.git#v35
     networks:
       faf:
         aliases:
@@ -22,17 +22,43 @@ services:
   #
   # FAF game server for clients to connect to.
   #
-  faf-server:
-    container_name: faf-server
-    image: faforever/faf-server:0.9.7
+  faf-python-server:
+    container_name: faf-python-server
+    build: git://github.com/FAForever/server.git#v0.5.2
+    networks:
+      faf:
+        aliases:
+          - "faf-python-server"
+    restart: always
+    env_file: ./config/faf-server/faf-python-server.env
+    expose:
+      - "8088" # HTTP Management API
+    ports:
+      - "8001:8001" # Server
+    depends_on:
+      faf-db:
+        condition: service_healthy
+    # TODO move to Dockerfile
+    healthcheck:
+      test: "wget -q -O /dev/null http://localhost:8080/health"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  #
+  # FAF game server for clients to connect to.
+  #
+  faf-java-server:
+    container_name: faf-java-server
+    image: faforever/faf-java-server::0.9.7
     networks:
       faf:
         aliases:
           - "faf-server"
     restart: always
-    env_file: ./config/faf-server/faf-server.env
+    env_file: ./config/faf-java-server/faf-java-server.env
     expose:
-      - "8080" # HTTP Management API
+      - "8088" # HTTP Management API
     ports:
       - "8001:8001" # Server
     depends_on:
@@ -48,15 +74,15 @@ services:
   #
   # FAF JSON-API to provide data over HTTP.
   #
-  faf-api:
-    container_name: faf-api
-    image: micheljung/faf-api:0.5.3
+  faf-java-api:
+    container_name: faf-java-api
+    image: faforever/faf-java-api:0.5.6
     networks:
       faf:
         aliases:
-          - "faf-api"
+          - "faf-java-api"
     restart: always
-    env_file: ./config/faf-api/faf-api.env
+    env_file: ./config/faf-java-api/faf-java-api.env
     volumes:
       - ./data/content:/content
     expose:
@@ -74,11 +100,32 @@ services:
       retries: 3
 
   #
+  # Old implementation of an almost JSON-API conform API.
+  #
+  faf-python-api:
+    build: git://github.com/FAForever/api.git#v0.5.3
+    command: python run.py -p 80
+    depends_on:
+      faf-db:
+        condition: service_healthy
+    env_file: ./config/faf-python-api/faf-python-api.env
+    environment:
+      - VIRTUAL_HOST=api.faforever.com
+      - FAF_API_ENVIRONMENT=stabler
+      - LETSENCRYPT_HOST=api.faforever.com
+      - LETSENCRYPT_EMAIL=admin@faforever.com
+      - STATSD_SERVER=172.17.0.1:8125
+    volumes:
+      - /opt/stable/content:/content
+    ports:
+      - "8093:80"
+
+  #
   # FAF website.
   #
   faf-website:
     container_name: faf-website
-    build: git://github.com/FAForever/website.git
+    build: git://github.com/FAForever/website.git#v1.1.1.4
     restart: always
     env_file: ./config/faf-website/faf-website.env
     networks:
@@ -107,15 +154,6 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
-
-  #
-  # FAF TURN (proxy) server.
-  #
-  faf-turn:
-    container_name: faf-turn
-    build: git://github.com/FAForever/docker-coturn.git
-    container_name: faf-turn
-    network_mode: "host"
 
   #
   # InfluxDB stores time-series data.
@@ -166,7 +204,7 @@ services:
   #
   faf-unrealircd:
     container_name: faf-unrealircd
-    build: git://github.com/FAForever/docker-unrealircd#feature/docker-improvements
+    build: git://github.com/FAForever/docker-unrealircd#f16e9ce
     ulimits:
       nofile:
         soft: 8192
@@ -174,7 +212,7 @@ services:
     networks:
       faf:
         aliases:
-          - "faf-irc"
+          - "faf-unrealircd"
           - "irc.faforever.com"
           - "services.faforever.com"
     depends_on:
@@ -199,7 +237,7 @@ services:
   #
   faf-murmur:
     container_name: faf-murmur
-    build: git://github.com/FAForever/murmur
+    build: git://github.com/FAForever/murmur#259b597
     networks:
       - faf
     depends_on:
@@ -216,7 +254,7 @@ services:
   #
   faf-legacy-apps:
     container_name: faf-legacy-apps
-    image: richarvey/nginx-php-fpm
+    image: richarvey/nginx-php-fpm:php5
     restart: always
     volumes:
       - ./data/content/app:/usr/share/nginx/html
@@ -230,7 +268,7 @@ services:
   #
   faf-wordpress:
     container_name: faf-wordpress
-    image: richarvey/nginx-php-fpm
+    image: richarvey/nginx-php-fpm:php5
     restart: always
     volumes:
       - ./data/faf-wordpress:/usr/share/nginx/html
@@ -266,7 +304,7 @@ services:
   #
   faf-softvote:
     container_name: faf-softvote
-    build: git://github.com/FAForever/softvote.git
+    build: git://github.com/FAForever/softvote.git#c5a5983
     networks:
       - faf
     depends_on:
@@ -278,22 +316,22 @@ services:
       - "127.0.0.1:8097:80"
 
   #
-  # FAF forum software.
+  # FAF phpBB forum software.
   #
-  faf-forums:
-    container_name: faf-forums
-    image: richarvey/nginx-php-fpm
+  faf-phpbb3:
+    container_name: faf-phpbb3
+    image: richarvey/nginx-php-fpm:php5
     volumes:
-      - ./data/faf-forums/phpbb3/www:/usr/share/nginx/html
-      - ./data/faf-forums/phpbb3:/usr/share/phpbb3
-      - ./data/faf-forums/etc/phpbb3:/etc/phpbb3
+      - ./data/faf-phpbb3/phpbb3/www:/usr/share/nginx/html
+      - ./data/faf-phpbb3/phpbb3:/usr/share/phpbb3
+      - ./data/faf-phpbb3/etc/phpbb3:/etc/phpbb3
     networks:
       - faf
     depends_on:
       faf-db:
         condition: service_healthy
     restart: always
-    env_file: ./config/faf-forums/faf-forums.env
+    env_file: ./config/faf-phpbb3/faf-phpbb3.env
     ports:
       - "127.0.0.1:8098:80"
 
@@ -302,7 +340,7 @@ services:
   #
   faf-content:
     container_name: faf-content
-    image: richarvey/nginx-php-fpm
+    image: richarvey/nginx-php-fpm:php5
     volumes:
       - ./data/content:/usr/share/nginx/html
     networks:
@@ -316,15 +354,15 @@ services:
       - "127.0.0.1:8091:80"
 
   #
-  # The FAF wiki.
+  # The FAF mediawiki.
   #
-  faf-wiki:
-    container_name: faf-wiki
-    image: richarvey/nginx-php-fpm
+  faf-mediawiki:
+    container_name: faf-mediawiki
+    image: richarvey/nginx-php-fpm:php5
     restart: always
     volumes:
-      - ./data/faf-wiki:/usr/share/nginx/html
-    env_file: ./config/faf-wiki/faf-wiki.env
+      - ./data/faf-mediawiki:/usr/share/nginx/html
+    env_file: ./config/faf-mediawiki/faf-mediawiki.env
     ports:
       - "127.0.0.1:8092:80"
 
@@ -333,7 +371,7 @@ services:
   #
   faf-legacy-updater:
     container_name: faf-legacy-updater
-    build: git://github.com/FAForever/legacy-updater.git
+    build: git://github.com/FAForever/legacy-updater.git#059e147
     restart: always
     volumes:
       - ./data/content:/content
@@ -352,7 +390,7 @@ services:
   #
   faf-legacy-live-replay-server:
     container_name: faf-legacy-live-replay-server
-    build: git://github.com/FAForever/legacy-replay-server.git
+    build: git://github.com/FAForever/legacy-replay-server.git#f699255
     restart: always
     volumes:
       - ./data/content:/content
@@ -371,7 +409,7 @@ services:
   #
   faf-legacy-secondary-server:
     container_name: faf-legacy-secondary-server
-    build: git://github.com/FAForever/legacy-secondaryServer.git
+    build: git://github.com/FAForever/legacy-secondaryServer.git#61cd426
     restart: always
     volumes:
       - ./data/content:/content
@@ -389,8 +427,8 @@ services:
   # A small web tool that allows users to invite themselves into our Slack group.
   #
   faf-slack-invite-automation:
-    container_name: slack-invite-automation
-    build: https://github.com/outsideris/slack-invite-automation.git
+    container_name: faf-slack-invite-automation
+    build: git://github.com/outsideris/slack-invite-automation.git#49798f6
     env_file: ./config/faf-slack-invite-automation/faf-slack-invite-automation.env
     restart: always
     ports:
@@ -401,7 +439,7 @@ services:
   #
   faf-discord-irc:
     container_name: faf-discord-irc
-    build: git://github.com/FAForever/faf-discord-irc.git
+    build: git://github.com/FAForever/faf-discord-irc.git#e370282
     volumes:
       - ./config/faf-discord-irc/config.json:/config/config.json
     restart: always
@@ -416,7 +454,7 @@ services:
   #
   faf-nginx:
     container_name: faf-nginx
-    image: jwilder/nginx-proxy
+    image: jwilder/nginx-proxy:0.5.0
     volumes:
       - ./data/content:/content
       - /var/run/docker.sock:/tmp/docker.sock:ro
@@ -436,15 +474,28 @@ services:
   #
   faf-nginx-certs:
     container_name: faf-nginx-certs
-    # image: jrcs/letsencrypt-nginx-proxy-companion
-    # https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion/pull/135
-    build: https://github.com/ecobytes/nginx-letsencrypt.git
+    image: jrcs/letsencrypt-nginx-proxy-companion#v1.5
     volumes_from:
       - faf-nginx:rw
     volumes:
       - ./data/faf-nginx/certs:/etc/nginx/certs:rw
       - ./data/faf-nginx/vhost.d:/etc/nginx/vhost.d:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  #
+  # Temporary avatar management tool.
+  #
+  jeremy:
+    build: git://github.com/FAForever/Jeremy.git#130c347
+    env_file: ./config/faf-jeremy/faf-jeremy.env
+    environment:
+      - VIRTUAL_HOST=jeremy.dev.faforever.com
+      - FAF_API_ENVIRONMENT=stabler
+      - ACME_CA_URI=https://acme-staging.api.letsencrypt.org/directory
+      - LETSENCRYPT_HOST=jeremy.dev.faforever.com
+      - LETSENCRYPT_EMAIL=admin@faforever.com
+    ports:
+      - "8099:5000"
 
 networks:
   faf:
