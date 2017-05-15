@@ -250,7 +250,7 @@ services:
   #
   faf-clanapp:
     container_name: faf-clanapp
-    image: dragonfire/clans
+    image: dragonfire/clans:1.0.1
     networks:
       - faf
     depends_on:
