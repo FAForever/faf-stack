@@ -1,15 +1,18 @@
 # FAF Stack
 
-This repository aims to provide a complete and ready-to-go Docker Compose file to set up a complete FAF Stack, or
-parts of it, with a single command.
+This repository aims to provide a ready-to-go Docker Compose file to set up a complete FAF stack (or parts of it) with
+a single command.
 
 ## Structure
 
-There are two directories: `config` (already there) and `data` (created upon first start).
+The FAF stack uses two directories:
+
+* `config` contains the configuration files for all FAF services
+* `data` contains data required or produced by the services
 
 ### Configuration
 
-Each service has its own directory within `conf`. They usually contain an environment file and/or other configuration
+Each service has its own directory within `config`. They usually contain an environment file and/or other configuration
 files needed for the service to operate properly. Environment files are loaded by Docker Compose and additional
 files/directories may be mounted as volumes (both as specified in `docker-compose.yml`).
 
@@ -25,8 +28,8 @@ committed.
 
 ## Naming
 
-To keep things easy and avoid conflicts, all services, network aliases, folder names and environment files have
-consistent names.
+To keep things easy and avoid conflicts, all services, network aliases, folder names and environment files follow a
+consistent naming.
 
 ## Usage
 
@@ -35,19 +38,19 @@ consistent names.
 * [Docker](https://github.com/docker/docker/releases) v1.13.0 or newer (or [Docker Toolbox](https://github.com/docker/toolbox/releases))
 * [Docker Compose](https://github.com/docker/compose/releases) v1.10.0 or newer
 
+### Copy configuration files
+
+    cp -R config.template config
+
 ### Start all at once
 
-```
-docker-compose up -d
-```
+    docker-compose up -d
 
 ### Start a single service
 
 If you start a single service, services it depends on will be started automatically. For instance:
 
-```
-docker-compose up -d faf-server
-```
+    docker-compose up -d faf-server
 
 This also starts `faf-db`.
 
@@ -55,8 +58,6 @@ This also starts `faf-db`.
 
 To start a service from your local repository, find its `image` or `build` in the `docker-compose.yml` and change it to:
 
-```
-build: <path>
-```
+    build: <path>
 
-Where `<path>` is for instance `../faf-server`.
+Where `<path>` is the path to your local project, for instance `../faf-python-server`.
