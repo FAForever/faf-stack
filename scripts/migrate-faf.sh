@@ -59,13 +59,13 @@ PATH_MAPPINGS['/opt/stable/content/faf/vault/map_previews/small/']="${FAF_BASE_D
 PATH_MAPPINGS['/opt/stable/content/faf/vault/map_previews/large/']="${FAF_BASE_DIR}/data/content/maps/previews/large"
 PATH_MAPPINGS['/opt/stable/content/faf/vault/maps/']="${FAF_BASE_DIR}/data/content/maps"
 PATH_MAPPINGS['/opt/stable/content/faf/vault/maps.php']="${FAF_BASE_DIR}/data/content/vault"
-PATH_MAPPINGS['/opt/stable/content/faf/vault/map_vault/']="${FAF_BASE_DIR}/data/content/maps"
+PATH_MAPPINGS['/opt/stable/content/faf/vault/map_vault/']="${FAF_BASE_DIR}/data/content/vault/map_vault"
 PATH_MAPPINGS['/opt/stable/content/faf/vault/mods/']="${FAF_BASE_DIR}/data/content/mods"
 PATH_MAPPINGS['/opt/stable/content/faf/vault/mods_thumbs/']="${FAF_BASE_DIR}/data/content/mods/thumbs"
 PATH_MAPPINGS['/opt/stable/content/faf/vault/replays_simple.php']="${FAF_BASE_DIR}/data/content/vault"
 PATH_MAPPINGS['/opt/stable/content/faf/vault/replay_vault/0/']="${FAF_BASE_DIR}/data/content/replays"
-PATH_MAPPINGS['/opt/stable/content/faf/vault/replay_vault/css/']="${FAF_BASE_DIR}/data/content/vault/replays/css"
-PATH_MAPPINGS['/opt/stable/content/faf/vault/replay_vault/replay.php']="${FAF_BASE_DIR}/data/content/vault/replays"
+PATH_MAPPINGS['/opt/stable/content/faf/vault/replay_vault/css/']="${FAF_BASE_DIR}/data/content/vault/replay_vault/css"
+PATH_MAPPINGS['/opt/stable/content/faf/vault/replay_vault/replay.php']="${FAF_BASE_DIR}/data/content/vault"
 #              /opt/stable/content/faf/xdelta'       ignored, generated as needed by the legacy updater
 #              /opt/stable/content/fafclans*gzip     ignored, trash
 #              /opt/stable/content/FAForever-0.10.*  ignored, very old client releases
@@ -135,7 +135,8 @@ SYMLINKS["${FAF_BASE_DIR}/content/faf/updaterNew"]='../legacy-featured-mod-files
 SYMLINKS["${FAF_BASE_DIR}/content/faf/vault/map_previews/small"]='../../../maps/previews/small'
 SYMLINKS["${FAF_BASE_DIR}/content/faf/vault/map_previews/large"]='../../../maps/previews/large'
 SYMLINKS["${FAF_BASE_DIR}/content/faf/vault/mod_thumbs/small"]='../../../mods/previews/large'
-
+SYMLINKS["${FAF_BASE_DIR}/content/faf/vault/replay_vault/replay.php"]='../../../vault/replay.php'
+SYMLINKS["${FAF_BASE_DIR}/content/faf/vault/replays_simple.php"]='../../vault/replays_simple.php'
 
 function check_is_root {
   if [[ $EUID > 0 ]]; then
@@ -306,6 +307,11 @@ function create_symlinks {
   done
 }
 
+function fix_replay_vault {
+  sed -i "s,/faf/vault/replay_vault,/replays,g" "${FAF_BASE_DIR}/data/content/vault/replay.php"
+  sed -i "s,replay_vault/replay\.php,replay.php,g" "${FAF_BASE_DIR}/data/content/vault/replays_simple.php"
+}
+
 function install_cron_jobs {
   # FIXME make sure the script is actually at this path
   #(crontab -l 2>/dev/null; echo "0 0 * * 1 bash ${FAF_BASE_DIR}/scripts/reporting.sh") | crontab -
@@ -327,4 +333,5 @@ install_rsync
 clone_faf_stack
 migrate_files
 create_symlinks
-
+fix_replay_vault
+install_cron_jobs
