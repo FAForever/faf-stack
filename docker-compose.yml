@@ -241,7 +241,7 @@ services:
     env_file: ./config/faf-murmur/faf-murmur.env
     ports:
       - "64738:64738"
-      - "64738/udp:64738/udp"
+      - "64738:64738/udp"
 
   #
   # Legacy FAF "apps" like the "link to steam" or "forgot password" pages which are being replaced.
