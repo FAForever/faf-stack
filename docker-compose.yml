@@ -227,6 +227,20 @@ services:
       - "8167:8167"
 
   #
+  # QAI irc bot
+  #
+  faf-qai:
+    container_name: faf-qai
+    build: git://github.com/FAForever/QAI#5817e717ffee4ad50093ec3219fd8c73d535e460
+    depends_on:
+      - "faf-unrealircd"
+    volumes:
+      - ./config/faf-qai:/config
+    networks:
+      - "faf"
+    restart: always
+
+  #
   # FAF Mumble server.
   #
   faf-murmur:
