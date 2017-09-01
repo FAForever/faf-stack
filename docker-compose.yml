@@ -52,7 +52,7 @@ services:
     restart: always
     env_file: ./config/faf-java-server/faf-java-server.env
     expose:
-      - "8088" # HTTP Management API
+      - "8089" # HTTP Management API
     ports:
       - "8001:8001" # Server
     depends_on:
