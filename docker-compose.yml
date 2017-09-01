@@ -164,7 +164,7 @@ services:
       - "127.0.0.1:9090:9090" # Webinterface
     volumes:
       - ./config/faf-prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./data/faf-prometheus:/prometheus-data
+      - ./data/faf-prometheus:/prometheus
 
   #
   # Grafana reads data from Prometheus and draws monitoring dashboards.
