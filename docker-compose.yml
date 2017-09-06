@@ -171,12 +171,13 @@ services:
   #
   faf-grafana:
     container_name: faf-grafana
-    image: grafana/grafana:4.1.1
+    image: grafana/grafana:4.4.3
     restart: always
     networks:
       - "faf"
     volumes:
       - ./config/faf-grafana:/etc/grafana/scripts
+      - ./data/faf-grafana:/var/lib/grafana
     ports:
       - "8090:3000"
 
