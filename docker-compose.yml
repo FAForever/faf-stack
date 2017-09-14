@@ -52,7 +52,7 @@ services:
     restart: always
     env_file: ./config/faf-java-server/faf-java-server.env
     expose:
-      - "8088" # HTTP Management API
+      - "8089" # HTTP Management API
     ports:
       - "8001:8001" # Server
     depends_on:
@@ -150,37 +150,24 @@ services:
       retries: 3
 
   #
-  # InfluxDB stores time-series data.
+  # Prometheus is a monitoring and alerting tool that time-series data.
   #
-  faf-influxdb:
-    container_name: faf-influxdb
-    image: influxdb:1.1.1-alpine
+  faf-prometheus:
+    container_name: faf-prometheus
+    image: prom/prometheus:v2.0.0-beta.2
     networks:
       faf:
         aliases:
-          - "faf-influxdb"
+          - "faf-prometheus"
     restart: always
-    expose:
-      - "8086" # HTTP API
-    environment:
-      INFLUXDB_DATA_ENGINE: tsm1
-
-  #
-  # Telegraf collects metrics from services and writes them to InfluxDB.
-  #
-  faf-telegraf:
-    container_name: faf-telegraf
-    image: telegraf:1.1.2-alpine
-    restart: always
-    networks:
-      - "faf"
+    ports:
+      - "127.0.0.1:9090:9090" # Webinterface
     volumes:
-      - ./config/faf-telegraf:/etc/telegraf
-    expose:
-      - "8125"
+      - ./config/faf-prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./data/faf-prometheus:/prometheus
 
   #
-  # Grafana reads data from InfluxDB and draws monitoring dashboards.
+  # Grafana reads data from Prometheus and draws monitoring dashboards.
   #
   faf-grafana:
     container_name: faf-grafana
@@ -190,6 +177,7 @@ services:
       - "faf"
     volumes:
       - ./config/faf-grafana:/etc/grafana/scripts
+      - ./data/faf-grafana:/var/lib/grafana
     ports:
       - "8090:3000"
 

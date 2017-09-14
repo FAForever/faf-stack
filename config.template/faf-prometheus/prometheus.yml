@@ -1,0 +1,21 @@
+global:
+  scrape_interval: 15s
+  external_labels:
+    monitor: 'faforever'
+
+scrape_configs:
+  - job_name: 'faf-java-api'
+    scrape_interval: 5s
+    metrics_path: '/prometheus'
+    static_configs:
+      - targets: ['faf-java-api:8081']
+        labels:
+          alias: faf-main
+
+  - job_name: 'faf-java-server'
+    scrape_interval: 5s
+    metrics_path: '/prometheus'
+    static_configs:
+      - targets: ['faf-java-server:8089']
+        labels:
+          alias: faf-main
