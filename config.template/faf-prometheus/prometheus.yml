@@ -9,9 +9,13 @@ scrape_configs:
     metrics_path: '/prometheus'
     static_configs:
       - targets: ['faf-java-api:8081']
+        labels:
+          alias: faf-main
 
   - job_name: 'faf-java-server'
     scrape_interval: 5s
     metrics_path: '/prometheus'
     static_configs:
       - targets: ['faf-java-server:8089']
+        labels:
+          alias: faf-main
