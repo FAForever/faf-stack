@@ -178,6 +178,7 @@ services:
     volumes:
       - ./config/faf-grafana:/etc/grafana/scripts
       - ./data/faf-grafana:/var/lib/grafana
+    env_file: ./config/faf-grafana/faf-grafana.env
     ports:
       - "8090:3000"
 
