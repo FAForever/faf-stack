@@ -73,6 +73,8 @@ services:
       - "8089" # HTTP Management API
     ports:
       - "8001:8001" # Server
+    volumes:
+      - ./data/faf-java-server/logs:/logs
     depends_on:
       - faf-init-volumes
       - faf-db
@@ -98,6 +100,7 @@ services:
     env_file: ./config/faf-java-api/faf-java-api.env
     volumes:
       - ./data/content:/content
+      - ./data/faf-java-api/logs:/logs
     expose:
       - "8081" # HTTP Management API
     ports:
