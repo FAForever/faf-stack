@@ -4,4 +4,7 @@ services:
   - docker
 
 script:
+  - cp -r config.template config
+  # Causes the docker-compose.yml to be syntax checked, without actually doing anything
+  - docker-compose version
   - docker-compose stop
