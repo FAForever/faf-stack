@@ -33,7 +33,7 @@ ALLOW_PASSWORD_AUTHENTICATION="no"
 DEFAULT_UMASK="007"
 FAF_BASE_DIR="/opt/faf"
 FAF_STACK_URL="https://github.com/FAForever/faf-stack.git"
-DOCKER_COMPOSE_VERSION="1.13.0"
+DOCKER_COMPOSE_VERSION="1.16.1"
 
 declare -A PATH_MAPPINGS
 #              /opt/stable/api                       ignored, part of faf-stack
@@ -224,6 +224,21 @@ function update_apt_index {
   apt update || { echo "Failed to update APT index"; exit 1; }
 }
 
+function install_apt_https {
+  echo "Installing packages to allow APT to use repositories over HTTPS"
+  apt install apt-transport-https ca-certificates software-properties-common || { echo "Failed to install HTTPS repository support for APT"; exit 1; }
+}
+
+function install_curl {
+  if command -v curl >/dev/null 2>&1; then
+    echo "Not installing curl as it is already installed"
+    return
+  fi
+
+  echo "Installing curl"
+  yes | apt install curl || { echo "Failed to install curl"; exit 1; }
+}
+
 function install_git {
   if command -v git >/dev/null 2>&1; then
     echo "Not installing Git as it is already installed"
@@ -244,14 +259,18 @@ function install_rsync {
   yes | apt install rsync || { echo "Failed to install rsync"; exit 1; }
 }
 
-function install_docker {
+function install_docker_ce {
   if command -v docker >/dev/null 2>&1; then
     echo "Not installing Docker as it is already installed"
     return
   fi
 
   echo "Installing Docker"
-  yes | apt install docker.io || { echo "Failed to install Docker"; exit 1; }
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  # TODO verify fingerprint
+  add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  apt update
+  yes | apt install docker-ce || { echo "Failed to install Docker CE"; exit 1; }
 }
 
 function install_docker_compose {
@@ -326,8 +345,10 @@ create_users
 generate_ssh_key_pair
 confirm_source_user_permissions
 update_apt_index
+install_apt_https
+install_curl
 install_git
-install_docker
+install_docker_ce
 install_docker_compose
 install_rsync
 clone_faf_stack

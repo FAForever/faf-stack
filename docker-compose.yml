@@ -3,6 +3,19 @@ version: '3.2'
 services:
 
   #
+  # Initialize all data directories with correct permissions.
+  # This is a workaround for the fact that Docker always creates volumes as root. This could also be done outside
+  # docker-compose in a shell script, but it would add yet another manual maintenance step. This way, permissions are
+  # set correctly by simply using docker-compose.
+  #
+  faf-init-volumes:
+    container_name: faf-init-volumes
+    image: alpine:latest
+    volumes:
+      - ./:/faf-stack
+    command: sh -c "cd /faf-stack && sh scripts/init-volumes.sh"
+
+  #
   # FAF MySQL database.
   #
   faf-db:
@@ -19,6 +32,8 @@ services:
       - "127.0.0.1:3306:3306"
     volumes:
       - ./data/faf-db:/var/lib/mysql
+    depends_on:
+      - faf-init-volumes
 
   #
   # FAF game server for clients to connect to.
@@ -38,6 +53,7 @@ services:
     ports:
       - "8001:8001" # Server
     depends_on:
+      - faf-init-volumes
       - faf-db
 
   #
@@ -45,7 +61,7 @@ services:
   #
   faf-java-server:
     container_name: faf-java-server
-    image: faforever/faf-java-server::1.0.0
+    image: faforever/faf-java-server:1.0.0
     user: ${FAF_JAVA_SERVER_USER}
     networks:
       faf:
@@ -58,6 +74,7 @@ services:
     ports:
       - "8001:8001" # Server
     depends_on:
+      - faf-init-volumes
       - faf-db
     # TODO move to Dockerfile
     healthcheck:
@@ -86,6 +103,7 @@ services:
     ports:
       - "8010:8010" # HTTP API
     depends_on:
+      - faf-init-volumes
       - faf-db
     # TODO move to Dockerfile
     healthcheck:
@@ -106,6 +124,7 @@ services:
         aliases:
           - "faf-python-api"
     depends_on:
+      - faf-init-volumes
       - faf-db
     env_file: ./config/faf-python-api/faf-python-api.env
     environment:
@@ -172,6 +191,8 @@ services:
     volumes:
       - ./config/faf-prometheus/faf-prometheus.yml:/etc/prometheus/prometheus.yml
       - ./data/faf-prometheus:/prometheus
+    depends_on:
+      - faf-init-volumes
 
   #
   # Grafana reads data from Prometheus and draws monitoring dashboards.
@@ -186,6 +207,8 @@ services:
     volumes:
       - ./config/faf-grafana:/etc/grafana/scripts
       - ./data/faf-grafana:/var/lib/grafana
+    depends_on:
+      - faf-init-volumes
     env_file: ./config/faf-grafana/faf-grafana.env
     ports:
       - "8090:3000"
@@ -208,6 +231,7 @@ services:
           - "irc.faforever.com"
           - "services.faforever.com"
     depends_on:
+      - faf-init-volumes
       - faf-db
     volumes:
       - ./config/faf-unrealircd/ssl:/home/unreal/unrealircd/conf/ssl
@@ -231,6 +255,7 @@ services:
     build: git://github.com/FAForever/QAI#5817e717ffee4ad50093ec3219fd8c73d535e460
     user: ${FAF_QAI_USER}
     depends_on:
+      - faf-init-volumes
       - faf-unrealircd
     volumes:
       - ./config/faf-qai:/config
@@ -265,6 +290,8 @@ services:
     restart: always
     volumes:
       - ./data/content/app:/usr/share/nginx/html
+    depends_on:
+      - faf-init-volumes
     env_file: ./config/faf-legacy-apps/faf-legacy-apps.env
     ports:
       - "127.0.0.1:8094:80"
@@ -285,6 +312,7 @@ services:
         aliases:
           - "faf-wordpress"
     depends_on:
+      - faf-init-volumes
       - faf-db
     env_file: ./config/faf-wordpress/faf-wordpress.env
     ports:
@@ -336,6 +364,7 @@ services:
     networks:
       - faf
     depends_on:
+      - faf-init-volumes
       - faf-db
     restart: always
     env_file: ./config/faf-phpbb3/faf-phpbb3.env
@@ -354,6 +383,7 @@ services:
     networks:
       - faf
     depends_on:
+      - faf-init-volumes
       - faf-db
     restart: always
     env_file: ./config/faf-content/faf-content.env
@@ -370,6 +400,8 @@ services:
     restart: always
     volumes:
       - ./data/faf-mediawiki:/usr/share/nginx/html
+    depends_on:
+      - faf-init-volumes
     env_file: ./config/faf-mediawiki/faf-mediawiki.env
     ports:
       - "127.0.0.1:8092:80"
@@ -387,6 +419,7 @@ services:
     networks:
       - faf
     depends_on:
+      - faf-init-volumes
       - faf-db
     restart: always
     env_file: ./config/faf-legacy-updater/faf-legacy-updater.env
@@ -406,6 +439,7 @@ services:
     networks:
       - faf
     depends_on:
+      - faf-init-volumes
       - faf-db
     restart: always
     env_file: ./config/faf-legacy-live-replay-server/faf-legacy-live-replay-server.env
@@ -425,6 +459,7 @@ services:
     networks:
       - faf
     depends_on:
+      - faf-init-volumes
       - faf-db
     restart: always
     env_file: ./config/faf-legacy-secondary-server/faf-legacy-secondary-server.env
@@ -453,6 +488,8 @@ services:
     volumes:
       - ./config/faf-discord-irc/config.json:/config/config.json
     restart: always
+    depends_on:
+      - faf-init-volumes
 
   #
   # An nginx proxy which exposes FAF services such as the website, the API etc. through HTTP. It does so by listening
@@ -472,6 +509,8 @@ services:
       - ./data/faf-nginx/vhost.d:/etc/nginx/vhost.d:ro
       - ./data/faf-nginx/certs:/etc/nginx/certs:ro
       - /usr/share/nginx/html
+    depends_on:
+      - faf-init-volumes
     ports:
       - "80:80"
       - "443:443"
@@ -491,6 +530,8 @@ services:
       - ./data/faf-nginx/certs:/etc/nginx/certs:rw
       - ./data/faf-nginx/vhost.d:/etc/nginx/vhost.d:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - faf-init-volumes
 
   #
   # Temporary avatar management tool.
