@@ -222,7 +222,7 @@ services:
   #
   faf-unrealircd:
     container_name: faf-unrealircd
-    build: git://github.com/FAForever/docker-unrealircd#f16e9ce
+    build: git://github.com/FAForever/docker-unrealircd#v1.0
     user: ${FAF_UNREALIRCD_USER}
     ulimits:
       nofile:
@@ -256,11 +256,10 @@ services:
   #
   faf-qai:
     container_name: faf-qai
-    build: git://github.com/FAForever/QAI#5817e717ffee4ad50093ec3219fd8c73d535e460
+    build: git://github.com/FAForever/QAI#v1.0
     user: ${FAF_QAI_USER}
     depends_on:
       - faf-init-volumes
-      - faf-unrealircd
     volumes:
       - ./config/faf-qai:/config
     networks:
@@ -272,7 +271,7 @@ services:
   #
   faf-murmur:
     container_name: faf-murmur
-    build: git://github.com/FAForever/murmur#259b597
+    build: git://github.com/FAForever/murmur#v1.0
     user: ${FAF_MUMBLE_USER}
     networks:
       - faf
@@ -343,7 +342,7 @@ services:
   #
   faf-softvote:
     container_name: faf-softvote
-    build: git://github.com/FAForever/softvote.git#c5a5983
+    build: git://github.com/FAForever/softvote.git#v1.0
     user: ${FAF_SOFTVOTE_USER}
     networks:
       - faf
@@ -415,7 +414,7 @@ services:
   #
   faf-legacy-updater:
     container_name: faf-legacy-updater
-    build: git://github.com/FAForever/legacy-updater.git#059e147
+    build: git://github.com/FAForever/legacy-updater.git#v1.0
     user: ${FAF_LEGACY_UPDATER_USER}
     restart: always
     volumes:
@@ -435,7 +434,7 @@ services:
   #
   faf-legacy-live-replay-server:
     container_name: faf-legacy-live-replay-server
-    build: git://github.com/FAForever/legacy-replay-server.git#f699255
+    build: git://github.com/FAForever/legacy-replay-server.git#v1.0
     user: ${FAF_LEGACY_LIVE_REPLAY_SERVER_USER}
     restart: always
     volumes:
@@ -455,7 +454,7 @@ services:
   #
   faf-legacy-secondary-server:
     container_name: faf-legacy-secondary-server
-    build: git://github.com/FAForever/legacy-secondaryServer.git#61cd426
+    build: git://github.com/FAForever/legacy-secondaryServer.git#v1.0
     user: ${FAF_LEGACY_SECONDARY_SERVER_USER}
     restart: always
     volumes:
@@ -487,7 +486,7 @@ services:
   #
   faf-discord-irc:
     container_name: faf-discord-irc
-    build: git://github.com/FAForever/faf-discord-irc.git#e370282
+    build: git://github.com/FAForever/faf-discord-irc.git#v1.0
     user: ${FAF_DISCORD_IRC_USER}
     volumes:
       - ./config/faf-discord-irc/config.json:/config/config.json
@@ -528,7 +527,7 @@ services:
   #
   faf-nginx-certs:
     container_name: faf-nginx-certs
-    image: jrcs/letsencrypt-nginx-proxy-companion#v1.5
+    image: jrcs/letsencrypt-nginx-proxy-companion:v1.5
     user: ${FAF_NGINX_CERTS_USER}
     volumes:
       - ./data/faf-nginx/certs:/etc/nginx/certs:rw
