@@ -197,10 +197,11 @@ services:
   #
   # Grafana reads data from Prometheus and draws monitoring dashboards.
   #
+  # This image needs to run as root since is changes users inside the container.
+  #
   faf-grafana:
     container_name: faf-grafana
-    image: grafana/grafana:4.5.0
-    user: ${FAF_GRAFANA_USER}
+    image: grafana/grafana:4.5.1
     restart: always
     networks:
       - "faf"
