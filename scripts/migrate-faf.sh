@@ -121,7 +121,7 @@ PATH_MAPPINGS['/opt/stable/mediawiki/']="${FAF_BASE_DIR}/data/faf-mediawiki"
 #              /opt/stable/update-loggly-certificate.sh ignored, obsolete
 PATH_MAPPINGS['/opt/stable/vhost.d/ ']="${FAF_BASE_DIR}/data/faf-nginx/vhost.d"
 #              /opt/stable/website                   ignored, part of faf-stack
-#              /opt/stable/wordpress                 ignored, part of wordpress
+#              /opt/stable/wordpress                 ignored, part of faf-stacl
 #              /opt/stable/wordpress.bak             ignored, obsolete
 
 
