@@ -67,7 +67,8 @@ services:
       faf:
         aliases:
           - "faf-java-server"
-    restart: always
+    # Service currently not in use
+    # restart: always
     env_file: ./config/faf-java-server/faf-java-server.env
     expose:
       - "8089" # HTTP Management API
@@ -170,7 +171,8 @@ services:
       faf:
         aliases:
           - "faf-spring-boot-admin"
-    restart: always
+    # Service currently not in use
+    # restart: always
     healthcheck:
       test: "wget -q -O /dev/null http://localhost:8080"
       interval: 30s
@@ -178,7 +180,7 @@ services:
       retries: 3
 
   #
-  # Prometheus is a monitoring and alerting tool that time-series data.
+  # Prometheus is a monitoring and alerting tool that scrapes and stores time-series data.
   #
   faf-prometheus:
     container_name: faf-prometheus
