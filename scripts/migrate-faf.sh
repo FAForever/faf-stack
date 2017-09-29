@@ -19,7 +19,7 @@
 #
 # The script is interactive and has your back, so you can just run it like so:
 #
-#   curl -fsSL https://raw.githubusercontent.com/FAForever/faf-stack/develop/scripts/migrate-faf.sh | sh
+#   curl -fsSL https://raw.githubusercontent.com/FAForever/faf-stack/develop/scripts/migrate-faf.sh | bash
 #
 
 SOURCE_HOST="faforever.com"
