@@ -38,9 +38,9 @@ DOCKER_COMPOSE_VERSION="1.16.1"
 declare -A PATH_MAPPINGS
 #              /opt/stable/api                       ignored, part of faf-stack
 #              /opt/stable/api_secrets.env           ignored, part of faf-stack
-#              /opt/stable/app                       TBD
+#              /opt/stable/app                       ignored, not used anymore
 PATH_MAPPINGS['/opt/stable/certs/']="${FAF_BASE_DIR}/data/faf-nginx/certs"
-#              /opt/stable/~certs                    TBD
+#              /opt/stable/~certs                    ignored, not used anymore
 #              /opt/stable/checklist.md              ignored, obsolete
 #              /opt/stable/clans                     ignored, part of faf-stack
 PATH_MAPPINGS['/opt/stable/content/achievements/']="${FAF_BASE_DIR}/data/content/achievements"
@@ -53,7 +53,7 @@ PATH_MAPPINGS['/opt/stable/content/faf/include/']="${FAF_BASE_DIR}/data/content/
 PATH_MAPPINGS['/opt/stable/content/faf/leaderboards/']="${FAF_BASE_DIR}/data/content/leaderboards"
 PATH_MAPPINGS['/opt/stable/content/faf/tutorials/']="${FAF_BASE_DIR}/data/content/tutorials"
 PATH_MAPPINGS['/opt/stable/content/faf/updaterNew/']="${FAF_BASE_DIR}/data/content/legacy-featured-mod-files"
-#              /opt/stable/content/faf/vault/*.png   TBD
+#              /opt/stable/content/faf/vault/*.png   ignored, not used anymore
 #              /opt/stable/content/faf/vault/images  ignored, old map previews
 PATH_MAPPINGS['/opt/stable/content/faf/vault/map_previews/small/']="${FAF_BASE_DIR}/data/content/maps/previews/small"
 PATH_MAPPINGS['/opt/stable/content/faf/vault/map_previews/large/']="${FAF_BASE_DIR}/data/content/maps/previews/large"
@@ -88,10 +88,10 @@ PATH_MAPPINGS['/opt/stable/db_dumps/']="${FAF_BASE_DIR}/backups/faf-db"
 #              /opt/stable/docker-compose.yml        ignored, part of faf-stack
 #              /opt/stable/faf-clans.env             ignored, part of faf-stack
 #              /opt/stable/faf_java_api.env          ignored, part of faf-stack
-#              /opt/stable/faforever.com.key         TBD
-#              /opt/stable/faf_server_privkey.pkcs1  TBD
-#              /opt/stable/faf_server_pubkey.pem     TBD
-#              /opt/stable/faftools                  TBD
+#              /opt/stable/faforever.com.key         ignored, not used anymore
+#              /opt/stable/faf_server_privkey.pkcs1  ignored, not used anymore
+#              /opt/stable/faf_server_pubkey.pem     ignored, not used anymore
+#              /opt/stable/faftools                  ignored, scripts go into scripts/
 #              /opt/stable/featured_mods             ignored, to be configured in faf-java-api
 PATH_MAPPINGS['/opt/stable/forums/']="${FAF_BASE_DIR}/data/faf-phpbb3"
 #              /opt/stable/.git                      ignored, part of faf-stack
@@ -105,9 +105,9 @@ PATH_MAPPINGS['/opt/stable/forums/']="${FAF_BASE_DIR}/data/faf-phpbb3"
 PATH_MAPPINGS['/opt/stable/mediawiki/']="${FAF_BASE_DIR}/data/faf-mediawiki"
 #              /opt/stable/mumble_secrets.env        ignored, part of faf-stack
 #              /opt/stable/murmur                    ignored, part of faf-stack
-#              /opt/stable/nginx-php-sites           TBD
-#              /opt/stable/outkey.py                 TBD
-#              /opt/stable/pear                      TBD
+#              /opt/stable/nginx-php-sites           ignored, will be fixed in faf-website Dockerfile
+#              /opt/stable/outkey.py                 ignored, not used anymore
+#              /opt/stable/pear                      ignored, will be fixed in faf-website
 #              /opt/stable/QAI                       To be included in faf-stack
 #              /opt/stable/README.md                 ignored, obsolete
 #              /opt/stable/repositories              ignored, created by faf-java-api in data/faf-java-api
