@@ -1,5 +1,8 @@
-.idea/
-*.iml
-data/
-config/
-backups/
+*
+!config.template
+!scripts
+!.env
+!.gitignore
+!.travis.yml
+!docker-compose.yml
+!README.md
