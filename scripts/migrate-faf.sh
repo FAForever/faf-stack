@@ -127,17 +127,17 @@ PATH_MAPPINGS['/opt/stable/vhost.d/ ']="${FAF_BASE_DIR}/data/faf-nginx/vhost.d"
 
 
 declare -A SYMLINKS
-SYMLINKS["${FAF_BASE_DIR}/content/faf/avatars"]='../avatars'
-SYMLINKS["${FAF_BASE_DIR}/content/faf/images"]='../images'
-SYMLINKS["${FAF_BASE_DIR}/content/faf/include"]='../include'
-SYMLINKS["${FAF_BASE_DIR}/content/faf/leaderboards"]='../leaderboards'
-SYMLINKS["${FAF_BASE_DIR}/content/faf/tutorials"]='../tutorials'
-SYMLINKS["${FAF_BASE_DIR}/content/faf/updaterNew"]='../legacy-featured-mod-files'
-SYMLINKS["${FAF_BASE_DIR}/content/faf/vault/map_previews/small"]='../../../maps/previews/small'
-SYMLINKS["${FAF_BASE_DIR}/content/faf/vault/map_previews/large"]='../../../maps/previews/large'
-SYMLINKS["${FAF_BASE_DIR}/content/faf/vault/mod_thumbs/small"]='../../../mods/previews/large'
-SYMLINKS["${FAF_BASE_DIR}/content/faf/vault/replay_vault/replay.php"]='../../../vault/replay.php'
-SYMLINKS["${FAF_BASE_DIR}/content/faf/vault/replays_simple.php"]='../../vault/replays_simple.php'
+SYMLINKS["${FAF_BASE_DIR}/data/content/faf/avatars"]='../avatars'
+SYMLINKS["${FAF_BASE_DIR}/data/content/faf/images"]='../images'
+SYMLINKS["${FAF_BASE_DIR}/data/content/faf/include"]='../include'
+SYMLINKS["${FAF_BASE_DIR}/data/content/faf/leaderboards"]='../leaderboards'
+SYMLINKS["${FAF_BASE_DIR}/data/content/faf/tutorials"]='../tutorials'
+SYMLINKS["${FAF_BASE_DIR}/data/content/faf/updaterNew"]='../legacy-featured-mod-files'
+SYMLINKS["${FAF_BASE_DIR}/data/content/faf/vault/map_previews/small"]='../../../maps/previews/small'
+SYMLINKS["${FAF_BASE_DIR}/data/content/faf/vault/map_previews/large"]='../../../maps/previews/large'
+SYMLINKS["${FAF_BASE_DIR}/data/content/faf/vault/mod_thumbs/small"]='../../../mods/thumbs'
+SYMLINKS["${FAF_BASE_DIR}/data/content/faf/vault/replay_vault/replay.php"]='../../../vault/replay.php'
+SYMLINKS["${FAF_BASE_DIR}/data/content/faf/vault/replays_simple.php"]='../../vault/replays_simple.php'
 
 function check_is_root {
   if [[ $EUID > 0 ]]; then
