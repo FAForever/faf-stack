@@ -398,16 +398,16 @@ services:
   #
   # The FAF mediawiki.
   #
-  faf-mediawiki:
-    container_name: faf-mediawiki
+  faf-wiki:
+    container_name: faf-wiki
     image: richarvey/nginx-php-fpm:php5
     user: ${FAF_MEDIAWIKI_USER}
     restart: always
     volumes:
-      - ./data/faf-mediawiki:/usr/share/nginx/html
+      - ./data/faf-wiki:/usr/share/nginx/html
     depends_on:
       - faf-init-volumes
-    env_file: ./config/faf-mediawiki/faf-mediawiki.env
+    env_file: ./config/faf-wiki/faf-wiki.env
     ports:
       - "127.0.0.1:8092:80"
 

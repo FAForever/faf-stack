@@ -103,7 +103,7 @@ PATH_MAPPINGS['/opt/stable/forums/']="${FAF_BASE_DIR}/data/faf-phpbb3"
 #              /opt/stable/legacy-replay-server      ignored, part of faf-stack
 #              /opt/stable/legacy-secondaryServer    ignored, part of faf-stack
 #              /opt/stable/legacy-updater            ignored, part of faf-stack
-PATH_MAPPINGS['/opt/stable/mediawiki/']="${FAF_BASE_DIR}/data/faf-mediawiki"
+PATH_MAPPINGS['/opt/stable/mediawiki/']="${FAF_BASE_DIR}/data/faf-wiki"
 #              /opt/stable/mumble_secrets.env        ignored, part of faf-stack
 #              /opt/stable/murmur                    ignored, part of faf-stack
 #              /opt/stable/nginx-php-sites           ignored, will be fixed in faf-website Dockerfile
@@ -285,6 +285,8 @@ function install_docker_compose {
      || { echo "Failed to install Docker-Compose"; exit 1; }
   chmod +x /usr/local/bin/docker-compose \
      || { echo "Failed to make docker-compose executable"; exit 1; }
+  chgrp docker /usr/local/bin/docker-compose \
+     || { echo "Failed to change group of docker-compose"; exit 1; }
   hash -r
 }
 
