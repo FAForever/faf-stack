@@ -74,6 +74,7 @@ PATH_MAPPINGS['/opt/stable/content/favicon.ico']="${FAF_BASE_DIR}/data/content"
 PATH_MAPPINGS['/opt/stable/content/Forged*.msi']="${FAF_BASE_DIR}/data/content/clients/python"
 #              /opt/stable/content/Game*log          ignored, trash
 PATH_MAPPINGS['/opt/stable/content/images/']="${FAF_BASE_DIR}/data/content/images"
+PATH_MAPPINGS['/opt/stable/content/jre/']="${FAF_BASE_DIR}/data/content/jre"
 PATH_MAPPINGS['/opt/stable/content/patchnotes/']="${FAF_BASE_DIR}/data/content/patchnotes"
 #              /opt/stable/content/reports.tar.xz    ignored, trash
 PATH_MAPPINGS['/opt/stable/content/server*.csr']="${FAF_BASE_DIR}/data/content"
