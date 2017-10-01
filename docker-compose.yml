@@ -521,6 +521,8 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
 
   #
   # An extension of the nginx proxy which converts exposed containers to HTTPS and automatically generates a
