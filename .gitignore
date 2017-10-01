@@ -1,6 +1,6 @@
-*
-!config.template
-!scripts
+/*
+!/config.template/
+!/scripts/
 !.env
 !.gitignore
 !.travis.yml

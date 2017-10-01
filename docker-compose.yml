@@ -165,6 +165,7 @@ services:
     container_name: faf-spring-boot-admin
     image: aetas/spring-boot-admin-docker:1.4.1
     user: ${FAF_SPRING_BOOT_ADMIN_USER}
+    env_file: ./config/faf-spring-boot-admin/faf-spring-boot-admin.env
     ports:
       - "127.0.0.1:8030:8080"
     networks:
@@ -186,6 +187,7 @@ services:
     container_name: faf-prometheus
     image: prom/prometheus:v2.0.0-beta.2
     user: ${FAF_PROMETHEUS_USER}
+    env_file: ./config/faf-prometheus/faf-prometheus.env
     networks:
       faf:
         aliases:
