@@ -111,7 +111,7 @@ services:
       - faf-db
     # TODO move to Dockerfile
     healthcheck:
-      test: "wget -q -O /dev/null http://localhost:8010/management/health"
+      test: "wget -q -O /dev/null http://localhost:8081/management/health"
       interval: 30s
       timeout: 5s
       retries: 3
@@ -398,12 +398,12 @@ services:
       - "127.0.0.1:8091:80"
 
   #
-  # The FAF mediawiki.
+  # The FAF media wiki.
   #
   faf-wiki:
     container_name: faf-wiki
     image: richarvey/nginx-php-fpm:php5
-    user: ${FAF_MEDIAWIKI_USER}
+    user: ${FAF_WIKI_USER}
     restart: always
     volumes:
       - ./data/faf-wiki:/usr/share/nginx/html
