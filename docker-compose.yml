@@ -185,7 +185,7 @@ services:
   #
   faf-prometheus:
     container_name: faf-prometheus
-    image: prom/prometheus:v2.0.0-beta.2
+    image: prom/prometheus:v1.7.2
     user: ${FAF_PROMETHEUS_USER}
     env_file: ./config/faf-prometheus/faf-prometheus.env
     networks:
