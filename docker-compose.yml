@@ -510,19 +510,21 @@ services:
     container_name: faf-nginx
     image: jwilder/nginx-proxy:0.5.0
     user: ${FAF_NGINX_USER}
+    networks:
+      - faf
     volumes:
       - ./data/content:/content
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./data/faf-nginx/vhost.d:/etc/nginx/vhost.d:ro
       - ./data/faf-nginx/certs:/etc/nginx/certs:ro
-      - /usr/share/nginx/html
+      - ./data/faf-nginx/html:/usr/share/nginx/html
     depends_on:
       - faf-init-volumes
     ports:
       - "80:80"
       - "443:443"
     labels:
-      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
 
   #
   # An extension of the nginx proxy which converts exposed containers to HTTPS and automatically generates a
@@ -539,6 +541,7 @@ services:
       - ./data/faf-nginx/certs:/etc/nginx/certs:rw
       - ./data/faf-nginx/vhost.d:/etc/nginx/vhost.d:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./data/faf-nginx/html:/usr/share/nginx/html
     depends_on:
       - faf-init-volumes
 
