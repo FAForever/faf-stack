@@ -13,7 +13,7 @@ function init_volume() {
   mkdir -p ${directory}
 
   echo "Changing owner of directory '${directory}' to '${user}'"
-  chown ${user} ${directory}
+  chown -R "${user}" "${directory}"
 }
 
 . .env
