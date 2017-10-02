@@ -213,7 +213,6 @@ services:
     networks:
       - "faf"
     volumes:
-      - ./config/faf-grafana:/etc/grafana/scripts
       - ./data/faf-grafana:/var/lib/grafana
     depends_on:
       - faf-init-volumes
