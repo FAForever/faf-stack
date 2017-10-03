@@ -403,6 +403,8 @@ services:
     image: richarvey/nginx-php-fpm:php5
     user: ${FAF_WIKI_USER}
     restart: always
+    networks:
+      - faf
     volumes:
       - ./data/faf-wiki:/usr/share/nginx/html
     depends_on:
