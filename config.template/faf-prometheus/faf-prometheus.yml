@@ -10,7 +10,7 @@ scrape_configs:
     static_configs:
       - targets: ['faf-java-api:8011']
         labels:
-          alias: faf-main
+          group: faf-main
 
   - job_name: 'faf-java-server'
     scrape_interval: 5s
@@ -18,4 +18,10 @@ scrape_configs:
     static_configs:
       - targets: ['faf-java-server:8089']
         labels:
-          alias: faf-main
+          group: faf-main
+
+  - job_name: 'faf-mysql-exporter'
+    static_configs:
+      - targets: ['faf-mysql-exporter:9104']
+        labels:
+          alias: faf-db
