@@ -43,7 +43,8 @@ services:
     image: prom/mysqld-exporter:v0.10.0
     networks:
       faf:
-        aliases: "faf-mysql-exporter"
+        aliases:
+          - "faf-mysql-exporter"
     restart: always
     env_file: ./config/faf-mysql-exporter/faf-mysql-exporter.env
     expose:
