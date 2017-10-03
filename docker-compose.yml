@@ -302,22 +302,6 @@ services:
       - "64738:64738/udp"
 
   #
-  # Legacy FAF "apps" like the "link to steam" or "forgot password" pages which are being replaced.
-  #
-  faf-legacy-apps:
-    container_name: faf-legacy-apps
-    image: richarvey/nginx-php-fpm:php5
-    user: ${FAF_LEGACY_APPS_USER}
-    restart: always
-    volumes:
-      - ./data/content/app:/usr/share/nginx/html
-    depends_on:
-      - faf-init-volumes
-    env_file: ./config/faf-legacy-apps/faf-legacy-apps.env
-    ports:
-      - "127.0.0.1:8094:80"
-
-  #
   # The content management system which is still being used as a backend for the website. The website accesses
   # Wordpress over a JSON API plugin.
   #
