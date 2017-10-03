@@ -390,7 +390,6 @@ services:
       - faf
     depends_on:
       - faf-init-volumes
-      - faf-db
     restart: always
     env_file: ./config/faf-content/faf-content.env
     ports:
