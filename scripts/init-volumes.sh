@@ -18,11 +18,8 @@ function init_volume() {
 
 . .env
 
-init_volume data/faf-db ${FAF_DB_USER}
-init_volume data/faf-grafana ${FAF_GRAFANA_USER}
-init_volume data/faf-wordpress ${FAF_WORDPRESS_USER}
-init_volume data/faf-phpbb3 ${FAF_PHPBB3_USER}
-init_volume data/faf-wiki ${FAF_MEDIAWIKI_USER}
-init_volume data/faf-nginx ${FAF_NGINX_USER}
-init_volume data/faf-java-server ${FAF_JAVA_SERVER_USER}
-init_volume data/faf-java-api ${FAF_JAVA_API_USER}
+# Permissions could be set like this:
+
+# init_volume data/faf-db ${FAF_DB_USER}
+
+# But for now we don't mess with any permissions unless we know what we're doing
