@@ -120,9 +120,9 @@ PATH_MAPPINGS['/opt/stable/mediawiki/']="${FAF_BASE_DIR}/data/faf-wiki"
 #              /opt/stable/slack_secrets.env         To be included in faf-stack
 #              /opt/stable/softove                   ignored, part of faf-stack
 #              /opt/stable/update-loggly-certificate.sh ignored, obsolete
-PATH_MAPPINGS['/opt/stable/vhost.d/ ']="${FAF_BASE_DIR}/data/faf-nginx/vhost.d"
+PATH_MAPPINGS['/opt/stable/vhost.d/']="${FAF_BASE_DIR}/data/faf-nginx/vhost.d"
 #              /opt/stable/website                   ignored, part of faf-stack
-#              /opt/stable/wordpress                 ignored, part of faf-stacl
+PATH_MAPPINGS['/opt/stable/wordpress/']="${FAF_BASE_DIR}/data/faf-wordpress"
 #              /opt/stable/wordpress.bak             ignored, obsolete
 
 
