@@ -8,7 +8,7 @@ scrape_configs:
     scrape_interval: 5s
     metrics_path: '/prometheus'
     static_configs:
-      - targets: ['faf-java-api:8081']
+      - targets: ['faf-java-api:8011']
         labels:
           alias: faf-main
 
