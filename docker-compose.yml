@@ -365,7 +365,7 @@ services:
     volumes:
       - ./data/faf-phpbb3/phpbb3/www:/usr/share/nginx/html
       - ./data/faf-phpbb3/phpbb3:/usr/share/phpbb3
-      - ./data/faf-phpbb3/etc/phpbb3:/etc/phpbb3
+      - ./config/faf-phpbb3/database.inc.php:/etc/phpbb3/database.inc.php
     networks:
       - faf
     depends_on:
