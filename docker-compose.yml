@@ -36,6 +36,20 @@ services:
       - faf-init-volumes
 
   #
+  # Prometheus exporter for MySQL server metrics.
+  #
+  faf-mysql-exporter:
+    container_name: faf-mysql-exporter
+    image: prom/mysqld-exporter:v0.10.0
+    networks:
+      faf:
+        aliases: "faf-mysql-exporter"
+    restart: always
+    env_file: ./config/faf-mysql-exporter/faf-mysql-exporter.env
+    expose:
+      - "9104"
+
+  #
   # FAF game server for clients to connect to.
   #
   faf-python-server:
