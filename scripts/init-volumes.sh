@@ -19,7 +19,6 @@ function init_volume() {
 . .env
 
 init_volume data/faf-db ${FAF_DB_USER}
-init_volume data/faf-prometheus ${FAF_PROMETHEUS_USER}
 init_volume data/faf-grafana ${FAF_GRAFANA_USER}
 init_volume data/faf-wordpress ${FAF_WORDPRESS_USER}
 init_volume data/faf-phpbb3 ${FAF_PHPBB3_USER}
