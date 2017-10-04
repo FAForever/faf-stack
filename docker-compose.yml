@@ -421,7 +421,7 @@ services:
   #
   faf-legacy-live-replay-server:
     container_name: faf-legacy-live-replay-server
-    build: git://github.com/FAForever/legacy-replay-server.git#v1.0
+    build: git://github.com/FAForever/legacy-replay-server.git#v1.1
     user: ${FAF_LEGACY_LIVE_REPLAY_SERVER_USER}
     restart: always
     volumes:
