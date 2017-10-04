@@ -10,33 +10,33 @@ The FAF stack uses two directories:
 * `config` contains the configuration files for all FAF services
 * `data` contains data required or produced by the services
 
+Both directories are excluded by `.gitignore`. In fact, all files and directories are excluded if not explicitly un-ignored within `.gitignore`.
+
 ### Configuration
 
 Each service has its own directory within `config`. They usually contain an environment file and/or other configuration
 files needed for the service to operate properly. Environment files are loaded by Docker Compose and additional
 files/directories may be mounted as volumes (both as specified in `docker-compose.yml`).
 
-For production or personal use, we recommend to create a new branch in which configuration files can be committed
-safely. Once the stack gets updated, changes can be merged into this branch as needed. However, **do never push
-production or your personal configuration files**.
+The `config` directory does not exist and has to be copied from `config.templates`. After that, it has to be kept in sync
+with updates to `config.templates` manually (like when a parameter has been added, renamed or removed).
 
 ### Data
 
 Some services need to persist files in volumes, or read files of other services. All volumes are created inside 
-the `data` directory, which is listed in `.gitignore`. It goes without saying that none of these files should ever be
-committed.
+the `data` directory.
 
 ## Naming
 
-To keep things easy and avoid conflicts, all services, network aliases, folder names and environment files follow a
+To keep things intuitive and avoid conflicts, all services, network aliases, user names, folder names and environment files follow a
 consistent naming.
 
 ## Usage
 
 ### Prerequisites
 
-* [Docker](https://github.com/docker/docker/releases) v1.13.0 or newer (or [Docker Toolbox](https://github.com/docker/toolbox/releases))
-* [Docker Compose](https://github.com/docker/compose/releases) v1.10.0 or newer
+* [Docker](https://github.com/docker/docker/releases) 17.09.0-ce or newer (or [Docker Toolbox](https://github.com/docker/toolbox/releases))
+* [Docker Compose](https://github.com/docker/compose/releases) v1.16.1 or newer
 
 ### Copy configuration files
 
