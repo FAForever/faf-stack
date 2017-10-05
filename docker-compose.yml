@@ -437,26 +437,6 @@ services:
       - "15000:15000"
 
   #
-  # The legacy "secondary server" which does many different things, most of which are being replaced.
-  #
-  faf-legacy-secondary-server:
-    container_name: faf-legacy-secondary-server
-    build: git://github.com/FAForever/legacy-secondaryServer.git#v1.0
-    user: ${FAF_LEGACY_SECONDARY_SERVER_USER}
-    restart: always
-    volumes:
-      - ./data/content:/content
-    networks:
-      - faf
-    depends_on:
-      - faf-init-volumes
-      - faf-db
-    restart: always
-    env_file: ./config/faf-legacy-secondary-server/faf-legacy-secondary-server.env
-    ports:
-      - "11002:11002"
-
-  #
   # A small web tool that allows users to invite themselves into our Slack group.
   #
   faf-slack-invite-automation:
