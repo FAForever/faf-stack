@@ -462,6 +462,7 @@ services:
   faf-legacy-secondary-server:
     container_name: faf-legacy-secondary-server
     build: git://github.com/FAForever/legacy-secondaryServer.git#v1.0
+    image: faforever/faf-legacy-secondary-server
     user: ${FAF_LEGACY_SECONDARY_SERVER_USER}
     restart: always
     volumes:
