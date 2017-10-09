@@ -269,7 +269,7 @@ services:
       - ./config/faf-unrealircd/ssl:/home/unreal/unrealircd/conf/ssl
       - ./config/faf-unrealircd/services.conf:/home/unreal/unrealircd/services/conf/services.conf
       - ./config/faf-unrealircd/unrealircd.conf:/home/unreal/unrealircd/conf/unrealircd.conf
-      - ./config/faf-unrealircd/motd.txt:/home/unreal/unrealircd/conf/irc.motd
+      - ./config/faf-unrealircd/motd.txt:/home/unreal/unrealircd/conf/ircd.motd
     restart: always
     ports:
       - "6667:6667"
