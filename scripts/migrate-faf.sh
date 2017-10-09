@@ -59,6 +59,7 @@ PATH_MAPPINGS['/opt/stable/content/faf/vault/map_previews/small/']="${FAF_BASE_D
 PATH_MAPPINGS['/opt/stable/content/faf/vault/map_previews/large/']="${FAF_BASE_DIR}/data/content/maps/previews/large"
 PATH_MAPPINGS['/opt/stable/content/faf/vault/maps/']="${FAF_BASE_DIR}/data/content/maps"
 PATH_MAPPINGS['/opt/stable/content/faf/vault/maps.php']="${FAF_BASE_DIR}/data/content/vault"
+PATH_MAPPINGS['/opt/stable/content/faf/vault/maps_qt5.php']="${FAF_BASE_DIR}/data/content/vault"
 PATH_MAPPINGS['/opt/stable/content/faf/vault/map_vault/']="${FAF_BASE_DIR}/data/content/vault/map_vault"
 PATH_MAPPINGS['/opt/stable/content/faf/vault/mods/']="${FAF_BASE_DIR}/data/content/mods"
 PATH_MAPPINGS['/opt/stable/content/faf/vault/mods_thumbs/']="${FAF_BASE_DIR}/data/content/mods/thumbs"
@@ -135,9 +136,15 @@ SYMLINKS["${FAF_BASE_DIR}/data/content/faf/tutorials"]='../tutorials'
 SYMLINKS["${FAF_BASE_DIR}/data/content/faf/updaterNew"]='../legacy-featured-mod-files'
 SYMLINKS["${FAF_BASE_DIR}/data/content/faf/vault/map_previews/small"]='../../../maps/previews/small'
 SYMLINKS["${FAF_BASE_DIR}/data/content/faf/vault/map_previews/large"]='../../../maps/previews/large'
+SYMLINKS["${FAF_BASE_DIR}/data/content/faf/vault/maps"]='../../maps'
+SYMLINKS["${FAF_BASE_DIR}/data/content/faf/vault/maps.php"]='../../vault/maps.php'
+SYMLINKS["${FAF_BASE_DIR}/data/content/faf/vault/maps_qt5.php"]='../../vault/maps_qt5.php'
+SYMLINKS["${FAF_BASE_DIR}/data/content/faf/vault/map_vault"]='../../vault/map_vault'
+SYMLINKS["${FAF_BASE_DIR}/data/content/faf/vault/mods"]='../../mods'
 SYMLINKS["${FAF_BASE_DIR}/data/content/faf/vault/mod_thumbs/small"]='../../../mods/thumbs'
 SYMLINKS["${FAF_BASE_DIR}/data/content/faf/vault/replay_vault/replay.php"]='../../../vault/replay.php'
 SYMLINKS["${FAF_BASE_DIR}/data/content/faf/vault/replays_simple.php"]='../../vault/replays_simple.php'
+SYMLINKS["${FAF_BASE_DIR}/data/content/faf/vault/replay_vault"]='../../../replays'
 
 function check_is_root {
   if [[ $EUID > 0 ]]; then
