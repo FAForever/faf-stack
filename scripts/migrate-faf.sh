@@ -64,7 +64,7 @@ PATH_MAPPINGS['/opt/stable/content/faf/vault/map_vault/']="${FAF_BASE_DIR}/data/
 PATH_MAPPINGS['/opt/stable/content/faf/vault/mods/']="${FAF_BASE_DIR}/data/content/mods"
 PATH_MAPPINGS['/opt/stable/content/faf/vault/mods_thumbs/']="${FAF_BASE_DIR}/data/content/mods/thumbs"
 PATH_MAPPINGS['/opt/stable/content/faf/vault/replays_simple.php']="${FAF_BASE_DIR}/data/content/vault"
-PATH_MAPPINGS['/opt/stable/content/faf/vault/replay_vault/0/']="${FAF_BASE_DIR}/data/content/replays"
+PATH_MAPPINGS['/opt/stable/content/faf/vault/replay_vault/0/']="${FAF_BASE_DIR}/data/content/replays/0"
 PATH_MAPPINGS['/opt/stable/content/faf/vault/replay_vault/css/']="${FAF_BASE_DIR}/data/content/vault/replay_vault/css"
 PATH_MAPPINGS['/opt/stable/content/faf/vault/replay_vault/replay.php']="${FAF_BASE_DIR}/data/content/vault"
 #              /opt/stable/content/faf/xdelta'       ignored, generated as needed by the legacy updater
