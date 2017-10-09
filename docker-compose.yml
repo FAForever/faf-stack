@@ -513,7 +513,7 @@ services:
   #
   faf-nginx:
     container_name: faf-nginx
-    image: jwilder/nginx-proxy:0.5.0
+    image: jwilder/nginx-proxy:0.6.0
     user: ${FAF_NGINX_USER}
     networks:
       - faf
