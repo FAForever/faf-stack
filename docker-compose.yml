@@ -484,6 +484,8 @@ services:
     build: git://github.com/FAForever/slack-invite-automation.git#v1.0
     image: faforever/faf-slack-invite-automation
     user: ${FAF_SLACK_INVITE_AUTOMATION_USER}
+    networks:
+      - faf
     env_file: ./config/faf-slack-invite-automation/faf-slack-invite-automation.env
     restart: always
     ports:
@@ -559,6 +561,8 @@ services:
     image: faforever/faf-jeremy
     user: ${FAF_JEREMY_USER}
     env_file: ./config/faf-jeremy/faf-jeremy.env
+    networks:
+      - faf
     environment:
       - VIRTUAL_HOST=jeremy.dev.faforever.com
       - FAF_API_ENVIRONMENT=stabler
