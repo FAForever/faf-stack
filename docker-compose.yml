@@ -20,6 +20,7 @@ services:
   # It uses net: "host" for performance reasons.
   #
   faf-coturn:
+    container_name: faf-coturn
     image: bprodoehl/turnserver
     env_file: ./config/faf-coturn/faf-coturn.env
     network_mode: "host"
@@ -146,6 +147,7 @@ services:
   # Old implementation of an almost JSON-API conform API.
   #
   faf-python-api:
+    container_name: faf-python-api
     build: git://github.com/FAForever/api.git#v0.9.0
     image: faforever/faf-python-api
     command: python run.py -p 80
