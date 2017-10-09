@@ -103,7 +103,7 @@ services:
     ports:
       - "8001:8001" # Server
       - "6112:6112/udp" # STUN
-      - "30351/udp:30351/udp" # STUN
+      - "30351:30351/udp" # STUN
       - "7:7/udp" # STUN
       - "194:194/udp" # STUN
       - "3535:3535/udp" # STUN
