@@ -307,6 +307,9 @@ function fetch_files {
   toDirectory=$2
   rsyncCommand="rsync -avz -e \"ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null\" \"${SOURCE_HOST_USER}@${SOURCE_HOST}\":\"${fromDirectory}\" \"${toDirectory}\""
 
+  echo "Changing owner of ${toDirectory} to ${FAF_USER}"
+  chown -R ${FAF_USER} ${toDirectory}
+
   echo "Migrating ${fromDirectory} to ${toDirectory}"
   sudo -u "${FAF_USER}" rsync -avz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" ${SOURCE_HOST_USER}@${SOURCE_HOST}:${fromDirectory} "${toDirectory}" || { echo "Failed to copy files from ${SOURCE_HOST}:${fromDirectory} to ${toDirectory}"; exit 1; }
 }
