@@ -209,7 +209,7 @@ services:
     networks:
       - faf
     depends_on:
-      - faf-db
+      - faf-python-api
     ports:
       - "127.0.0.1:8020:3000"
 
