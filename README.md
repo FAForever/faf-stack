@@ -38,9 +38,10 @@ consistent naming.
 * [Docker](https://github.com/docker/docker/releases) 17.09.0-ce or newer (or [Docker Toolbox](https://github.com/docker/toolbox/releases))
 * [Docker Compose](https://github.com/docker/compose/releases) v1.16.1 or newer
 
-### Copy configuration files
+### Copy configuration template files
 
     cp -R config.template config
+    cp .env.template .env
 
 ### Start all at once
 

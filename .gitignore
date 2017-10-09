@@ -1,7 +1,7 @@
 /*
 !/config.template/
 !/scripts/
-!.env
+!.env.template
 !.gitignore
 !.travis.yml
 !docker-compose.yml
