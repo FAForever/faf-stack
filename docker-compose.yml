@@ -62,6 +62,21 @@ services:
       - "9104"
 
   #
+  # Prometheus exporter for statsd metrics.
+  #
+  faf-statsd-exporter:
+    container_name: faf-statsd-exporter
+    image: prom/statsd-exporter:v0.4.0
+    networks:
+      faf:
+        aliases:
+          - "faf-statsd-exporter"
+    restart: always
+    env_file: ./config/faf-statsd-exporter/faf-statsd-exporter.env
+    expose:
+      - "9105"
+
+  #
   # FAF game server for clients to connect to.
   #
   faf-python-server:
