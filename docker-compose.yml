@@ -24,6 +24,9 @@ services:
     image: bprodoehl/turnserver
     env_file: ./config/faf-coturn/faf-coturn.env
     network_mode: "host"
+    ports:
+      - "3478:3478"
+      - "3478:3478/udp"
 
   #
   # FAF MySQL database.
