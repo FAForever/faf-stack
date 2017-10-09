@@ -158,12 +158,6 @@ services:
       - faf-init-volumes
       - faf-db
     env_file: ./config/faf-python-api/faf-python-api.env
-    environment:
-      - VIRTUAL_HOST=api.faforever.com
-      - FAF_API_ENVIRONMENT=stabler
-      - LETSENCRYPT_HOST=api.faforever.com
-      - LETSENCRYPT_EMAIL=admin@faforever.com
-      - STATSD_SERVER=172.17.0.1:8125
     volumes:
       - /opt/stable/content:/content
     ports:
@@ -563,12 +557,6 @@ services:
     env_file: ./config/faf-jeremy/faf-jeremy.env
     networks:
       - faf
-    environment:
-      - VIRTUAL_HOST=jeremy.dev.faforever.com
-      - FAF_API_ENVIRONMENT=stabler
-      - ACME_CA_URI=https://acme-staging.api.letsencrypt.org/directory
-      - LETSENCRYPT_HOST=jeremy.dev.faforever.com
-      - LETSENCRYPT_EMAIL=admin@faforever.com
     ports:
       - "8099:5000"
 
