@@ -22,8 +22,7 @@ services:
   faf-coturn:
     image: bprodoehl/turnserver
     env_file: ./config/faf-coturn/faf-coturn.env
-    networks:
-      - outside
+    network_mode: "host"
 
   #
   # FAF MySQL database.
