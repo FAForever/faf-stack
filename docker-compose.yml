@@ -250,7 +250,7 @@ services:
   #
   faf-unrealircd:
     container_name: faf-unrealircd
-    build: git://github.com/FAForever/docker-unrealircd#v1.0
+    build: git://github.com/FAForever/docker-unrealircd#faf
     user: ${FAF_UNREALIRCD_USER}
     ulimits:
       nofile:
@@ -269,6 +269,7 @@ services:
       - ./config/faf-unrealircd/ssl:/home/unreal/unrealircd/conf/ssl
       - ./config/faf-unrealircd/services.conf:/home/unreal/unrealircd/services/conf/services.conf
       - ./config/faf-unrealircd/unrealircd.conf:/home/unreal/unrealircd/conf/unrealircd.conf
+      - ./config/faf-unrealircd/motd.txt:/home/unreal/unrealircd/conf/irc.motd
     restart: always
     ports:
       - "6667:6667"
