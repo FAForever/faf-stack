@@ -192,7 +192,7 @@ services:
       - faf-db
     env_file: ./config/faf-python-api/faf-python-api.env
     volumes:
-      - /opt/stable/content:/content
+      - ./data/content:/content
     ports:
       - "8093:80"
 
