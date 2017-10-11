@@ -451,6 +451,7 @@ services:
     restart: always
     volumes:
       - ./data/content:/content
+      - ./config/faf-legacy-updater/updater.conf:/code/updater.conf
     networks:
       - faf
     depends_on:
