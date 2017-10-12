@@ -206,6 +206,8 @@ services:
     user: ${FAF_WEBSITE_USER}
     restart: always
     env_file: ./config/faf-website/faf-website.env
+    volumes:
+      - ./config/faf-website/faf-website.env:/code/.env
     networks:
       - faf
     depends_on:

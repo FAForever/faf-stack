@@ -22,7 +22,7 @@
 #   curl -fsSL https://raw.githubusercontent.com/FAForever/faf-stack/develop/scripts/migrate-faf.sh | bash
 #
 
-SOURCE_HOST="faforever.com"
+SOURCE_HOST="sl2.faforever.com"
 SOURCE_HOST_USER="sheeo"
 FAF_USER="faforever"
 FAF_GROUP="faforever"
