@@ -203,8 +203,8 @@ services:
   #
   faf-website:
     container_name: faf-website
-    build: git://github.com/FAForever/website.git#v1.1.1.9
-    image: faforever/faf-website
+    build: git://github.com/FAForever/website.git
+    image: faforever/faf-website:v1.1.1.11
     user: ${FAF_WEBSITE_USER}
     restart: always
     env_file: ./config/faf-website/faf-website.env
