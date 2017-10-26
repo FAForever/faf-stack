@@ -161,6 +161,7 @@ services:
     volumes:
       - ./data/content:/content
       - ./data/faf-java-api/logs:/logs
+      - ./data/faf-java-api/repositories:/repositories
     expose:
       - "8011" # HTTP Management API
     ports:
