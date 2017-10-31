@@ -150,7 +150,6 @@ services:
   faf-java-api:
     container_name: faf-java-api
     image: faforever/faf-java-api:0.9.2
-    build: git://github.com/FAForever/faf-java-api.git#v0.9.2
     user: ${FAF_JAVA_API_USER}
     networks:
       faf:
