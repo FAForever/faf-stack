@@ -109,7 +109,6 @@ services:
       - "3535:3535/udp" # STUN
       - "53:53/udp" # STUN
       - "67:67/udp" # STUN
-
     depends_on:
       - faf-init-volumes
       - faf-db
@@ -597,6 +596,21 @@ services:
       - faf
     ports:
       - "8099:5000"
+
+  faf-policy-server:
+    container_name: faf-policy-server
+    image: faforever/faf-policy-server:v1.7
+    env_file: ./config/faf-policy-server/faf-policy-server.env
+    user: ${FAF_POLICY_SERVER_USER}
+    restart: always
+    networks:
+      faf:
+        aliases:
+          - "faf-policy-server"
+    expose:
+      - "8097"
+    volumes:
+      - ./data/faf-policy-server/faf-uid-verifier/verifier:/app/verifier
 
 networks:
   faf:
