@@ -162,6 +162,31 @@ function install_cron_jobs {
   :
 }
 
+function install_tmux_init_file {
+  cat > /etc/init.d/faforever-tmux.sh <<EOF
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          faforever-tmux
+# Required-Start:    \$local_fs \$network
+# Required-Stop:     \$local_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: faforever-tmux
+# Description:       A tmux terminal session for the faforever user
+### END INIT INFO
+
+if [ "\$1" != "start" ]; then
+  exit 0;
+fi
+pushd /opt/faf
+su -c "tmux -S /tmp/tmux-faforever new-session -d" faforever
+chgrp faforever /tmp/tmux-faforever
+popd
+EOF
+  chmod +x /etc/init.d/faforever-tmux.sh
+  update-rc.d faforever-tmux.sh defaults
+}
+
 check_is_root
 configure_umask
 configure_permit_root_login
@@ -176,3 +201,6 @@ install_docker_compose
 install_rsync
 clone_faf_stack
 install_cron_jobs
+install_tmux_init_file
+
+/etc/init.d/faforever-tmux.sh start
