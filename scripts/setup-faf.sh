@@ -144,7 +144,7 @@ function install_docker_compose {
   hash -r
 }
 
-function clone_faf_stack {
+function install_faf_stack {
   if [ -d "${FAF_BASE_DIR}/.git" ]; then
     echo "Not cloning faf-stack as it is already cloned (at ${FAF_BASE_DIR})"
     return
@@ -154,6 +154,8 @@ function clone_faf_stack {
   mkdir -p "${FAF_BASE_DIR}"
   sudo chown "${FAF_USER}:${FAF_GROUP}" "${FAF_BASE_DIR}"
   sudo -u "${FAF_USER}" git clone "${FAF_STACK_URL}" "${FAF_BASE_DIR}"  || { echo "Failed to clone ${FAF_STACK_URL} to ${FAF_BASE_DIR}"; exit 1; }
+  sudo -u "${FAF_USER}" cp .env.template .env
+  sudo -u "${FAF_USER}" cp -r config.template/ config
 }
 
 function install_cron_jobs {
@@ -199,7 +201,7 @@ install_git
 install_docker_ce
 install_docker_compose
 install_rsync
-clone_faf_stack
+install_faf_stack
 install_cron_jobs
 install_tmux_init_file
 
