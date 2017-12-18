@@ -599,7 +599,7 @@ services:
 
   faf-policy-server:
     container_name: faf-policy-server
-    image: faforever/faf-policy-server:v1.9
+    image: faforever/faf-policy-server:v1.10
     env_file: ./config/faf-policy-server/faf-policy-server.env
     user: ${FAF_POLICY_SERVER_USER}
     restart: always
