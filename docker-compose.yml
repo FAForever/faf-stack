@@ -84,8 +84,8 @@ services:
   #
   faf-python-server:
     container_name: faf-python-server
-    build: git://github.com/FAForever/server.git#v0.9.8
-    image: faforever/faf-python-server:v0.9.8
+    build: git://github.com/FAForever/server.git#v0.9.11
+    image: faforever/faf-python-server:v0.9.11
     user: ${FAF_PYTHON_SERVER_USER}
     networks:
       faf:
@@ -599,7 +599,7 @@ services:
 
   faf-policy-server:
     container_name: faf-policy-server
-    image: faforever/faf-policy-server:v1.11
+    image: faforever/faf-policy-server:v1.12
     env_file: ./config/faf-policy-server/faf-policy-server.env
     user: ${FAF_POLICY_SERVER_USER}
     restart: always
