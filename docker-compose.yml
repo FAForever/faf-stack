@@ -84,8 +84,8 @@ services:
   #
   faf-python-server:
     container_name: faf-python-server
-    build: git://github.com/FAForever/server.git#v0.9.12
-    image: faforever/faf-python-server:v0.9.12
+    build: git://github.com/FAForever/server.git#v0.9.13
+    image: faforever/faf-python-server:v0.9.13
     user: ${FAF_PYTHON_SERVER_USER}
     networks:
       faf:
