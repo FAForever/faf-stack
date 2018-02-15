@@ -611,6 +611,27 @@ services:
     volumes:
       - ./data/faf-policy-server/faf-uid-verifier/verifier:/app/verifier
 
+  #
+  # FAF unit database
+  #  
+  faf-unitdb:
+    container_name: faf-unitdb
+    image: faforever/faf-unitdb:v1.0.9
+    environment:
+    - PUID=${FAF_FS_PUID}
+    - PGID=${FAF_FS_PGID}
+    networks:
+      - faf
+    volumes:
+      - ./data/faf-unitdb/:/var/www/html/DATA
+      - ./config/faf-unitdb/datafiles.json:/var/www/html/CONFIG/DATAFILES.JSON
+      - ./config/faf-unitdb/locfiles.json:/var/www/html/CONFIG/LOCFILES.JSON
+    depends_on:
+      - faf-init-volumes
+    env_file: ./config/faf-unitdb/faf-unitdb.env
+    ports:
+      - "8083:80"
+
 networks:
   faf:
     driver: bridge
