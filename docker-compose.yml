@@ -34,7 +34,7 @@ services:
   faf-db:
     container_name: faf-db
     build: git://github.com/FAForever/db.git#v48
-    image: faforever/faf-db:v48
+    image: faforever/faf-db:v48.1
     user: ${FAF_DB_USER}
     networks:
       faf:
@@ -612,7 +612,7 @@ services:
 
   #
   # FAF unit database
-  #  
+  #
   faf-unitdb:
     container_name: faf-unitdb
     image: faforever/faf-unitdb:v1.2.2
@@ -630,6 +630,58 @@ services:
     env_file: ./config/faf-unitdb/faf-unitdb.env
     ports:
       - "8083:80"
+
+  #
+  # Postal is a fully featured open source mail delivery platform for incoming & outgoing e-mail.
+  #
+  faf-postal:
+    container_name: faf-postal
+    image: faforever/faf-postal:1.0
+    env_file: ./config/faf-postal/faf-postal.env
+    user: ${FAF_POSTAL_USER}
+    networks:
+      faf:
+        aliases:
+          - "faf-postal"
+    ports:
+      - "8012:5000"
+    expose:
+      - "25"
+    volumes:
+      - ./data/faf-postal/assets:/opt/postal/public/assets
+      - ./config/faf-postal/config:/opt/postal/config
+
+  #
+  # RabbitMQ is open source message broker software (sometimes called message-oriented middleware) that implements the
+  # Advanced Message Queuing Protocol (AMQP).
+  #
+  faf-rabbitmq:
+    image: faforever/faf-rabbitmq:1.0
+    container_name: faf-rabbitmq
+    env_file: ./config/faf-rabbitmq/faf-rabbitmq.env
+    user: ${FAF_RABBITMQ_USER}
+    networks:
+      faf:
+        aliases:
+          - "faf-rabbitmq"
+
+  #
+  # Mautic is an open source marketing automation software.
+  #
+  faf-mautic:
+    container_name: faf-mautic
+    image: mautic/mautic:2.12-apache
+    env_file: ./config/faf-mautic/faf-mautic.env
+    user: ${FAF_MAUTIC_USER}
+    restart: always
+    networks:
+      faf:
+        aliases:
+          - "faf-mautic"
+    ports:
+      - "8013:80"
+    volumes:
+      - ./data/faf-mautic/html:/var/www/html
 
 networks:
   faf:
