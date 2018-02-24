@@ -154,8 +154,10 @@ function install_faf_stack {
   mkdir -p "${FAF_BASE_DIR}"
   sudo chown "${FAF_USER}:${FAF_GROUP}" "${FAF_BASE_DIR}"
   sudo -u "${FAF_USER}" git clone "${FAF_STACK_URL}" "${FAF_BASE_DIR}"  || { echo "Failed to clone ${FAF_STACK_URL} to ${FAF_BASE_DIR}"; exit 1; }
+  pusdh "${FAF_BASE_DIR}"
   sudo -u "${FAF_USER}" cp .env.template .env
   sudo -u "${FAF_USER}" cp -r config.template/ config
+  popd
 }
 
 function install_cron_jobs {
@@ -165,6 +167,7 @@ function install_cron_jobs {
 }
 
 function install_tmux_init_file {
+  echo "Creating tmux init file"
   cat > /etc/init.d/faforever-tmux.sh <<EOF
 #!/bin/bash
 ### BEGIN INIT INFO
@@ -187,6 +190,8 @@ popd
 EOF
   chmod +x /etc/init.d/faforever-tmux.sh
   update-rc.d faforever-tmux.sh defaults
+
+  /etc/init.d/faforever-tmux.sh start
 }
 
 check_is_root
