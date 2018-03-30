@@ -154,7 +154,7 @@ function install_faf_stack {
   mkdir -p "${FAF_BASE_DIR}"
   sudo chown "${FAF_USER}:${FAF_GROUP}" "${FAF_BASE_DIR}"
   sudo -u "${FAF_USER}" git clone "${FAF_STACK_URL}" "${FAF_BASE_DIR}"  || { echo "Failed to clone ${FAF_STACK_URL} to ${FAF_BASE_DIR}"; exit 1; }
-  pusdh "${FAF_BASE_DIR}"
+  pushd "${FAF_BASE_DIR}"
   sudo -u "${FAF_USER}" cp .env.template .env
   sudo -u "${FAF_USER}" cp -r config.template/ config
   popd
