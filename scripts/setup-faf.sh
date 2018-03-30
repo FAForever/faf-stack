@@ -194,6 +194,10 @@ EOF
   /etc/init.d/faforever-tmux.sh start
 }
 
+function add_user_to_docker_group {
+  usermod -a -G docker "${FAF_USER}"
+}
+
 check_is_root
 configure_umask
 configure_permit_root_login
@@ -209,5 +213,6 @@ install_rsync
 install_faf_stack
 install_cron_jobs
 install_tmux_init_file
+add_user_to_docker_group
 
 /etc/init.d/faforever-tmux.sh start
