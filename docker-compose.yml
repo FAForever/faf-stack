@@ -511,7 +511,6 @@ services:
   #
   faf-slack-invite-automation:
     container_name: faf-slack-invite-automation
-    build: git://github.com/FAForever/slack-invite-automation.git#v1.1
     image: faforever/faf-slack-invite-automation:v1.1
     user: ${FAF_SLACK_INVITE_AUTOMATION_USER}
     networks:
