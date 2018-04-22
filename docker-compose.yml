@@ -616,7 +616,7 @@ services:
   #  
   faf-unitdb:
     container_name: faf-unitdb
-    image: faforever/faf-unitdb:v1.0.13
+    image: faforever/faf-unitdb:v1.1
     environment:
     - PUID=${FAF_FS_PUID}
     - PGID=${FAF_FS_PGID}
