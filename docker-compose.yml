@@ -118,7 +118,7 @@ services:
   #
   faf-java-server:
     container_name: faf-java-server
-    image: faforever/faf-java-server:v1.2.1
+    image: faforever/faf-java-server:v1.3.0
     user: ${FAF_JAVA_SERVER_USER}
     networks:
       faf:
