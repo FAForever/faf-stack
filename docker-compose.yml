@@ -670,7 +670,7 @@ services:
   #
   faf-mautic:
     container_name: faf-mautic
-    image: mautic/mautic:2.12-apache
+    image: mautic/mautic:2.13-apache
     env_file: ./config/faf-mautic/faf-mautic.env
     user: ${FAF_MAUTIC_USER}
     restart: always
