@@ -148,7 +148,7 @@ services:
   #
   faf-java-api:
     container_name: faf-java-api
-    image: faforever/faf-java-api:1.1.1
+    image: faforever/faf-java-api:1.1.2
     user: ${FAF_JAVA_API_USER}
     networks:
       faf:
