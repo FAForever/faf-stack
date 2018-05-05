@@ -34,7 +34,7 @@ services:
   faf-db:
     container_name: faf-db
     build: git://github.com/FAForever/db.git#v48
-    image: faforever/faf-db:v48.1
+    image: faforever/faf-db:v49
     user: ${FAF_DB_USER}
     networks:
       faf:
