@@ -570,7 +570,7 @@ services:
   #
   faf-nginx-certs:
     container_name: faf-nginx-certs
-    image: jrcs/letsencrypt-nginx-proxy-companion:v1.6
+    image: jrcs/letsencrypt-nginx-proxy-companion:v1.8.1
     user: ${FAF_NGINX_CERTS_USER}
     env_file: ./config/faf-nginx-certs/faf-nginx-certs.env
     volumes:
