@@ -519,20 +519,6 @@ services:
       - "3001:3000"
 
   #
-  # IRC <-> Discord bot. Connects IRC's #aeolus to Discord's #aeolus
-  #
-  faf-discord-irc:
-    container_name: faf-discord-irc
-    build: git://github.com/FAForever/faf-discord-irc.git#v1.0
-    image: faforever/faf-discord-irc
-    user: ${FAF_DISCORD_IRC_USER}
-    volumes:
-      - ./config/faf-discord-irc/config.json:/config/config.json
-    restart: always
-    depends_on:
-      - faf-init-volumes
-
-  #
   # An nginx proxy which exposes FAF services such as the website, the API etc. through HTTP. It does so by listening
   # for docker containers to come online which have the environment variable VIRTUAL_HOST set. Once such a container
   # comes online, it sets up a virtual host which is forwarded to the only exposed port of that service. If multiple
