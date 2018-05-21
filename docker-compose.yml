@@ -130,7 +130,8 @@ services:
     expose:
       - "8089" # HTTP Management API
     ports:
-      - "8001:8001" # Server
+      - "8001:8001" # Legacy TCP
+      - "8012" # Websocket
     volumes:
       - ./data/faf-java-server/logs:/logs
     depends_on:
