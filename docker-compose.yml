@@ -666,6 +666,18 @@ services:
     volumes:
       - ./data/faf-mautic/html:/var/www/html
 
+  faf-voting:
+    image: FAForever/faf-voting:v1.0.3
+    user: ${FAF_VOTING_USER}
+    restart: always
+    networks:
+      faf:
+        aliases:
+          - "faf-voting"
+    env_file: ./config/faf-voting/faf-voting.env
+    ports:
+      - "8014:3000"
+
 networks:
   faf:
     driver: bridge
