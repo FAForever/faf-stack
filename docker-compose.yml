@@ -33,7 +33,7 @@ services:
   #
   faf-db:
     container_name: faf-db
-    image: faforever/faf-db:v57
+    image: faforever/faf-db:v58
     user: ${FAF_DB_USER}
     networks:
       faf:
