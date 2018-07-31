@@ -39,7 +39,7 @@ services:
       faf:
         aliases:
           - "faf-db"
-    restart: always
+    restart: unless-stopped
     env_file: ./config/faf-db/faf-db.env
     ports:
       - "127.0.0.1:3306:3306"
@@ -58,7 +58,7 @@ services:
       faf:
         aliases:
           - "faf-mysql-exporter"
-    restart: always
+    restart: unless-stopped
     env_file: ./config/faf-mysql-exporter/faf-mysql-exporter.env
     expose:
       - "9104"
@@ -73,7 +73,7 @@ services:
       faf:
         aliases:
           - "faf-statsd-exporter"
-    restart: always
+    restart: unless-stopped
     env_file: ./config/faf-statsd-exporter/faf-statsd-exporter.env
     expose:
       - "9105"
@@ -89,7 +89,7 @@ services:
       faf:
         aliases:
           - "faf-python-server"
-    restart: always
+    restart: unless-stopped
     env_file: ./config/faf-python-server/faf-python-server.env
     volumes:
       - ./config/faf-python-server/faf-server.pem:/code/faf-server.pem
@@ -153,7 +153,7 @@ services:
       faf:
         aliases:
           - "faf-java-api"
-    restart: always
+    restart: unless-stopped
     env_file: ./config/faf-java-api/faf-java-api.env
     volumes:
       - ./data/content:/content
@@ -201,7 +201,7 @@ services:
     container_name: faf-website
     image: faforever/faf-website:v1.3.0
     user: ${FAF_WEBSITE_USER}
-    restart: always
+    restart: unless-stopped
     env_file: ./config/faf-website/faf-website.env
     volumes:
       - ./config/faf-website/faf-website.env:/code/.env
@@ -217,6 +217,7 @@ services:
     container_name: faf-spring-boot-admin
     image: aetas/spring-boot-admin-docker:1.4.1
     user: ${FAF_SPRING_BOOT_ADMIN_USER}
+    restart: unless-stopped
     env_file: ./config/faf-spring-boot-admin/faf-spring-boot-admin.env
     ports:
       - "127.0.0.1:8030:8080"
@@ -239,12 +240,12 @@ services:
     container_name: faf-prometheus
     image: prom/prometheus:v1.7.2
     user: ${FAF_PROMETHEUS_USER}
+    restart: unless-stopped
     env_file: ./config/faf-prometheus/faf-prometheus.env
     networks:
       faf:
         aliases:
           - "faf-prometheus"
-    restart: always
     ports:
       - "127.0.0.1:9090:9090" # Webinterface
     volumes:
@@ -261,7 +262,7 @@ services:
   faf-grafana:
     container_name: faf-grafana
     image: grafana/grafana:4.5.1
-    restart: always
+    restart: unless-stopped
     networks:
       - "faf"
     volumes:
@@ -280,6 +281,7 @@ services:
     build: git://github.com/FAForever/docker-unrealircd#faf
     image: faforever/faf-unrealircd:v1.1
     user: ${FAF_UNREALIRCD_USER}
+    restart: unless-stopped
     ulimits:
       nofile:
         soft: 8192
@@ -298,7 +300,6 @@ services:
       - ./config/faf-unrealircd/services.conf:/home/unreal/unrealircd/services/conf/services.conf
       - ./config/faf-unrealircd/unrealircd.conf:/home/unreal/unrealircd/conf/unrealircd.conf
       - ./config/faf-unrealircd/motd.txt:/home/unreal/unrealircd/conf/ircd.motd
-    restart: always
     ports:
       - "6667:6667"
       - "6697:6697"
@@ -316,13 +317,13 @@ services:
     build: git://github.com/FAForever/QAI#v1.0
     image: faforever/faf-qai
     user: ${FAF_QAI_USER}
+    restart: unless-stopped
     depends_on:
       - faf-init-volumes
     volumes:
       - ./config/faf-qai:/config
     networks:
       - faf
-    restart: always
 
   #
   # FAF Mumble server.
@@ -332,11 +333,11 @@ services:
     build: git://github.com/FAForever/murmur#v1.0
     image: faforever/faf-murmur
     user: ${FAF_MUMBLE_USER}
+    restart: unless-stopped
     networks:
       - faf
     depends_on:
       - faf-db
-    restart: always
     env_file: ./config/faf-murmur/faf-murmur.env
     ports:
       - "64738:64738"
@@ -350,7 +351,7 @@ services:
     container_name: faf-wordpress
     image: faforever/nginx-php-fpm:fixed_user
     user: ${FAF_WORDPRESS_USER}
-    restart: always
+    restart: unless-stopped
     volumes:
       - ./data/faf-wordpress:/usr/share/nginx/html
     networks:
@@ -371,11 +372,12 @@ services:
     container_name: faf-clanapp
     image: dragonfire/clans:1.0.3
     user: ${FAF_CLANAPP_USER}
+    restart: unless-stopped
     networks:
       - faf
     depends_on:
       - faf-db
-    restart: always
+    restart: unless-stopped
     env_file: ./config/faf-clanapp/faf-clanapp.env
     ports:
       - "127.0.0.1:8096:8080"
@@ -387,6 +389,7 @@ services:
     container_name: faf-phpbb3
     image: faforever/nginx-php-fpm:fixed_user
     user: ${FAF_PHPBB3_USER}
+    restart: unless-stopped
     volumes:
       - ./data/faf-phpbb3/phpbb3/www:/usr/share/nginx/html
       - ./data/faf-phpbb3/phpbb3:/usr/share/phpbb3
@@ -408,13 +411,14 @@ services:
     container_name: faf-content
     image: faforever/nginx-php-fpm:fixed_user
     user: ${FAF_CONTENT_USER}
+    restart: unless-stopped
     volumes:
       - ./data/content:/usr/share/nginx/html
     networks:
       - faf
     depends_on:
       - faf-init-volumes
-    restart: always
+    restart: unless-stopped
     env_file: ./config/faf-content/faf-content.env
     ports:
       - "127.0.0.1:8091:80"
@@ -426,7 +430,7 @@ services:
     container_name: faf-wiki
     image: faforever/nginx-php-fpm:fixed_user
     user: ${FAF_WIKI_USER}
-    restart: always
+    restart: unless-stopped
     networks:
       - faf
     volumes:
@@ -445,7 +449,7 @@ services:
     build: git://github.com/FAForever/legacy-updater.git#v1.0
     image: faforever/faf-legacy-updater
     user: ${FAF_LEGACY_UPDATER_USER}
-    restart: always
+    restart: unless-stopped
     volumes:
       - ./data/content:/content
       - ./config/faf-legacy-updater/updater.conf:/code/updater.conf
@@ -454,7 +458,7 @@ services:
     depends_on:
       - faf-init-volumes
       - faf-db
-    restart: always
+    restart: unless-stopped
     env_file: ./config/faf-legacy-updater/faf-legacy-updater.env
     ports:
       - "9001:9001"
@@ -467,7 +471,7 @@ services:
     build: git://github.com/FAForever/legacy-replay-server.git#v1.2
     image: faforever/faf-legacy-live-replay-server
     user: ${FAF_LEGACY_LIVE_REPLAY_SERVER_USER}
-    restart: always
+    restart: unless-stopped
     volumes:
       - ./data/content:/content
     networks:
@@ -475,7 +479,7 @@ services:
     depends_on:
       - faf-init-volumes
       - faf-db
-    restart: always
+    restart: unless-stopped
     env_file: ./config/faf-legacy-live-replay-server/faf-legacy-live-replay-server.env
     ports:
       - "15000:15000"
@@ -488,7 +492,7 @@ services:
     build: git://github.com/FAForever/legacy-secondaryServer.git#v1.0
     image: faforever/faf-legacy-secondary-server
     user: ${FAF_LEGACY_SECONDARY_SERVER_USER}
-    restart: always
+    restart: unless-stopped
     volumes:
       - ./data/content:/content
     networks:
@@ -508,10 +512,11 @@ services:
     container_name: faf-slack-invite-automation
     image: faforever/faf-slack-invite-automation:v1.1
     user: ${FAF_SLACK_INVITE_AUTOMATION_USER}
+    restart: unless-stopped
     networks:
       - faf
     env_file: ./config/faf-slack-invite-automation/faf-slack-invite-automation.env
-    restart: always
+    restart: unless-stopped
     ports:
       - "3001:3000"
 
@@ -527,6 +532,7 @@ services:
     container_name: faf-nginx
     image: jwilder/nginx-proxy:alpine-0.6.0
     user: ${FAF_NGINX_USER}
+    restart: unless-stopped
     networks:
       - faf
     volumes:
@@ -554,6 +560,7 @@ services:
     container_name: faf-nginx-certs
     image: jrcs/letsencrypt-nginx-proxy-companion:v1.8.1
     user: ${FAF_NGINX_CERTS_USER}
+    restart: unless-stopped
     env_file: ./config/faf-nginx-certs/faf-nginx-certs.env
     volumes:
       - ./data/faf-nginx/certs:/etc/nginx/certs:rw
@@ -582,7 +589,7 @@ services:
     image: faforever/faf-policy-server:v1.17
     env_file: ./config/faf-policy-server/faf-policy-server.env
     user: ${FAF_POLICY_SERVER_USER}
-    restart: always
+    restart: unless-stopped
     networks:
       faf:
         aliases:
@@ -598,6 +605,7 @@ services:
   faf-unitdb:
     container_name: faf-unitdb
     image: faforever/faf-unitdb:v1.2.9
+    restart: unless-stopped
     environment:
     - PUID=${FAF_FS_PUID}
     - PGID=${FAF_FS_PGID}
@@ -621,6 +629,7 @@ services:
     image: faforever/faf-postal:1.1
     env_file: ./config/faf-postal/faf-postal.env
     user: ${FAF_POSTAL_USER}
+    restart: unless-stopped
     networks:
       faf:
         aliases:
@@ -642,6 +651,7 @@ services:
     container_name: faf-rabbitmq
     env_file: ./config/faf-rabbitmq/faf-rabbitmq.env
     user: ${FAF_RABBITMQ_USER}
+    restart: unless-stopped
     networks:
       faf:
         aliases:
@@ -655,7 +665,7 @@ services:
     image: mautic/mautic:2.13-apache
     env_file: ./config/faf-mautic/faf-mautic.env
     user: ${FAF_MAUTIC_USER}
-    restart: always
+    restart: unless-stopped
     networks:
       faf:
         aliases:
@@ -668,7 +678,7 @@ services:
   faf-voting:
     image: faforever/faf-voting:v1.1.0
     user: ${FAF_VOTING_USER}
-    restart: always
+    restart: unless-stopped
     networks:
       faf:
         aliases:
