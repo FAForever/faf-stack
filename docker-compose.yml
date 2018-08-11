@@ -296,7 +296,8 @@ services:
       - faf-init-volumes
       - faf-db
     volumes:
-      - ./config/faf-unrealircd/ssl:/home/unreal/unrealircd/conf/ssl
+      - ./config/faf-unrealircd/ssl/server.cert.pem:/home/unreal/unrealircd/conf/ssl/server.cert.pem
+      - ./config/faf-unrealircd/ssl/server.key.pem:/home/unreal/unrealircd/conf/ssl/server.key.pem
       - ./config/faf-unrealircd/services.conf:/home/unreal/unrealircd/services/conf/services.conf
       - ./config/faf-unrealircd/unrealircd.conf:/home/unreal/unrealircd/conf/unrealircd.conf
       - ./config/faf-unrealircd/motd.txt:/home/unreal/unrealircd/conf/ircd.motd
