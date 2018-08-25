@@ -279,7 +279,7 @@ services:
   faf-unrealircd:
     container_name: faf-unrealircd
     build: git://github.com/FAForever/docker-unrealircd#faf
-    image: faforever/faf-unrealircd:v1.1
+    image: faforever/faf-unrealircd:v1.2
     user: ${FAF_UNREALIRCD_USER}
     restart: unless-stopped
     ulimits:
