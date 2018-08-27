@@ -51,7 +51,7 @@ consistent naming.
 
 If you start a single service, services it depends on will be started automatically. For instance:
 
-    docker-compose up -d faf-server
+    docker-compose up -d faf-python-server
 
 This also starts `faf-db`.
 
