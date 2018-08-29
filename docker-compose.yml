@@ -109,7 +109,6 @@ services:
       - "67:67/udp" # STUN
     depends_on:
       - faf-init-volumes
-      - faf-db
 
   #
   # FAF game server for clients to connect to.
@@ -134,7 +133,6 @@ services:
       - ./data/faf-java-server/logs:/logs
     depends_on:
       - faf-init-volumes
-      - faf-db
     # TODO move to Dockerfile
     healthcheck:
       test: "wget -q -O /dev/null http://localhost:8089/health"
@@ -165,7 +163,6 @@ services:
       - "8010:8010" # HTTP API
     depends_on:
       - faf-init-volumes
-      - faf-db
     # TODO move to Dockerfile
     healthcheck:
       test: "wget -q -O /dev/null http://localhost:8011/health"
@@ -187,7 +184,6 @@ services:
           - "faf-python-api"
     depends_on:
       - faf-init-volumes
-      - faf-db
     env_file: ./config/faf-python-api/faf-python-api.env
     volumes:
       - ./data/content:/content
@@ -294,7 +290,6 @@ services:
           - "services.faforever.com"
     depends_on:
       - faf-init-volumes
-      - faf-db
     volumes:
       - ./config/faf-unrealircd/ssl/server.cert.pem:/home/unreal/unrealircd/conf/ssl/server.cert.pem
       - ./config/faf-unrealircd/ssl/server.key.pem:/home/unreal/unrealircd/conf/ssl/server.key.pem
@@ -337,8 +332,6 @@ services:
     restart: unless-stopped
     networks:
       - faf
-    depends_on:
-      - faf-db
     env_file: ./config/faf-murmur/faf-murmur.env
     ports:
       - "64738:64738"
@@ -361,7 +354,6 @@ services:
           - "faf-wordpress"
     depends_on:
       - faf-init-volumes
-      - faf-db
     env_file: ./config/faf-wordpress/faf-wordpress.env
     ports:
       - "127.0.0.1:8095:80"
@@ -376,9 +368,6 @@ services:
     restart: unless-stopped
     networks:
       - faf
-    depends_on:
-      - faf-db
-    restart: unless-stopped
     env_file: ./config/faf-clanapp/faf-clanapp.env
     ports:
       - "127.0.0.1:8096:8080"
@@ -399,8 +388,6 @@ services:
       - faf
     depends_on:
       - faf-init-volumes
-      - faf-db
-    restart: always
     env_file: ./config/faf-phpbb3/faf-phpbb3.env
     ports:
       - "127.0.0.1:8098:80"
@@ -419,7 +406,6 @@ services:
       - faf
     depends_on:
       - faf-init-volumes
-    restart: unless-stopped
     env_file: ./config/faf-content/faf-content.env
     ports:
       - "127.0.0.1:8091:80"
@@ -458,8 +444,6 @@ services:
       - faf
     depends_on:
       - faf-init-volumes
-      - faf-db
-    restart: unless-stopped
     env_file: ./config/faf-legacy-updater/faf-legacy-updater.env
     ports:
       - "9001:9001"
@@ -479,8 +463,6 @@ services:
       - faf
     depends_on:
       - faf-init-volumes
-      - faf-db
-    restart: unless-stopped
     env_file: ./config/faf-legacy-live-replay-server/faf-legacy-live-replay-server.env
     ports:
       - "15000:15000"
@@ -500,8 +482,6 @@ services:
       - faf
     depends_on:
       - faf-init-volumes
-      - faf-db
-    restart: always
     env_file: ./config/faf-legacy-secondary-server/faf-legacy-secondary-server.env
     ports:
       - "11002:11002"
@@ -517,7 +497,6 @@ services:
     networks:
       - faf
     env_file: ./config/faf-slack-invite-automation/faf-slack-invite-automation.env
-    restart: unless-stopped
     ports:
       - "3001:3000"
 
