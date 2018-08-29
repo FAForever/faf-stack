@@ -1,0 +1,72 @@
+{
+	"info": {
+		"_postman_id": "80efcc1b-8473-4739-89b9-db2e75fc8871",
+		"name": "FAF-Stack Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Main Website",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9c524ab4-9a1d-427a-88e7-3085f1025c33",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Forged Alliance Forever\");",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{website-url}}",
+					"host": [
+						"{{website-url}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "7c9450d1-de20-4bf0-9bce-2b6672946e9e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "90e0e0f8-43b6-4b37-a68c-c048d21031c9",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "29729c24-2edd-4e71-a054-22540afa89d3",
+			"key": "website-url",
+			"value": "http://localhost:8020",
+			"type": "string"
+		}
+	]
+}
