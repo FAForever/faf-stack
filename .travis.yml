@@ -25,9 +25,11 @@ script:
   # prepare services under test
   # faf-db first because it takes the longest to load
   - docker-compose up -d faf-db
-  - docker-compose up -d faf-java-api faf-website
-  # wait for db migrations to be run
   - sleep 60
+  - docker-compose up -d faf-java-api
+  - sleep 60
+  - docker-compose up -d faf-website
+  # wait for db migrations to be run
   # insert test data
   - docker exec -i faf-db mysql -uroot -pbanana faf < test-data.sql
   # run test collection

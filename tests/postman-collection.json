@@ -6,37 +6,204 @@
 	},
 	"item": [
 		{
-			"name": "Main Website",
-			"event": [
+			"name": "website",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"id": "9c524ab4-9a1d-427a-88e7-3085f1025c33",
-						"type": "text/javascript",
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"Body matches string\", function () {",
-							"    pm.expect(pm.response.text()).to.include(\"Forged Alliance Forever\");",
-							"});"
-						]
-					}
+					"name": "main website",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9c524ab4-9a1d-427a-88e7-3085f1025c33",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Forged Alliance Forever\");",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{website-url}}",
+							"host": [
+								"{{website-url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register (fail - username in use)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5b42d51e-5a51-4785-a3d1-cd5e8a461e2f",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"The entered username is already in use: test\");",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "test@test.test",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								},
+								{
+									"key": "password_confirm",
+									"value": "123456",
+									"type": "text"
+								},
+								{
+									"key": "tosagree",
+									"value": "on",
+									"type": "text"
+								},
+								{
+									"key": "privacyagree",
+									"value": "on",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{website-url}}/account/register",
+							"host": [
+								"{{website-url}}"
+							],
+							"path": [
+								"account",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "confirm registration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b76596b6-8676-43c3-a807-ff84f9c5420a",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"You have activated your account successfully!\");",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "new_user",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "new@user.email",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								},
+								{
+									"key": "password_confirm",
+									"value": "123456",
+									"type": "text"
+								},
+								{
+									"key": "tosagree",
+									"value": "on",
+									"type": "text"
+								},
+								{
+									"key": "privacyagree",
+									"value": "on",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-url}}/users/activate?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsaWZldGltZSI6IjIwNTAtMTItMzFUMTk6MzY6MTguMjIzWiIsImFjdGlvbiI6IlJFR0lTVFJBVElPTiIsInBhc3N3b3JkIjoiOGQ5NjllZWY2ZWNhZDNjMjlhM2E2MjkyODBlNjg2Y2YwYzNmNWQ1YTg2YWZmM2NhMTIwMjBjOTIzYWRjNmM5MiIsImVtYWlsIjoibmV3QHVzZXIuZW1haWwiLCJ1c2VybmFtZSI6Im5ld191c2VyIn0.nZblUmo96ryd_P0T8E4Q28AHqrpKcfVjLxTTXD7Xp1s",
+							"host": [
+								"{{api-url}}"
+							],
+							"path": [
+								"users",
+								"activate"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsaWZldGltZSI6IjIwNTAtMTItMzFUMTk6MzY6MTguMjIzWiIsImFjdGlvbiI6IlJFR0lTVFJBVElPTiIsInBhc3N3b3JkIjoiOGQ5NjllZWY2ZWNhZDNjMjlhM2E2MjkyODBlNjg2Y2YwYzNmNWQ1YTg2YWZmM2NhMTIwMjBjOTIzYWRjNmM5MiIsImVtYWlsIjoibmV3QHVzZXIuZW1haWwiLCJ1c2VybmFtZSI6Im5ld191c2VyIn0.nZblUmo96ryd_P0T8E4Q28AHqrpKcfVjLxTTXD7Xp1s"
+								}
+							]
+						}
+					},
+					"response": []
 				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "{{website-url}}",
-					"host": [
-						"{{website-url}}"
-					]
-				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "api",
+			"item": []
 		}
 	],
 	"event": [
@@ -63,9 +230,15 @@
 	],
 	"variable": [
 		{
-			"id": "29729c24-2edd-4e71-a054-22540afa89d3",
+			"id": "885a2e70-ec90-4879-aa53-490f03ff721d",
 			"key": "website-url",
 			"value": "http://localhost:8020",
+			"type": "string"
+		},
+		{
+			"id": "5982e588-93c6-4486-b6ab-388fc87ebaca",
+			"key": "api-url",
+			"value": "http://localhost:8010",
 			"type": "string"
 		}
 	]
