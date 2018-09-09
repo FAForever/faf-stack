@@ -468,6 +468,26 @@ services:
       - "15000:15000"
 
   #
+  # The second version of "live replay" server
+  #
+  faf-aio-replayserver:
+    container_name: faf-aio-replayserver
+    build: git://github.com/FAForever/faf-aio-replayserver
+    image: faforever/faf-aio-replayserver
+    user: ${FAF_AIO_REPLAYSERVER_USER}
+    restart: unless-stopped
+    volumes:
+      - ./data/content:/content
+    networks:
+      - faf
+    depends_on:
+      - faf-init-volumes
+      - faf-db
+    env_file: ./config/faf-aio-replayserver/faf-aio-replayserver.env
+    ports:
+      - "15000:15000"
+
+  #
   # The legacy "secondary server" which does many different things, most of which are being replaced.
   #
   faf-legacy-secondary-server:
