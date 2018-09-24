@@ -203,7 +203,41 @@
 		},
 		{
 			"name": "api",
-			"item": []
+			"item": [
+				{
+					"name": "main api page (swagger)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "90041ffc-4c75-434e-a36c-21b79684fc61",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Body matches string\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Swagger UI\");",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{api-url}}",
+							"host": [
+								"{{api-url}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
@@ -230,13 +264,13 @@
 	],
 	"variable": [
 		{
-			"id": "885a2e70-ec90-4879-aa53-490f03ff721d",
+			"id": "32a56849-43f4-437e-9671-c7d5658a4034",
 			"key": "website-url",
 			"value": "http://localhost:8020",
 			"type": "string"
 		},
 		{
-			"id": "5982e588-93c6-4486-b6ab-388fc87ebaca",
+			"id": "b05b095e-aadd-4d26-b483-864f1e87d9d9",
 			"key": "api-url",
 			"value": "http://localhost:8010",
 			"type": "string"
