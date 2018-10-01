@@ -569,20 +569,6 @@ services:
     depends_on:
       - faf-init-volumes
 
-  #
-  # Temporary avatar management tool.
-  #
-  faf-jeremy:
-    container_name: faf-jeremy
-    build: git://github.com/FAForever/Jeremy.git#v1.0
-    image: faforever/faf-jeremy
-    user: ${FAF_JEREMY_USER}
-    env_file: ./config/faf-jeremy/faf-jeremy.env
-    networks:
-      - faf
-    ports:
-      - "8099:5000"
-
   faf-policy-server:
     container_name: faf-policy-server
     image: faforever/faf-policy-server:v1.21
