@@ -675,7 +675,7 @@ services:
       - ./data/faf-mautic/html:/var/www/html
 
   faf-voting:
-    image: faforever/faf-voting:v2.0.0
+    image: faforever/faf-voting:v2.0.1
     user: ${FAF_VOTING_USER}
     restart: unless-stopped
     networks:
