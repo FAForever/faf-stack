@@ -171,26 +171,6 @@ services:
       retries: 3
 
   #
-  # Old implementation of an almost JSON-API conform API.
-  #
-  faf-python-api:
-    container_name: faf-python-api
-    image: faforever/faf-python-api:v0.9.2
-    command: python run.py -p 80
-    user: ${FAF_PYTHON_API_USER}
-    networks:
-      faf:
-        aliases:
-          - "faf-python-api"
-    depends_on:
-      - faf-init-volumes
-    env_file: ./config/faf-python-api/faf-python-api.env
-    volumes:
-      - ./data/content:/content
-    ports:
-      - "8093:80"
-
-  #
   # FAF website.
   #
   faf-website:
