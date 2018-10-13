@@ -33,7 +33,7 @@ services:
   #
   faf-db:
     container_name: faf-db
-    image: faforever/faf-db:v59.1
+    image: faforever/faf-db:v59.1-flyway
     user: ${FAF_DB_USER}
     networks:
       faf:
@@ -44,9 +44,31 @@ services:
     ports:
       - "127.0.0.1:3306:3306"
     volumes:
+      - ./config/faf-db/mysql.cnf:/root/.my.cnf
       - ./data/faf-db:/var/lib/mysql
     depends_on:
       - faf-init-volumes
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  #
+  # FAF MySQL database migrations
+  # (this creates & updates the database tables and some required data)
+  #
+  faf-db-migrations:
+    container_name: faf-db-migrations
+    image: faf-db-migrations # TODO: use proper image here
+    user: ${FAF_DB_USER}
+    networks:
+      faf:
+        aliases:
+        - "faf-db-migrations"
+    restart: "no"
+    env_file: ./config/faf-db-migrations/faf-db-migrations.env
+    depends_on:
+      - faf-db
 
   #
   # Prometheus exporter for MySQL server metrics.
