@@ -1,11 +1,19 @@
+sudo: required
 dist: trusty
 
 services:
   - docker
 
+addons:
+  apt:
+    sources:
+      - mysql-5.7-trusty
+    packages:
+      - mysql-client
+
 # Temporarily update docker until travis supports compose v3.3+ files
 before_install:
-  - sudo service mysql stop
+  - sudo /etc/init.d/mysql stop
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
   - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   - sudo apt-get update
@@ -26,7 +34,14 @@ script:
   # prepare services under test
   # faf-db first because it takes the longest to load
   - docker-compose up -d faf-db
-  - sleep 60
+  - |
+    echo -n 'Waiting for faf-db '
+    while ! mysqladmin ping -h 127.0.0.1 -uroot -pbanana 2> /dev/null
+    do
+      echo -n "."
+      sleep 1
+    done
+  - docker-compose run faf-db-migrations migrate
   - docker-compose up -d faf-java-api
   - |
     echo -n "Waiting for faf-java-api "

@@ -33,7 +33,7 @@ services:
   #
   faf-db:
     container_name: faf-db
-    image: faforever/faf-db:v59.1-flyway
+    image: mysql:5.7
     user: ${FAF_DB_USER}
     networks:
       faf:
@@ -59,7 +59,7 @@ services:
   #
   faf-db-migrations:
     container_name: faf-db-migrations
-    image: faf-db-migrations # TODO: use proper image here
+    image: faforever/faf-db-migrations:v59.1-flyway
     user: ${FAF_DB_USER}
     networks:
       faf:
