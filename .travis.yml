@@ -59,7 +59,7 @@ script:
       sleep 1
     done
 
-# wait for db migrations to be run
+  # wait for db migrations to be run
   # insert test data
   - docker exec -i faf-db mysql -uroot -pbanana faf < test-data.sql
   # run test collection
