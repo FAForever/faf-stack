@@ -32,17 +32,8 @@ script:
   # Causes the docker-compose.yml to be syntax checked, without actually doing anything
   - docker-compose config
   # prepare services under test
-  # faf-db first because it takes the longest to load
-  - docker-compose up -d faf-db
-  - |
-    echo -n 'Waiting for faf-db '
-    while ! mysqladmin ping -h 127.0.0.1 -uroot -pbanana 2> /dev/null
-    do
-      echo -n "."
-      sleep 1
-    done
-  - docker-compose run faf-db-migrations migrate
-  - docker-compose up -d faf-java-api
+  - scripts/init-db.sh
+  - docker-compose up faf-java-api
   - |
     echo -n "Waiting for faf-java-api "
     while ! curl -s --max-time 1 http://localhost:8010 &> /dev/null
