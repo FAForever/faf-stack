@@ -4,13 +4,6 @@ dist: trusty
 services:
   - docker
 
-addons:
-  apt:
-    sources:
-      - mysql-5.7-trusty
-    packages:
-      - mysql-client
-
 # Temporarily update docker until travis supports compose v3.3+ files
 before_install:
   - sudo /etc/init.d/mysql stop

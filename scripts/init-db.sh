@@ -7,7 +7,7 @@ if [ ! -f docker-compose.yml ]; then
 fi
 
 docker-compose up -d faf-db
-echo -n 'Waiting for faf-db '
+echo -n "Waiting for faf-db "
 while ! docker exec -it faf-db sh -c "mysqladmin ping -h 127.0.0.1 -uroot -pbanana" &> /dev/null
 do
   echo -n "."
