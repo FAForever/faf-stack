@@ -29,11 +29,9 @@ install:
   - wget https://raw.githubusercontent.com/FAForever/db/`grep -oP 'faforever/faf-db:\K(.*)$' ./docker-compose.yml`/test-data.sql
 
 script:
-  # Causes the docker-compose.yml to be syntax checked, without actually doing anything
-  - docker-compose config
   # prepare services under test
   - scripts/init-db.sh
-  - docker-compose up faf-java-api
+  - docker-compose up -d faf-java-api
   - |
     echo -n "Waiting for faf-java-api "
     while ! curl -s --max-time 1 http://localhost:8010 &> /dev/null
