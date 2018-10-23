@@ -1,4 +1,4 @@
-version: '3.3'
+version: '2.4'
 
 services:
 
@@ -660,6 +660,12 @@ services:
 networks:
   faf:
     driver: bridge
+    enable_ipv6: true
+    ipam:
+      driver: default
+      config:
+      - subnet: 2001:3200:3200::/64
+        gateway: 2001:3200:3200::1
   outside:
     external:
       name: "outside"

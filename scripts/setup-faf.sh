@@ -198,6 +198,17 @@ function add_user_to_docker_group {
   usermod -a -G docker "${FAF_USER}"
 }
 
+function configure_dockerd {
+  cat /etc/docker/daemon.json <<EOF
+{
+    "hosts": ["tcp://127.0.0.1:2375", "unix:///var/run/docker.sock"],
+    "ipv6": true,
+    "fixed-cidr-v6": "2001:db8:1::/64"
+}
+EOF
+  systemctl restart docker
+}
+
 check_is_root
 configure_umask
 configure_permit_root_login
@@ -214,5 +225,6 @@ install_faf_stack
 install_cron_jobs
 install_tmux_init_file
 add_user_to_docker_group
+configure_dockerd
 
 /etc/init.d/faforever-tmux.sh start
