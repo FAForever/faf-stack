@@ -18,7 +18,7 @@ before_install:
 install:
   - cp -r config.template config
   - cp .env.template .env
-  - wget https://raw.githubusercontent.com/FAForever/db/develop/test-data.sql
+  - wget https://raw.githubusercontent.com/FAForever/db/`grep -oP 'faforever/faf-db:\K(.*)$' ./docker-compose.yml`/test-data.sql
 
 script:
   # Causes the docker-compose.yml to be syntax checked, without actually doing anything
