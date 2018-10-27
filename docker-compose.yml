@@ -33,7 +33,7 @@ services:
   #
   faf-db:
     container_name: faf-db
-    image: faforever/faf-db:v59.1
+    image: mysql:5.7
     user: ${FAF_DB_USER}
     networks:
       faf:
@@ -44,9 +44,28 @@ services:
     ports:
       - "127.0.0.1:3306:3306"
     volumes:
+      - ./config/faf-db/mysql.cnf:/root/.my.cnf
       - ./data/faf-db:/var/lib/mysql
     depends_on:
       - faf-init-volumes
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  #
+  # FAF MySQL database migrations creates & updates the database tables and some required data
+  #
+  faf-db-migrations:
+    container_name: faf-db-migrations
+    image: faforever/faf-db-migrations:v61
+    user: ${FAF_DB_USER}
+    networks:
+      - faf
+    restart: "no"
+    env_file: ./config/faf-db-migrations/faf-db-migrations.env
+    depends_on:
+      - faf-db
 
   #
   # Prometheus exporter for MySQL server metrics.
@@ -145,7 +164,7 @@ services:
   #
   faf-java-api:
     container_name: faf-java-api
-    image: faforever/faf-java-api:v2.1.0
+    image: faforever/faf-java-api:v2.1.1
     user: ${FAF_JAVA_API_USER}
     networks:
       faf:

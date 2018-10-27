@@ -1,3 +1,4 @@
+sudo: required
 dist: trusty
 
 services:
@@ -18,15 +19,12 @@ before_install:
 install:
   - cp -r config.template config
   - cp .env.template .env
-  - wget https://raw.githubusercontent.com/FAForever/db/`grep -oP 'faforever/faf-db:\K(.*)$' ./docker-compose.yml`/test-data.sql
+  # download test data from corresponding db-repository tag
+  - wget https://raw.githubusercontent.com/FAForever/db/`grep -oP 'faforever/faf-db-migrations:\K(.*)$' ./docker-compose.yml`/test-data.sql
 
 script:
-  # Causes the docker-compose.yml to be syntax checked, without actually doing anything
-  - docker-compose config
   # prepare services under test
-  # faf-db first because it takes the longest to load
-  - docker-compose up -d faf-db
-  - sleep 60
+  - scripts/init-db.sh
   - docker-compose up -d faf-java-api
   - |
     echo -n "Waiting for faf-java-api "
@@ -44,7 +42,6 @@ script:
       sleep 1
     done
 
-# wait for db migrations to be run
   # insert test data
   - docker exec -i faf-db mysql -uroot -pbanana faf < test-data.sql
   # run test collection
