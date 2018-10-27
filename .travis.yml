@@ -6,7 +6,7 @@ services:
 
 # Temporarily update docker until travis supports compose v3.3+ files
 before_install:
-  - sudo /etc/init.d/mysql stop
+  - sudo service mysql stop
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
   - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   - sudo apt-get update
@@ -19,6 +19,7 @@ before_install:
 install:
   - cp -r config.template config
   - cp .env.template .env
+  # download test data from corresponding db-repository tag
   - wget https://raw.githubusercontent.com/FAForever/db/`grep -oP 'faforever/faf-db-migrations:\K(.*)$' ./docker-compose.yml`/test-data.sql
 
 script:

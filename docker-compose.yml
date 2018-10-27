@@ -54,17 +54,14 @@ services:
       retries: 10
 
   #
-  # FAF MySQL database migrations
-  # (this creates & updates the database tables and some required data)
+  # FAF MySQL database migrations creates & updates the database tables and some required data
   #
   faf-db-migrations:
     container_name: faf-db-migrations
     image: faforever/faf-db-migrations:v59.1-flyway
     user: ${FAF_DB_USER}
     networks:
-      faf:
-        aliases:
-        - "faf-db-migrations"
+      - faf
     restart: "no"
     env_file: ./config/faf-db-migrations/faf-db-migrations.env
     depends_on:
