@@ -19,7 +19,7 @@ before_install:
 install:
   - cp -r config.template config
   - cp .env.template .env
-  - wget https://raw.githubusercontent.com/FAForever/db/`grep -oP 'faforever/faf-db:\K(.*)$' ./docker-compose.yml`/test-data.sql
+  - wget https://raw.githubusercontent.com/FAForever/db/`grep -oP 'faforever/faf-db-migrations:\K(.*)$' ./docker-compose.yml`/test-data.sql
 
 script:
   # prepare services under test
@@ -41,7 +41,6 @@ script:
       sleep 1
     done
 
-  # wait for db migrations to be run
   # insert test data
   - docker exec -i faf-db mysql -uroot -pbanana faf < test-data.sql
   # run test collection
