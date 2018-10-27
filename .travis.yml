@@ -28,9 +28,23 @@ script:
   - docker-compose up -d faf-db
   - sleep 60
   - docker-compose up -d faf-java-api
-  - sleep 60
+  - |
+    echo -n "Waiting for faf-java-api "
+    while ! curl -s --max-time 1 http://localhost:8010 &> /dev/null
+    do
+      echo -n "."
+      sleep 1
+    done
   - docker-compose up -d faf-website
-  # wait for db migrations to be run
+  - |
+    echo "Waiting for faf-website "
+    while ! curl -s --max-time 1 http://localhost:8020 &> /dev/null
+    do
+      echo -n "."
+      sleep 1
+    done
+
+# wait for db migrations to be run
   # insert test data
   - docker exec -i faf-db mysql -uroot -pbanana faf < test-data.sql
   # run test collection
