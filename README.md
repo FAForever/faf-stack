@@ -130,4 +130,12 @@ Make sure you set up Postal first.
         1. Click `New` and enter Label: `FAF Username`, Alias: `faf_username`, Object: `Contact`, Group: `Core`, Data Type: `Text`, Required: `Yes`, Available for segments: `No`, Is Unique Identifier: `Yes`. Click `Save & Close`
         1. Open the field `Email` and set Required: `Yes`
         
-        
+## Grafana
+
+### Initial Setup
+
+1. Log into Grafana using `admin/admin`
+1. Add a Prometheus datasource named `Prometheus` at `http://faf-prometheus:9090`
+1. Go to global organization settings and change the name from `Main org.` to `Forged Alliance Forever`. This is 
+required to enable anonymous access, too.
+ 
