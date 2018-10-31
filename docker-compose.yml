@@ -102,7 +102,7 @@ services:
   #
   faf-python-server:
     container_name: faf-python-server
-    image: faforever/faf-python-server:v0.9.21
+    image: faforever/faf-python-server:v0.9.22
     user: ${FAF_PYTHON_SERVER_USER}
     networks:
       faf:
