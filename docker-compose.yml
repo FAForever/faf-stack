@@ -184,7 +184,7 @@ services:
       - faf-init-volumes
     # TODO move to Dockerfile
     healthcheck:
-      test: "wget -q -O /dev/null http://localhost:8011/health"
+      test: "wget -q -O /dev/null http://localhost:8011/manage/health"
       interval: 30s
       timeout: 5s
       retries: 3
