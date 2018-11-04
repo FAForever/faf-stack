@@ -42,7 +42,7 @@ services:
     restart: unless-stopped
     env_file: ./config/faf-db/faf-db.env
     ports:
-      - "127.0.0.1:3306:3306"
+        - "127.0.0.1:3306:3306"
     volumes:
       - ./config/faf-db/mysql.cnf:/root/.my.cnf
       - ./data/faf-db:/var/lib/mysql
@@ -230,12 +230,12 @@ services:
   #
   faf-spring-boot-admin:
     container_name: faf-spring-boot-admin
-    image: aetas/spring-boot-admin-docker:1.4.1
+    image: slydeveloper/spring-boot-admin:1.0
     user: ${FAF_SPRING_BOOT_ADMIN_USER}
     restart: unless-stopped
     env_file: ./config/faf-spring-boot-admin/faf-spring-boot-admin.env
     ports:
-      - "127.0.0.1:8030:8080"
+      - "127.0.0.1:8030:1111"
     networks:
       faf:
         aliases:
@@ -243,7 +243,7 @@ services:
     # Service currently not in use
     # restart: always
     healthcheck:
-      test: "wget -q -O /dev/null http://localhost:8080"
+      test: "wget -q -O /dev/null http://localhost:1111/health"
       interval: 30s
       timeout: 5s
       retries: 3
