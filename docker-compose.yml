@@ -608,7 +608,7 @@ services:
   #
   faf-unitdb:
     container_name: faf-unitdb
-    image: faforever/faf-unitdb:v1.2.9
+    image: faforever/faf-unitdb:v1.2.10
     restart: unless-stopped
     environment:
     - PUID=${FAF_FS_PUID}
@@ -617,8 +617,8 @@ services:
       - faf
     volumes:
       - ./data/faf-unitdb/:/var/www/html/DATA
-      - ./config/faf-unitdb/datafiles.json:/var/www/html/CONFIG/DATAFILES.JSON
-      - ./config/faf-unitdb/locfiles.json:/var/www/html/CONFIG/LOCFILES.JSON
+      - ./config/faf-unitdb/datafiles.json:/var/www/html/config/datafiles.json
+      - ./config/faf-unitdb/locfiles.json:/var/www/html/config/locfiles.json
     depends_on:
       - faf-init-volumes
     env_file: ./config/faf-unitdb/faf-unitdb.env
