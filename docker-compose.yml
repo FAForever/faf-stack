@@ -616,7 +616,6 @@ services:
     networks:
       - faf
     volumes:
-      - ./data/faf-unitdb/:/var/www/html/DATA
       - ./config/faf-unitdb/datafiles.json:/var/www/html/config/datafiles.json
       - ./config/faf-unitdb/locfiles.json:/var/www/html/config/locfiles.json
     depends_on:
