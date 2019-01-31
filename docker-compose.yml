@@ -347,6 +347,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./data/faf-wordpress:/usr/share/nginx/html
+      - ./config/faf-wordpress/faf-wordpress.conf:/var/www/html/conf/nginx/nginx-site.conf
     networks:
       faf:
         aliases:
