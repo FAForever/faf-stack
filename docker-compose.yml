@@ -309,8 +309,7 @@ services:
   #
   faf-qai:
     container_name: faf-qai
-    build: git://github.com/FAForever/QAI#v1.0
-    image: faforever/faf-qai
+    image: faforever/faf-qai:v1.1
     user: ${FAF_QAI_USER}
     restart: unless-stopped
     depends_on:
