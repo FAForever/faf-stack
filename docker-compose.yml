@@ -472,8 +472,8 @@ services:
   #
   faf-aio-replayserver:
     container_name: faf-aio-replayserver
-    build: git://github.com/FAForever/faf-aio-replayserver#0.1
-    image: faforever/faf-aio-replayserver:0.1
+    # build: git://github.com/FAForever/faf-aio-replayserver#0.1
+    image: faforever/faf-aio-replayserver:0.4.11
     user: ${FAF_AIO_REPLAYSERVER_USER}
     restart: unless-stopped
     volumes:
