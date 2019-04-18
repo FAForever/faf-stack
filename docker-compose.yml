@@ -21,7 +21,7 @@ services:
   #
   faf-coturn:
     container_name: faf-coturn
-    image: geosearchef/coturn-lt-cred
+    image: faforever/coturn-lt-cred
     env_file: ./config/faf-coturn/faf-coturn.env
     network_mode: "host"
     ports:
