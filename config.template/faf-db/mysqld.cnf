@@ -1,0 +1,4 @@
+[mysqld]
+innodb_buffer_pool_instances = 4
+innodb_buffer_pool_size      = 1G
+slow_query_log               = 1
