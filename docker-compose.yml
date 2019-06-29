@@ -590,7 +590,7 @@ services:
   #
   faf-unitdb:
     container_name: faf-unitdb
-    image: faforever/faf-unitdb:v1.2.11
+    image: faforever/faf-unitdb:v1.3
     restart: unless-stopped
     environment:
     - PUID=${FAF_FS_PUID}
