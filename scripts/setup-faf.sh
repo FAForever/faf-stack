@@ -135,7 +135,7 @@ function install_docker_compose {
   fi
 
   echo "Installing Docker-Compose"
-  curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose \
+  curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
      || { echo "Failed to install Docker-Compose"; exit 1; }
   chmod +x /usr/local/bin/docker-compose \
      || { echo "Failed to make docker-compose executable"; exit 1; }
