@@ -16,6 +16,35 @@ services:
     command: sh -c "cd /faf-stack && sh scripts/init-volumes.sh"
 
   #
+  # Traefik server for reverse proxying, load balancing and fetching Let's encrypt certificates
+  # Listens for changes on docker containers and adds them if matching labels are found
+  # Runs in dashboard mode, secured by basic http auth
+  #
+  # This service has no user set on purpose. It is based on a scratch docker image that does not even offer a shell.
+  #
+  faf-traefik:
+    image: traefik:v1.7.12
+    env_file: ./config/faf-traefik/faf-traefik.env
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - outside
+      - faf
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
+      - ./config/faf-traefik/traefik.toml:/etc/traefik/traefik.toml # Only general config, service specific stuff via label
+      - ./config/faf-traefik/rules.toml:/etc/traefik/rules.toml # Change dynamic rules here
+      - ./config/faf-traefik/acme.json:/etc/traefik/acme.json # Make sure to set chmod to 600
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=traefik"
+      - "traefik.frontend.rule=Host:traefik.${DOMAINNAME}"
+      - "traefik.port=8080"
+      - "traefik.frontend.auth.basic.users=${TRAEFIK_USERNAME}:${TRAEFIK_PASSWORD}" # password in bcrypt
+
+
+  #
   # Coturn server for proxying between players
   # It uses net: "host" for performance reasons.
   #
@@ -179,11 +208,17 @@ services:
       - ./data/faf-java-api/logs:/logs
       - ./data/faf-java-api/repositories:/repositories
     expose:
+      - "8010" # HTTP API
       - "8011" # HTTP Management API
     ports:
-      - "8010:8010" # HTTP API
+      - "127.0.0.1:8010:8010" # For internal testing only
     depends_on:
       - faf-init-volumes
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=java-api"
+      - "traefik.port=8010"
+      - "traefik.frontend.rule=Host:api.${DOMAINNAME}"
     # TODO move to Dockerfile
     healthcheck:
       test: "wget -q -O /dev/null http://localhost:8011/manage/health"
@@ -205,7 +240,12 @@ services:
     networks:
       - faf
     ports:
-      - "127.0.0.1:8020:3000"
+      - "127.0.0.1:8020:3000" # For internal testing only
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=website"
+      - "traefik.port=3000"
+      - "traefik.frontend.rule=Host:www.${DOMAINNAME},${DOMAINNAME}"
 
   #
   # Interface to administer Spring Boot applications.
@@ -216,8 +256,6 @@ services:
     user: ${FAF_SPRING_BOOT_ADMIN_USER}
     restart: unless-stopped
     env_file: ./config/faf-spring-boot-admin/faf-spring-boot-admin.env
-    ports:
-      - "127.0.0.1:8030:1111"
     networks:
       faf:
         aliases:
@@ -229,6 +267,11 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=spring-boot-admin"
+      - "traefik.port=1111"
+      - "traefik.frontend.rule=Host:bootadmin.${DOMAINNAME}"
 
   #
   # Prometheus is a monitoring and alerting tool that scrapes and stores time-series data.
@@ -243,13 +286,17 @@ services:
       faf:
         aliases:
           - "faf-prometheus"
-    ports:
-      - "127.0.0.1:9090:9090" # Webinterface
     volumes:
       - ./config/faf-prometheus/faf-prometheus.yml:/etc/prometheus/prometheus.yml
       - ./data/faf-prometheus:/prometheus
     depends_on:
       - faf-init-volumes
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=prometheus"
+      - "traefik.port=9090"
+      - "traefik.frontend.rule=Host:prometheus.${DOMAINNAME}"
+      - "traefik.frontend.auth.basic.users=${PROMETHEUS_USERNAME}:${PROMETHEUS_PASSWORD}" # password in bcrypt
 
   #
   # Grafana reads data from Prometheus and draws monitoring dashboards.
@@ -267,8 +314,11 @@ services:
     depends_on:
       - faf-init-volumes
     env_file: ./config/faf-grafana/faf-grafana.env
-    ports:
-      - "8090:3000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=grafana"
+      - "traefik.port=3000"
+      - "traefik.frontend.rule=Host:grafana.${DOMAINNAME}"
 
   #
   # IRC for FAF chat.
@@ -356,8 +406,11 @@ services:
     depends_on:
       - faf-init-volumes
     env_file: ./config/faf-wordpress/faf-wordpress.env
-    ports:
-      - "127.0.0.1:8095:80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=wordpress"
+      - "traefik.frontend.rule=Host:direct.${DOMAINNAME}"
+
 
   #
   # The new FAF clanapp.
@@ -370,8 +423,11 @@ services:
     networks:
       - faf
     env_file: ./config/faf-clanapp/faf-clanapp.env
-    ports:
-      - "127.0.0.1:8096:8080"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=clanapp"
+      - "traefik.port=8080"
+      - "traefik.frontend.rule=Host:clans.${DOMAINNAME}"
 
   #
   # FAF phpBB forum software.
@@ -390,8 +446,10 @@ services:
     depends_on:
       - faf-init-volumes
     env_file: ./config/faf-phpbb3/faf-phpbb3.env
-    ports:
-      - "127.0.0.1:8098:80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=phpbb"
+      - "traefik.frontend.rule=Host:forums.${DOMAINNAME}"
 
   #
   # Serves static files such as maps, mods, game files etc.
@@ -408,8 +466,10 @@ services:
     depends_on:
       - faf-init-volumes
     env_file: ./config/faf-content/faf-content.env
-    ports:
-      - "127.0.0.1:8091:80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=content"
+      - "traefik.frontend.rule=Host:content.${DOMAINNAME},replay.${DOMAINNAME}"
 
   #
   # The FAF media wiki.
@@ -426,8 +486,10 @@ services:
     depends_on:
       - faf-init-volumes
     env_file: ./config/faf-wiki/faf-wiki.env
-    ports:
-      - "127.0.0.1:8092:80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=wiki"
+      - "traefik.frontend.rule=Host:wiki.${DOMAINNAME}"
 
   #
   # The legacy update server from which the legacy client gets its update information.
@@ -483,12 +545,9 @@ services:
       - faf
     depends_on:
       - faf-init-volumes
-      - faf-db
     env_file: ./config/faf-aio-replayserver/faf-aio-replayserver.env
     ports:
       - "15001:15001"
-    expose:
-      - "8011"
 
   #
   # The legacy "secondary server" which does many different things, most of which are being replaced.
@@ -520,58 +579,11 @@ services:
     networks:
       - faf
     env_file: ./config/faf-slack-invite-automation/faf-slack-invite-automation.env
-    ports:
-      - "3001:3000"
-
-  #
-  # An nginx proxy which exposes FAF services such as the website, the API etc. through HTTP. It does so by listening
-  # for docker containers to come online which have the environment variable VIRTUAL_HOST set. Once such a container
-  # comes online, it sets up a virtual host which is forwarded to the only exposed port of that service. If multiple
-  # ports are exposed, VIRTUAL_PORT can be set to pick one.
-  #
-  # For more information, see https://github.com/jwilder/nginx-proxy
-  #
-  faf-nginx:
-    container_name: faf-nginx
-    image: jwilder/nginx-proxy:alpine-0.6.0
-    user: ${FAF_NGINX_USER}
-    restart: unless-stopped
-    networks:
-      - faf
-    volumes:
-      - ./data/content:/content
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - ./data/faf-nginx/vhost.d:/etc/nginx/vhost.d:ro
-      - ./data/faf-nginx/certs:/etc/nginx/certs:ro
-      - ./data/faf-nginx/html:/usr/share/nginx/html
-    depends_on:
-      - faf-init-volumes
-    ports:
-      - "80:80"
-      - "443:443"
     labels:
-      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
-
-  #
-  # An extension of the nginx proxy which converts exposed containers to HTTPS and automatically generates a
-  # Let's Encrypt SSL certificate. It does so by listening for docker containers to come online which have the
-  # environment variable LETSENCRYPT_HOST and LETSENCRYPT_EMAIL set.
-  #
-  # For more information, see https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion
-  #
-  faf-nginx-certs:
-    container_name: faf-nginx-certs
-    image: jrcs/letsencrypt-nginx-proxy-companion:v1.8.1
-    user: ${FAF_NGINX_CERTS_USER}
-    restart: unless-stopped
-    env_file: ./config/faf-nginx-certs/faf-nginx-certs.env
-    volumes:
-      - ./data/faf-nginx/certs:/etc/nginx/certs:rw
-      - ./data/faf-nginx/vhost.d:/etc/nginx/vhost.d:rw
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./data/faf-nginx/html:/usr/share/nginx/html
-    depends_on:
-      - faf-init-volumes
+      - "traefik.enable=true"
+      - "traefik.backend=slackinvite"
+      - "traefik.port=3000"
+      - "traefik.frontend.rule=Host:slackinvite.${DOMAINNAME}"
 
   faf-policy-server:
     container_name: faf-policy-server
@@ -606,8 +618,10 @@ services:
     depends_on:
       - faf-init-volumes
     env_file: ./config/faf-unitdb/faf-unitdb.env
-    ports:
-      - "8083:80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=unitdb"
+      - "traefik.frontend.rule=Host:unitdb.${DOMAINNAME}"
 
   #
   # Postal is a fully featured open source mail delivery platform for incoming & outgoing e-mail.
@@ -622,13 +636,16 @@ services:
       faf:
         aliases:
           - "faf-postal"
-    ports:
-      - "8012:5000"
     expose:
       - "25"
     volumes:
       - ./data/faf-postal/assets:/opt/postal/public/assets
       - ./config/faf-postal/config:/opt/postal/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=postal"
+      - "traefik.port=5000"
+      - "traefik.frontend.rule=Host:postal.${DOMAINNAME}"
 
   #
   # RabbitMQ is open source message broker software (sometimes called message-oriented middleware) that implements the
@@ -658,10 +675,12 @@ services:
       faf:
         aliases:
           - "faf-mautic"
-    ports:
-      - "8013:80"
     volumes:
       - ./data/faf-mautic/html:/var/www/html
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=mautic"
+      - "traefik.frontend.rule=Host:mautic.${DOMAINNAME}"
 
   faf-voting:
     image: faforever/faf-voting:v2.0.1
@@ -672,12 +691,15 @@ services:
         aliases:
           - "faf-voting"
     env_file: ./config/faf-voting/faf-voting.env
-    ports:
-      - "8014:3000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=voting"
+      - "traefik.port=3000"
+      - "traefik.frontend.rule=Host:voting.${DOMAINNAME}"
 
 networks:
   faf:
     driver: bridge
   outside:
     external:
-      name: "host"
+      name: "outside"
