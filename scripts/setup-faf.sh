@@ -25,7 +25,7 @@ ALLOW_PASSWORD_AUTHENTICATION="no"
 DEFAULT_UMASK="007"
 FAF_BASE_DIR="/opt/faf"
 FAF_STACK_URL="https://github.com/FAForever/faf-stack.git"
-DOCKER_COMPOSE_VERSION="1.16.1"
+DOCKER_COMPOSE_VERSION="1.24.0"
 
 
 function check_is_root {
