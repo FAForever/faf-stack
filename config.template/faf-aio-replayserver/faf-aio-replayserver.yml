@@ -1,7 +1,7 @@
 rs:
     log_level: INFO
     server:
-        port: "15001"
+        port: "15000"
         prometheus_port: "8011"
         connection_header_read_timeout: "21600"
     db:

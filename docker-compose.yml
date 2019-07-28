@@ -549,7 +549,7 @@ services:
       - faf-init-volumes
     env_file: ./config/faf-aio-replayserver/faf-aio-replayserver.env
     ports:
-      - "15001:15001"
+      - "15000:15000"
 
   #
   # The legacy "secondary server" which does many different things, most of which are being replaced.
