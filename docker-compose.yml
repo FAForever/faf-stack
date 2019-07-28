@@ -472,6 +472,8 @@ services:
       - "traefik.enable=true"
       - "traefik.backend=content"
       - "traefik.frontend.rule=Host:content.${DOMAINNAME},replay.${DOMAINNAME}"
+      - "traefik.frontend.redirect.regex=^(http|https)://replay.${DOMAINNAME}/(.*)"
+      - "traefik.frontend.redirect.replacement=$$1://content.${DOMAINNAME}/faf/vault/replay_vault/replay.php?id=$$2"
 
   #
   # The FAF media wiki.
