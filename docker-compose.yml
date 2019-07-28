@@ -33,9 +33,11 @@ services:
       - faf
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
-      - ./config/faf-traefik/traefik.toml:/etc/traefik/traefik.toml # Only general config, service specific stuff via label
-      - ./config/faf-traefik/rules.toml:/etc/traefik/rules.toml # Change dynamic rules here
-      - ./config/faf-traefik/acme.json:/etc/traefik/acme.json # Make sure to set chmod to 600
+      # Config folder contains 3 files:
+      # traefik.toml - Only general config (change requires restart)
+      # rules.toml   - For setup of dynamic rules (traefik listens for changes)
+      # acme.json    - Make sure to set chmod to 600 (will be populated by traefik)
+      - ./config/faf-traefik:/etc/traefik
     labels:
       - "traefik.enable=true"
       - "traefik.backend=traefik"
