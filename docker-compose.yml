@@ -44,7 +44,11 @@ services:
       - "traefik.frontend.rule=Host:traefik.${DOMAINNAME}"
       - "traefik.port=8080"
       - "traefik.frontend.auth.basic.users=${TRAEFIK_USERNAME}:${TRAEFIK_PASSWORD}" # password in bcrypt
-
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "4"
 
   #
   # Coturn server for proxying between players
@@ -58,6 +62,11 @@ services:
     ports:
       - "3478:3478"
       - "3478:3478/udp"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "3"
 
   #
   # FAF MySQL database.
@@ -84,6 +93,11 @@ services:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "4"
 
   #
   # FAF MySQL database migrations creates & updates the database tables and some required data
@@ -128,6 +142,11 @@ services:
     env_file: ./config/faf-statsd-exporter/faf-statsd-exporter.env
     expose:
       - "9105"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "2"
 
   #
   # FAF game server for clients to connect to.
@@ -161,7 +180,11 @@ services:
       - "4000:4000" # Control server
     depends_on:
       - faf-init-volumes
-
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "3"
   #
   # FAF game server for clients to connect to.
   #
@@ -191,6 +214,11 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "4"
 
   #
   # FAF JSON-API to provide data over HTTP.
@@ -227,6 +255,11 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "3"
 
   #
   # FAF website.
@@ -248,6 +281,11 @@ services:
       - "traefik.backend=website"
       - "traefik.port=3000"
       - "traefik.frontend.rule=Host:www.${DOMAINNAME},${DOMAINNAME}"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "3"
 
   #
   # Interface to administer Spring Boot applications.
@@ -274,6 +312,11 @@ services:
       - "traefik.backend=spring-boot-admin"
       - "traefik.port=1111"
       - "traefik.frontend.rule=Host:bootadmin.${DOMAINNAME}"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "3"
 
   #
   # Prometheus is a monitoring and alerting tool that scrapes and stores time-series data.
@@ -299,6 +342,11 @@ services:
       - "traefik.port=9090"
       - "traefik.frontend.rule=Host:prometheus.${DOMAINNAME}"
       - "traefik.frontend.auth.basic.users=${PROMETHEUS_USERNAME}:${PROMETHEUS_PASSWORD}" # password in bcrypt
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "2"
 
   #
   # Grafana reads data from Prometheus and draws monitoring dashboards.
@@ -321,6 +369,11 @@ services:
       - "traefik.backend=grafana"
       - "traefik.port=3000"
       - "traefik.frontend.rule=Host:grafana.${DOMAINNAME}"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "2"
 
   #
   # IRC for FAF chat.
@@ -357,6 +410,11 @@ services:
       - "8067:8067"
       - "7070:7070"
       - "8167:8167"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "3"
 
   #
   # QAI irc bot
@@ -372,6 +430,11 @@ services:
       - ./config/faf-qai:/config
     networks:
       - faf
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "2"
 
   #
   # FAF Mumble server.
@@ -412,6 +475,11 @@ services:
       - "traefik.enable=true"
       - "traefik.backend=wordpress"
       - "traefik.frontend.rule=Host:direct.${DOMAINNAME}"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "2"
 
 
   #
@@ -430,6 +498,11 @@ services:
       - "traefik.backend=clanapp"
       - "traefik.port=8080"
       - "traefik.frontend.rule=Host:clans.${DOMAINNAME}"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "2"
 
   #
   # FAF phpBB forum software.
@@ -452,6 +525,11 @@ services:
       - "traefik.enable=true"
       - "traefik.backend=phpbb"
       - "traefik.frontend.rule=Host:forums.${DOMAINNAME}"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "2"
 
   #
   # Serves static files such as maps, mods, game files etc.
@@ -474,6 +552,11 @@ services:
       - "traefik.frontend.rule=Host:content.${DOMAINNAME},replay.${DOMAINNAME}"
       - "traefik.frontend.redirect.regex=^(http|https)://replay.${DOMAINNAME}/(.*)"
       - "traefik.frontend.redirect.replacement=$$1://content.${DOMAINNAME}/faf/vault/replay_vault/replay.php?id=$$2"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "3"
 
   #
   # The FAF media wiki.
@@ -494,6 +577,11 @@ services:
       - "traefik.enable=true"
       - "traefik.backend=wiki"
       - "traefik.frontend.rule=Host:wiki.${DOMAINNAME}"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "2"
 
   #
   # The legacy update server from which the legacy client gets its update information.
@@ -514,6 +602,11 @@ services:
     env_file: ./config/faf-legacy-updater/faf-legacy-updater.env
     ports:
       - "9001:9001"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "3"
 
   #
   # The second version of "live replay" server
@@ -533,6 +626,11 @@ services:
     env_file: ./config/faf-aio-replayserver/faf-aio-replayserver.env
     ports:
       - "15000:15000"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "3"
 
   faf-policy-server:
     container_name: faf-policy-server
@@ -571,6 +669,11 @@ services:
       - "traefik.enable=true"
       - "traefik.backend=unitdb"
       - "traefik.frontend.rule=Host:direct.${DOMAINNAME};PathPrefixStrip:/faf/unitsDB/"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "512m"
+        max-file: "2"
 
   #
   # Postal is a fully featured open source mail delivery platform for incoming & outgoing e-mail.
@@ -595,6 +698,11 @@ services:
       - "traefik.backend=postal"
       - "traefik.port=5000"
       - "traefik.frontend.rule=Host:postal.${DOMAINNAME}"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
+        max-file: "2"
 
   #
   # RabbitMQ is open source message broker software (sometimes called message-oriented middleware) that implements the
@@ -645,6 +753,11 @@ services:
       - "traefik.backend=voting"
       - "traefik.port=3000"
       - "traefik.frontend.rule=Host:voting.${DOMAINNAME}"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "512m"
+        max-file: "2"
 
   # replay api for testing purposes, don't deploy, just let it live on test.
   faf-replay-api:
