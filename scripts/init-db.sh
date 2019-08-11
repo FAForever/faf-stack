@@ -6,6 +6,7 @@ if [ ! -f docker-compose.yml ]; then
     exit 1
 fi
 
+docker network create outside
 docker-compose up -d faf-db
 echo -n "Waiting for faf-db "
 while ! docker exec -it faf-db sh -c "mysqladmin ping -h 127.0.0.1 -uroot -pbanana" &> /dev/null

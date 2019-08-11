@@ -24,7 +24,6 @@ install:
 
 script:
   # prepare services under test
-  - docker network create outside
   - scripts/init-db.sh
   - docker-compose up -d faf-traefik faf-java-api
   - |
