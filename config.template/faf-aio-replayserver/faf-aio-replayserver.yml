@@ -19,3 +19,4 @@ rs:
             update_interval: "1"
         merge:
             desired_quorum: "2"
+            stream_comparison_cutoff: "2048"
