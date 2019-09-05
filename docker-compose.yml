@@ -516,25 +516,6 @@ services:
       - "9001:9001"
 
   #
-  # The legacy "live replay" server.
-  #
-  faf-legacy-live-replay-server:
-    container_name: faf-legacy-live-replay-server
-    build: git://github.com/FAForever/legacy-replay-server.git#v1.2
-    image: faforever/faf-legacy-live-replay-server
-    user: ${FAF_LEGACY_LIVE_REPLAY_SERVER_USER}
-    restart: unless-stopped
-    volumes:
-      - ./data/content:/content
-    networks:
-      - faf
-    depends_on:
-      - faf-init-volumes
-    env_file: ./config/faf-legacy-live-replay-server/faf-legacy-live-replay-server.env
-    ports:
-      - "15000:15000"
-
-  #
   # The second version of "live replay" server
   #
   faf-aio-replayserver:
@@ -552,42 +533,6 @@ services:
     env_file: ./config/faf-aio-replayserver/faf-aio-replayserver.env
     ports:
       - "15000:15000"
-
-  #
-  # The legacy "secondary server" which does many different things, most of which are being replaced.
-  #
-  faf-legacy-secondary-server:
-    container_name: faf-legacy-secondary-server
-    build: git://github.com/FAForever/legacy-secondaryServer.git#v1.0
-    image: faforever/faf-legacy-secondary-server
-    user: ${FAF_LEGACY_SECONDARY_SERVER_USER}
-    restart: unless-stopped
-    volumes:
-      - ./data/content:/content
-    networks:
-      - faf
-    depends_on:
-      - faf-init-volumes
-    env_file: ./config/faf-legacy-secondary-server/faf-legacy-secondary-server.env
-    ports:
-      - "11002:11002"
-
-  #
-  # A small web tool that allows users to invite themselves into our Slack group.
-  #
-  faf-slack-invite-automation:
-    container_name: faf-slack-invite-automation
-    image: faforever/faf-slack-invite-automation:v1.1
-    user: ${FAF_SLACK_INVITE_AUTOMATION_USER}
-    restart: unless-stopped
-    networks:
-      - faf
-    env_file: ./config/faf-slack-invite-automation/faf-slack-invite-automation.env
-    labels:
-      - "traefik.enable=true"
-      - "traefik.backend=slackinvite"
-      - "traefik.port=3000"
-      - "traefik.frontend.rule=Host:slackinvite.${DOMAINNAME}"
 
   faf-policy-server:
     container_name: faf-policy-server
