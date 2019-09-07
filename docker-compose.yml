@@ -419,7 +419,7 @@ services:
   #
   faf-clanapp:
     container_name: faf-clanapp
-    image: dragonfire/clans:1.0.3
+    image: faforever/clans:1.0.4
     user: ${FAF_CLANAPP_USER}
     restart: unless-stopped
     networks:
