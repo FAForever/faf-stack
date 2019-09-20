@@ -165,7 +165,7 @@ services:
   #
   faf-python-server:
     container_name: faf-python-server
-    image: faforever/faf-python-server:v1.1
+    image: faforever/faf-python-server:v1.2
     user: ${FAF_PYTHON_SERVER_USER}
     networks:
       faf:
@@ -631,7 +631,7 @@ services:
   #
   faf-aio-replayserver:
     container_name: faf-aio-replayserver
-    image: faforever/faf-aio-replayserver:1.0.0
+    image: faforever/faf-aio-replayserver:1.0.3
     user: ${FAF_AIO_REPLAYSERVER_USER}
     restart: unless-stopped
     volumes:
