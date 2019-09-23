@@ -279,7 +279,7 @@ services:
   #
   faf-website:
     container_name: faf-website
-    image: faforever/faf-website:v1.5
+    image: faforever/faf-website:v1.6
     user: ${FAF_WEBSITE_USER}
     restart: unless-stopped
     env_file: ./config/faf-website/faf-website.env
@@ -293,7 +293,7 @@ services:
       - "traefik.enable=true"
       - "traefik.backend=website"
       - "traefik.port=3000"
-      - "traefik.frontend.rule=Host:www.${DOMAINNAME},${DOMAINNAME}"
+      - "traefik.frontend.rule=Host:www.${DOMAINNAME},${DOMAINNAME},clans.${DOMAINNAME}"
     logging:
       driver: "json-file"
       options:
@@ -493,29 +493,6 @@ services:
       - "traefik.enable=true"
       - "traefik.backend=wordpress"
       - "traefik.frontend.rule=Host:direct.${DOMAINNAME}"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
-
-
-  #
-  # The new FAF clanapp.
-  #
-  faf-clanapp:
-    container_name: faf-clanapp
-    image: faforever/clans:1.0.4
-    user: ${FAF_CLANAPP_USER}
-    restart: unless-stopped
-    networks:
-      - faf
-    env_file: ./config/faf-clanapp/faf-clanapp.env
-    labels:
-      - "traefik.enable=true"
-      - "traefik.backend=clanapp"
-      - "traefik.port=8080"
-      - "traefik.frontend.rule=Host:clans.${DOMAINNAME}"
     logging:
       driver: "json-file"
       options:
