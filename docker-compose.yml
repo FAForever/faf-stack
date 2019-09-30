@@ -830,6 +830,10 @@ services:
     image: google/cadvisor:latest
     container_name: faf-cadvisor
     restart: unless-stopped
+    networks:
+      faf:
+        aliases:
+          - "faf-cadvisor"
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
