@@ -360,9 +360,6 @@ services:
       options:
         max-size: "${DEFAULT_LOG_SIZE}"
         max-file: "${DEFAULT_LOG_FILES}"
-    links:
-      - faf-cadvisor:faf-cadvisor
-      - faf-node-exporter:faf-node-exporter
 
   #
   # Grafana reads data from Prometheus and draws monitoring dashboards.
@@ -820,8 +817,8 @@ services:
     image: prom/node-exporter
     restart: unless-stopped
     container_name: faf-node-exporter
-    ports:
-      - "9100:9100"
+    expose:
+      - 9100
     networks:
       faf:
         aliases:
@@ -841,8 +838,8 @@ services:
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
-    ports:
-      - "8080:8080"
+    expose:
+      - 8080
 
 networks:
   faf:
