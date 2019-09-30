@@ -808,6 +808,7 @@ services:
         max-size: "${DEFAULT_LOG_SIZE}"
         max-file: "${DEFAULT_LOG_FILES}"
 
+  # Collects system information for prometheus
   faf-node-exporter:
     image: prom/node-exporter
     restart: unless-stopped
@@ -824,6 +825,7 @@ services:
         max-size: "${DEFAULT_LOG_SIZE}"
         max-file: "${DEFAULT_LOG_FILES}"
 
+  # Collects docker status for prometheus
   faf-cadvisor:
     image: google/cadvisor:latest
     container_name: faf-cadvisor
