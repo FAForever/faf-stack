@@ -802,6 +802,11 @@ services:
       faf:
         aliases:
           - "faf-replay-api"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=replay-api"
+      - "traefik.port=13666"
+      - "traefik.frontend.rule=Host:replay-api.${DOMAINNAME}"
     logging:
       driver: "json-file"
       options:
