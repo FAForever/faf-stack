@@ -6,15 +6,32 @@ if [ ! -f docker-compose.yml ]; then
     exit 1
 fi
 
+MAX_WAIT=360 # max. 5 minute waiting time in loop before timeout
+
 docker network create outside
 docker-compose up -d faf-db
+docker-compose logs -f faf-db &
+log_process_id=$!
+
 echo -n "Waiting for faf-db "
-while ! docker exec -it faf-db sh -c "mysqladmin ping -h 127.0.0.1 -uroot -pbanana" &> /dev/null
+current_wait=0
+while ! docker exec -i faf-db sh -c "mysqladmin ping -h 127.0.0.1 -uroot -pbanana" >/dev/null 2>&1
 do
-  echo -n "."
+  if [ ${current_wait} -ge ${MAX_WAIT} ]; then
+    echo "Timeout on startup of faf-db"
+    kill -TERM ${log_process_id}
+    exit 1
+  fi
+  current_wait=$((current_wait+1))
   sleep 1
 done
-docker-compose run faf-db-migrations migrate
+
+kill -TERM ${log_process_id}
+
+
+echo "Waiting for faf-db-migrations"
+docker-compose run --rm faf-db-migrations migrate || { echo "Failed migrate database"; exit 1; }
+
 source config/faf-db/faf-db.env
 
 create() {
