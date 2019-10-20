@@ -45,4 +45,4 @@ script:
   # insert test data
   - docker exec -i faf-db mysql -uroot -pbanana faf < test-data.sql
   # run test collection
-  - docker run --network="host" -t postman/newman_ubuntu1404 run "https://raw.githubusercontent.com/FAForever/faf-stack/$(urlencode "$TRAVIS_BRANCH")/tests/postman-collection.json"
+  - docker run --network="host" -t postman/newman:alpine run "https://raw.githubusercontent.com/FAForever/faf-stack/$(urlencode "$TRAVIS_BRANCH")/tests/postman-collection.json"
