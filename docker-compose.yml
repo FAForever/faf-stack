@@ -846,6 +846,11 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
     expose:
       - 8080
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "${DEFAULT_LOG_SIZE}"
+        max-file: "${DEFAULT_LOG_FILES}"
 
 networks:
   faf:
