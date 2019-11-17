@@ -1,0 +1,21 @@
+{
+  "url": "http://localhost:4567",
+  "secret": "banana",
+  "database": "mongo",
+  "port": 4567,
+  "mongo": {
+    "host": "faf-mongodb",
+    "port": "27017",
+    "username": "nodebb",
+    "password": "banana",
+    "database": "nodebb"
+  },
+  "oauth": {
+    "authorizationURL": "http://localhost:8010/oauth/authorize",
+    "tokenURL": "http://faf-java-api:8010/oauth/token",
+    "fafApiProfileURL": "http://faf-java-api:8010/me",
+    "id": "faf-nodebb",
+    "secret": "banana-pizza",
+    "scope": "public_profile"
+  }
+}
