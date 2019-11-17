@@ -808,6 +808,54 @@ services:
         max-size: "${DEFAULT_LOG_SIZE}"
         max-file: "${DEFAULT_LOG_FILES}"
 
+  faf-mongodb:
+    container_name: faf-mongodb
+    image: mongo:4.2.3
+    user: ${FAF_MONGODB_USER}
+    restart: unless-stopped
+    networks:
+      faf:
+        aliases:
+          - "faf-mongodb"
+    env_file: ./config/faf-mongodb/faf-mongodb.env
+    volumes:
+      - ./data/faf-mongodb/data/db:/data/db
+    ports:
+      - "27017:27017"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "${DEFAULT_LOG_SIZE}"
+        max-file: "${DEFAULT_LOG_FILES}"
+
+  faf-nodebb:
+    # for instructions how to initialize the setup check the readme in the config.template/faf-nodebb
+    container_name: faf-nodebb
+    image: nodebb/docker:v1.13.3
+    user: ${FAF_NODEBB_USER}
+    restart: unless-stopped
+    env_file: ./config/faf-nodebb/faf-nodebb.env
+    networks:
+      faf:
+        aliases:
+          - "faf-nodebb"
+    volumes:
+      - ./config/faf-nodebb/config.json:/usr/src/app/config.json
+      - ./data/faf-nodebb/node_modules:/usr/src/app/node_modules
+      - ./data/faf-nodebb/build:/usr/src/app/build
+    ports:
+      - "4567:4567"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "${DEFAULT_LOG_SIZE}"
+        max-file: "${DEFAULT_LOG_FILES}"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.faf-nodebb.rule=Host(`forum.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-nodebb.entryPoints=web-secure"
+      - "traefik.http.routers.faf-nodebb.middlewares=test-compress@file"
+      - "traefik.http.routers.faf-nodebb.tls.certresolver=default"
 networks:
   faf:
     driver: bridge
