@@ -43,6 +43,16 @@ consistent naming.
     cp -R config.template config
     cp .env.template .env
 
+### Initialize core database
+
+    scripts/init-db.sh
+    
+This will launch the faf-db and generate the current database scheme.
+
+### Update database schema
+
+    docker-compose run --rm faf-db-migrations migrate
+
 ### Start all at once
 
     docker-compose up -d
@@ -52,8 +62,6 @@ consistent naming.
 If you start a single service, services it depends on will be started automatically. For instance:
 
     docker-compose up -d faf-python-server
-
-This also starts `faf-db`.
 
 ### Start from local repository
 
