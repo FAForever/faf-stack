@@ -49,7 +49,6 @@ SQL_SCRIPT
 
 create "${MYSQL_DATABASE}" "faf-java-api" "${MYSQL_JAVA_API_PASSWORD}"
 create "${MYSQL_DATABASE}" "faf-python-api" "${MYSQL_PYTHON_API_PASSWORD}"
-create "${MYSQL_DATABASE}" "faf-legacy-live-replay-server" "${MYSQL_LEGACY_LIVE_REPLAY_SERVER_PASSWORD}"
 create "${MYSQL_DATABASE}" "faf-aio-replayserver" "${MYSQL_AIO_REPLAYSERVER_PASSWORD}"
 create "${MYSQL_DATABASE}" "faf-legacy-updater" "${MYSQL_LEGACY_UPDATER_PASSWORD}"
 create "${MYSQL_DATABASE}" "faf-policy-server" "${MYSQL_POLICY_SERVER_PASSWORD}"
