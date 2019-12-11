@@ -54,7 +54,6 @@ create "${MYSQL_DATABASE}" "faf-aio-replayserver" "${MYSQL_AIO_REPLAYSERVER_PASS
 create "${MYSQL_DATABASE}" "faf-legacy-secondary-server" "${MYSQL_LEGACY_SECONDARY_SERVER_PASSWORD}"
 create "${MYSQL_DATABASE}" "faf-legacy-updater" "${MYSQL_LEGACY_UPDATER_PASSWORD}"
 create "${MYSQL_DATABASE}" "faf-policy-server" "${MYSQL_POLICY_SERVER_PASSWORD}"
-create "faf-murmur" "faf-murmur" "${MYSQL_MURMUR_PASSWORD}"
 create "${MYSQL_DATABASE}" "faf-java-server" "${MYSQL_JAVA_SERVER_PASSWORD}"
 create "${MYSQL_DATABASE}" "faf-python-server" "${MYSQL_PYTHON_SERVER_PASSWORD}"
 create "faf-softvote" "faf-softvote" "${MYSQL_SOFTVOTE_PASSWORD}"
