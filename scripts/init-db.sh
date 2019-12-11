@@ -54,7 +54,6 @@ create "${MYSQL_DATABASE}" "faf-legacy-updater" "${MYSQL_LEGACY_UPDATER_PASSWORD
 create "${MYSQL_DATABASE}" "faf-policy-server" "${MYSQL_POLICY_SERVER_PASSWORD}"
 create "${MYSQL_DATABASE}" "faf-java-server" "${MYSQL_JAVA_SERVER_PASSWORD}"
 create "${MYSQL_DATABASE}" "faf-python-server" "${MYSQL_PYTHON_SERVER_PASSWORD}"
-create "faf-softvote" "faf-softvote" "${MYSQL_SOFTVOTE_PASSWORD}"
 create "faf-anope" "faf-anope" "${MYSQL_ANOPE_PASSWORD}"
 create "faf-wiki" "faf-wiki" "${MYSQL_WIKI_PASSWORD}"
 create "faf-wordpress" "faf-wordpress" "${MYSQL_WORDPRESS_PASSWORD}"
