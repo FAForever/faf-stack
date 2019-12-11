@@ -450,27 +450,6 @@ services:
         max-file: "${DEFAULT_LOG_FILES}"
 
   #
-  # FAF Mumble server.
-  #
-  faf-murmur:
-    container_name: faf-murmur
-    build: git://github.com/FAForever/murmur#v1.0
-    image: faforever/faf-murmur
-    user: ${FAF_MUMBLE_USER}
-    restart: unless-stopped
-    networks:
-      - faf
-    env_file: ./config/faf-murmur/faf-murmur.env
-    ports:
-      - "64738:64738"
-      - "64738:64738/udp"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
-
-  #
   # The content management system which is still being used as a backend for the website. The website accesses
   # Wordpress over a JSON API plugin.
   #
