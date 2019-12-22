@@ -455,7 +455,7 @@ services:
   #
   faf-wordpress:
     container_name: faf-wordpress
-    image: faforever/nginx-php-fpm:fixed_user
+    image: richarvey/nginx-php-fpm:1.8.2
     user: ${FAF_WORDPRESS_USER}
     restart: unless-stopped
     volumes:
