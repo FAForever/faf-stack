@@ -631,11 +631,8 @@ services:
   #
   faf-unitdb:
     container_name: faf-unitdb
-    image: faforever/faf-unitdb:v1.3
+    image: faforever/faf-unitdb:v1.3.1
     restart: unless-stopped
-    environment:
-    - PUID=${FAF_FS_PUID}
-    - PGID=${FAF_FS_PGID}
     networks:
       - faf
     volumes:
