@@ -23,7 +23,7 @@ services:
   # This service has no user set on purpose. It is based on a scratch docker image that does not even offer a shell.
   #
   faf-traefik:
-    image: traefik:v1.7.12
+    image: traefik:cantal
     env_file: ./config/faf-traefik/faf-traefik.env
     ports:
       - "80:80"
@@ -34,16 +34,19 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
       # Config folder contains 3 files:
-      # traefik.toml - Only general config (change requires restart)
-      # rules.toml   - For setup of dynamic rules (traefik listens for changes)
+      # traefik.yml  - Static configuration (change requires restart)
+      # config.yml   - Dynamic configuration (traefik listens for changes)
       # acme.json    - Make sure to set chmod to 600 (will be populated by traefik)
       - ./config/faf-traefik:/etc/traefik
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=traefik"
-      - "traefik.frontend.rule=Host:traefik.${DOMAINNAME}"
-      - "traefik.port=8080"
-      - "traefik.frontend.auth.basic.users=${TRAEFIK_USERNAME}:${TRAEFIK_PASSWORD}" # password in bcrypt
+      - "traefik.http.routers.faf-traefik.entryPoints=web-secure"
+      - "traefik.http.routers.faf-traefik.rule=Host(`traefik.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-traefik.tls.certresolver=default"
+      - "traefik.http.routers.faf-traefik.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_USERNAME}:${TRAEFIK_PASSWORD}"
+      - "traefik.http.routers.faf-traefik.service=api@internal"
+      - "traefik.http.services.faf-traefik.loadbalancer.server.port=8080" # Dummy port so Docker doesn't complain
     logging:
       driver: "json-file"
       options:

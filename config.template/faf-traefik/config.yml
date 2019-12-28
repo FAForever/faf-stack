@@ -1,0 +1,37 @@
+# Listen to any domain on port 80 and upgrade it to https.
+# Sadly, a router needs a service even if it will go unused
+# So, we create a dummy service
+# This rule has less weight than other rules, so a http-only 
+# service can still be defined elsewhere
+http:
+  routers:
+    redirector:
+      rule: HostRegexp(`{any:.*}`)
+      entryPoints:
+        - "web"
+      service: dummy
+      middlewares:
+        - redirect
+
+  services:
+    dummy:
+      loadBalancer:
+        servers:
+          - url: http://127.0.0.1
+
+  middlewares:
+    redirect:
+      redirectScheme:
+        scheme: https
+
+# Hardened TLS options by default. 
+tls:
+  options:
+    default:
+      sniStrict: true
+      minVersion: VersionTLS12
+      cipherSuites:
+        - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
+        - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        - TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
