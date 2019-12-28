@@ -531,10 +531,12 @@ services:
     env_file: ./config/faf-content/faf-content.env
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=content"
-      - "traefik.frontend.rule=Host:content.${DOMAINNAME},replay.${DOMAINNAME}"
-      - "traefik.frontend.redirect.regex=^(http|https)://replay.${DOMAINNAME}/(.*)"
-      - "traefik.frontend.redirect.replacement=$$1://content.${DOMAINNAME}/faf/vault/replay_vault/replay.php?id=$$2"
+      - "traefik.http.routers.faf-content.rule=Host(`content.${DOMAINNAME}`) || Host(`replay.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-content.entrypoints=web-secure"
+      - "traefik.http.routers.faf-content.tls.certresolver=default"
+      - "traefik.http.routers.faf-content.middlewares=faf-content-regex"
+      - "traefik.http.middlewares.faf-content-regex.redirectregex.regex=^(http|https)://replay.${DOMAINNAME}/(.*)"
+      - "traefik.http.middlewares.faf-content-regex.redirectregex.replacement=$$1://content.${DOMAINNAME}/faf/vault/replay_vault/replay.php?id=$$2"
     logging:
       driver: "json-file"
       options:
