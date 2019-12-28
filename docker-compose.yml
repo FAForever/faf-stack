@@ -654,8 +654,9 @@ services:
     env_file: ./config/faf-unitdb/faf-unitdb.env
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=unitdb"
-      - "traefik.frontend.rule=Host:direct.${DOMAINNAME};PathPrefixStrip:/faf/unitsDB/"
+      - "traefik.http.routers.faf-unitdb.rule=Host(`direct.${DOMAINNAME}`) && PathPrefixStrip(`/faf/unitsDB/`)"
+      - "traefik.http.routers.faf-unitdb.entrypoints=web-secure"
+      - "traefik.http.routers.faf-unitdb.tls.certresolver=default"
     logging:
       driver: "json-file"
       options:
