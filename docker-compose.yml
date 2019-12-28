@@ -562,8 +562,9 @@ services:
     env_file: ./config/faf-wiki/faf-wiki.env
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=wiki"
-      - "traefik.frontend.rule=Host:wiki.${DOMAINNAME}"
+      - "traefik.http.routers.faf-wiki.rule=Host(`wiki.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-wiki.entrypoints=web-secure"
+      - "traefik.http.routers.faf-wiki.tls.certresolver=default"
     logging:
       driver: "json-file"
       options:
