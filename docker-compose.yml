@@ -755,9 +755,10 @@ services:
     env_file: ./config/faf-voting/faf-voting.env
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=voting"
-      - "traefik.port=3000"
-      - "traefik.frontend.rule=Host:voting.${DOMAINNAME}"
+      - "traefik.http.routers.faf-voting.rule=Host(`voting.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-voting.entrypoints=web-secure"
+      - "traefik.http.routers.faf-voting.tls.certresolver=default"
+      - "traefik.http.services.faf-voting.loadbalancer.server.port=3000"
     logging:
       driver: "json-file"
       options:
