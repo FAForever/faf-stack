@@ -262,9 +262,10 @@ services:
       - faf-init-volumes
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=java-api"
-      - "traefik.port=8010"
-      - "traefik.frontend.rule=Host:api.${DOMAINNAME}"
+      - "traefik.http.routers.faf-java-api.rule=Host(`api.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-java-api.entrypoints=web-secure"
+      - "traefik.http.routers.faf-java-api.tls.certresolver=default"
+      - "traefik.http.services.faf-java-api.loadbalancer.server.port=8010"
     # TODO move to Dockerfile
     healthcheck:
       test: "wget -q -O /dev/null http://localhost:8011/manage/health"
