@@ -327,9 +327,10 @@ services:
       retries: 3
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=spring-boot-admin"
-      - "traefik.port=1111"
-      - "traefik.frontend.rule=Host:bootadmin.${DOMAINNAME}"
+      - "traefik.http.routers.faf-spring-boot-admin.rule=Host(`bootadmin.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-spring-boot-admin.entrypoints=web-secure"
+      - "traefik.http.routers.faf-spring-boot-admin.tls.certresolver=default"
+      - "traefik.http.services.faf-spring-boot-admin.loadbalancer.server.port=1111"
     logging:
       driver: "json-file"
       options:
@@ -356,10 +357,12 @@ services:
       - faf-init-volumes
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=prometheus"
-      - "traefik.port=9090"
-      - "traefik.frontend.rule=Host:prometheus.${DOMAINNAME}"
-      - "traefik.frontend.auth.basic.users=${PROMETHEUS_USERNAME}:${PROMETHEUS_PASSWORD}" # password in bcrypt
+      - "traefik.http.routers.faf-prometheus.rule=Host(`prometheus.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-prometheus.entrypoints=web-secure"
+      - "traefik.http.routers.faf-prometheus.tls.certresolver=default"
+      - "traefik.http.routers.faf-prometheus.middlewares=prometheus-auth"
+      - "traefik.http.middlewares.prometheus-auth.basicauth.users=${PROMETHEUS_USERNAME}:${PROMETHEUS_PASSWORD}"
+      - "traefik.http.services.faf-prometheus.loadbalancer.server.port=9090"
     logging:
       driver: "json-file"
       options:
@@ -384,9 +387,10 @@ services:
     env_file: ./config/faf-grafana/faf-grafana.env
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=grafana"
-      - "traefik.port=3000"
-      - "traefik.frontend.rule=Host:grafana.${DOMAINNAME}"
+      - "traefik.http.routers.faf-grafana.rule=Host(`grafana.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-grafana.entrypoints=web-secure"
+      - "traefik.http.routers.faf-grafana.tls.certresolver=default"
+      - "traefik.http.services.faf-grafana.loadbalancer.server.port=3000"
     logging:
       driver: "json-file"
       options:
@@ -475,8 +479,9 @@ services:
     env_file: ./config/faf-wordpress/faf-wordpress.env
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=wordpress"
-      - "traefik.frontend.rule=Host:direct.${DOMAINNAME}"
+      - "traefik.http.routers.faf-wordpress.rule=Host(`direct.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-wordpress.entrypoints=web-secure"
+      - "traefik.http.routers.faf-wordpress.tls.certresolver=default"
     logging:
       driver: "json-file"
       options:
@@ -502,8 +507,9 @@ services:
     env_file: ./config/faf-phpbb3/faf-phpbb3.env
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=phpbb"
-      - "traefik.frontend.rule=Host:forums.${DOMAINNAME}"
+      - "traefik.http.routers.faf-phpbb3.rule=Host(`forums.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-phpbb3.entrypoints=web-secure"
+      - "traefik.http.routers.faf-phpbb3.tls.certresolver=default"
     logging:
       driver: "json-file"
       options:
