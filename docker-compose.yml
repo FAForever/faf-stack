@@ -295,9 +295,10 @@ services:
       - "127.0.0.1:8020:3000" # For internal testing only
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=website"
-      - "traefik.port=3000"
-      - "traefik.frontend.rule=Host:www.${DOMAINNAME},${DOMAINNAME},clans.${DOMAINNAME}"
+      - "traefik.http.routers.faf-website.rule=Host(`www.${DOMAINNAME}`) || Host(`${DOMAINNAME}`) || Host(`clans.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-website.entrypoints=web-secure"
+      - "traefik.http.routers.faf-website.tls.certresolver=default"
+      - "traefik.http.services.faf-website.loadbalancer.server.port=3000"
     logging:
       driver: "json-file"
       options:
