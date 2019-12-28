@@ -732,8 +732,9 @@ services:
       - ./data/faf-mautic/html:/var/www/html
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=mautic"
-      - "traefik.frontend.rule=Host:mautic.${DOMAINNAME}"
+      - "traefik.http.routers.faf-mautic.rule=Host(`mautic.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-mautic.entrypoints=web-secure"
+      - "traefik.http.routers.faf-mautic.tls.certresolver=default"
     logging:
       driver: "json-file"
       options:
