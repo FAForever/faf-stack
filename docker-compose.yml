@@ -774,9 +774,10 @@ services:
           - "faf-replay-api"
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=replay-api"
-      - "traefik.port=13666"
-      - "traefik.frontend.rule=Host:replay-api.${DOMAINNAME}"
+      - "traefik.http.routers.faf-replay-api.rule=Host(`replay-api.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-replay-api.entrypoints=web-secure"
+      - "traefik.http.routers.faf-replay-api.tls.certresolver=default"
+      - "traefik.http.services.faf-replay-api.loadbalancer.server.port=13666"
     logging:
       driver: "json-file"
       options:
