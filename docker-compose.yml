@@ -688,9 +688,10 @@ services:
       - ./config/faf-postal/config:/opt/postal/config
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=postal"
-      - "traefik.port=5000"
-      - "traefik.frontend.rule=Host:postal.${DOMAINNAME}"
+      - "traefik.http.routers.faf-postal.rule=Host(`postal.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-postal.entrypoints=web-secure"
+      - "traefik.http.routers.faf-postal.tls.certresolver=default"
+      - "traefik.http.services.faf-postal.loadbalancer.server.port=5000"
     logging:
       driver: "json-file"
       options:
