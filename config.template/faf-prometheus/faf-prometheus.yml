@@ -4,6 +4,12 @@ global:
     monitor: 'faforever'
 
 scrape_configs:
+  - job_name: 'faf-traefik'
+    static_configs:
+      - targets: ['faf-traefik:8080']
+        labels:
+          alias: faf-main
+
   - job_name: 'faf-java-api'
     scrape_interval: 5s
     metrics_path: '/actuator/prometheus'

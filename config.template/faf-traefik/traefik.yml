@@ -28,3 +28,7 @@ certificatesResolvers:
       storage: /etc/traefik/acme.json
       httpChallenge:
         entryPoint: web
+
+# Observability
+metrics:
+  prometheus: {}
