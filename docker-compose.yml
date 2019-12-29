@@ -263,7 +263,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-java-api.rule=Host(`api.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-java-api.entrypoints=web-secure"
+      - "traefik.http.routers.faf-java-api.entryPoints=web-secure"
       - "traefik.http.routers.faf-java-api.tls.certresolver=default"
       - "traefik.http.services.faf-java-api.loadbalancer.server.port=8010"
     # TODO move to Dockerfile
@@ -296,7 +296,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-website.rule=Host(`www.${DOMAINNAME}`) || Host(`${DOMAINNAME}`) || Host(`clans.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-website.entrypoints=web-secure"
+      - "traefik.http.routers.faf-website.entryPoints=web-secure"
       - "traefik.http.routers.faf-website.tls.certresolver=default"
       - "traefik.http.services.faf-website.loadbalancer.server.port=3000"
     logging:
@@ -328,7 +328,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-spring-boot-admin.rule=Host(`bootadmin.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-spring-boot-admin.entrypoints=web-secure"
+      - "traefik.http.routers.faf-spring-boot-admin.entryPoints=web-secure"
       - "traefik.http.routers.faf-spring-boot-admin.tls.certresolver=default"
       - "traefik.http.services.faf-spring-boot-admin.loadbalancer.server.port=1111"
     logging:
@@ -358,7 +358,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-prometheus.rule=Host(`prometheus.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-prometheus.entrypoints=web-secure"
+      - "traefik.http.routers.faf-prometheus.entryPoints=web-secure"
       - "traefik.http.routers.faf-prometheus.tls.certresolver=default"
       - "traefik.http.routers.faf-prometheus.middlewares=prometheus-auth"
       - "traefik.http.middlewares.prometheus-auth.basicauth.users=${PROMETHEUS_USERNAME}:${PROMETHEUS_PASSWORD}"
@@ -388,7 +388,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-grafana.rule=Host(`grafana.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-grafana.entrypoints=web-secure"
+      - "traefik.http.routers.faf-grafana.entryPoints=web-secure"
       - "traefik.http.routers.faf-grafana.tls.certresolver=default"
       - "traefik.http.services.faf-grafana.loadbalancer.server.port=3000"
     logging:
@@ -480,7 +480,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-wordpress.rule=Host(`direct.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-wordpress.entrypoints=web-secure"
+      - "traefik.http.routers.faf-wordpress.entryPoints=web-secure"
       - "traefik.http.routers.faf-wordpress.tls.certresolver=default"
     logging:
       driver: "json-file"
@@ -508,7 +508,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-phpbb3.rule=Host(`forums.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-phpbb3.entrypoints=web-secure"
+      - "traefik.http.routers.faf-phpbb3.entryPoints=web-secure"
       - "traefik.http.routers.faf-phpbb3.tls.certresolver=default"
     logging:
       driver: "json-file"
@@ -534,7 +534,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-content.rule=Host(`content.${DOMAINNAME}`) || Host(`replay.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-content.entrypoints=web-secure"
+      - "traefik.http.routers.faf-content.entryPoints=web-secure"
       - "traefik.http.routers.faf-content.tls.certresolver=default"
       - "traefik.http.routers.faf-content.middlewares=faf-content-regex"
       - "traefik.http.middlewares.faf-content-regex.redirectregex.regex=^(http|https)://replay.${DOMAINNAME}/(.*)"
@@ -563,7 +563,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-wiki.rule=Host(`wiki.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-wiki.entrypoints=web-secure"
+      - "traefik.http.routers.faf-wiki.entryPoints=web-secure"
       - "traefik.http.routers.faf-wiki.tls.certresolver=default"
     logging:
       driver: "json-file"
@@ -658,7 +658,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-unitdb.rule=Host(`direct.${DOMAINNAME}`) && PathPrefix(`/faf/unitsDB/`)"
-      - "traefik.http.routers.faf-unitdb.entrypoints=web-secure"
+      - "traefik.http.routers.faf-unitdb.entryPoints=web-secure"
       - "traefik.http.routers.faf-unitdb.tls.certresolver=default"
       - "traefik.http.routers.faf-unitdb.middlewares=unitdb-stripprefix"
       - "traefik.http.middlewares.unitdb-stripprefix.stripprefix.prefixes=/faf/unitsDB/"
@@ -689,7 +689,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-postal.rule=Host(`postal.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-postal.entrypoints=web-secure"
+      - "traefik.http.routers.faf-postal.entryPoints=web-secure"
       - "traefik.http.routers.faf-postal.tls.certresolver=default"
       - "traefik.http.services.faf-postal.loadbalancer.server.port=5000"
     logging:
@@ -736,7 +736,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-mautic.rule=Host(`mautic.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-mautic.entrypoints=web-secure"
+      - "traefik.http.routers.faf-mautic.entryPoints=web-secure"
       - "traefik.http.routers.faf-mautic.tls.certresolver=default"
     logging:
       driver: "json-file"
@@ -756,7 +756,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-voting.rule=Host(`voting.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-voting.entrypoints=web-secure"
+      - "traefik.http.routers.faf-voting.entryPoints=web-secure"
       - "traefik.http.routers.faf-voting.tls.certresolver=default"
       - "traefik.http.services.faf-voting.loadbalancer.server.port=3000"
     logging:
@@ -778,7 +778,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-replay-api.rule=Host(`replay-api.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-replay-api.entrypoints=web-secure"
+      - "traefik.http.routers.faf-replay-api.entryPoints=web-secure"
       - "traefik.http.routers.faf-replay-api.tls.certresolver=default"
       - "traefik.http.services.faf-replay-api.loadbalancer.server.port=13666"
     logging:
