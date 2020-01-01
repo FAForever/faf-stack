@@ -537,7 +537,7 @@ services:
   #
   faf-wiki:
     container_name: faf-wiki
-    image: faforever/nginx-php-fpm:fixed_user
+    image: richarvey/nginx-php-fpm:1.8.2
     user: ${FAF_WIKI_USER}
     restart: unless-stopped
     networks:
