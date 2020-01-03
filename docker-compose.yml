@@ -393,7 +393,6 @@ services:
   #
   faf-unrealircd:
     container_name: faf-unrealircd
-    build: git://github.com/FAForever/docker-unrealircd#faf
     image: faforever/faf-unrealircd:v1.2
     user: ${FAF_UNREALIRCD_USER}
     restart: unless-stopped
@@ -562,7 +561,6 @@ services:
   #
   faf-legacy-updater:
     container_name: faf-legacy-updater
-    build: git://github.com/FAForever/legacy-updater.git#v1.0
     image: faforever/faf-legacy-updater
     user: ${FAF_LEGACY_UPDATER_USER}
     restart: unless-stopped
