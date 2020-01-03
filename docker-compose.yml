@@ -25,12 +25,7 @@ services:
   faf-traefik:
     image: traefik:cantal
     env_file: ./config/faf-traefik/faf-traefik.env
-    ports:
-      - "80:80"
-      - "443:443"
-    networks:
-      - outside
-      - faf
+    network_mode: host
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
       # Config folder contains 3 files:
@@ -829,6 +824,4 @@ services:
 networks:
   faf:
     driver: bridge
-  outside:
-    external:
-      name: "outside"
+
