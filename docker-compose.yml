@@ -454,12 +454,11 @@ services:
   #
   faf-wordpress:
     container_name: faf-wordpress
-    image: richarvey/nginx-php-fpm:1.8.2
+    image: wordpress
     user: ${FAF_WORDPRESS_USER}
     restart: unless-stopped
     volumes:
-      - ./data/faf-wordpress:/usr/share/nginx/html
-      - ./config/faf-wordpress/faf-wordpress.conf:/var/www/html/conf/nginx/nginx-site.conf
+      - ./data/faf-wordpress/wp-content:/var/www/html/wp-content/:rw
     networks:
       faf:
         aliases:
