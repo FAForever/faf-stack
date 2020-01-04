@@ -23,7 +23,7 @@ services:
   # This service has no user set on purpose. It is based on a scratch docker image that does not even offer a shell.
   #
   faf-traefik:
-    image: traefik:cantal
+    image: traefik:v2.1.1
     env_file: ./config/faf-traefik/faf-traefik.env
     network_mode: host
     volumes:
