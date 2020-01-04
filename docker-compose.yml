@@ -475,6 +475,8 @@ services:
       - "traefik.http.routers.faf-wordpress.rule=Host(`direct.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-wordpress.entryPoints=web-secure"
       - "traefik.http.routers.faf-wordpress.tls.certresolver=default"
+      - "traefik.http.routers.faf-wordpress-http.rule=Host(`direct.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-wordpress-http.entryPoints=web"
     logging:
       driver: "json-file"
       options:
