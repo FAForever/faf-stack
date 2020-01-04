@@ -545,15 +545,14 @@ services:
   #
   faf-wiki:
     container_name: faf-wiki
-    image: richarvey/nginx-php-fpm:1.8.2
+    image: mediawiki
     user: ${FAF_WIKI_USER}
     restart: unless-stopped
     networks:
       - faf
     volumes:
-      - ./data/faf-wiki:/usr/share/nginx/html
-    depends_on:
-      - faf-init-volumes
+      - ./data/faf-wiki/images:/var/www/html/images
+      - ./data/faf-wiki/LocalSettings.php:/var/www/html/LocalSettings.php
     env_file: ./config/faf-wiki/faf-wiki.env
     labels:
       - "traefik.enable=true"
