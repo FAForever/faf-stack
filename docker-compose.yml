@@ -545,7 +545,7 @@ services:
   #
   faf-wiki:
     container_name: faf-wiki
-    image: mediawiki
+    image: mediawiki:lts
     user: ${FAF_WIKI_USER}
     restart: unless-stopped
     networks:
