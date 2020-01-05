@@ -651,10 +651,13 @@ services:
     env_file: ./config/faf-unitdb/faf-unitdb.env
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.faf-unitdb.rule=Host(`direct.${DOMAINNAME}`) && PathPrefix(`/faf/unitsDB/`)"
+      - "traefik.http.routers.faf-unitdb.rule=Host(`unitdb.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-unitdb.entryPoints=web-secure"
       - "traefik.http.routers.faf-unitdb.tls.certresolver=default"
-      - "traefik.http.routers.faf-unitdb.middlewares=unitdb-stripprefix"
+      - "traefik.http.routers.faf-unitdb-2.rule=Host(`direct.${DOMAINNAME}`) && PathPrefix(`/faf/unitsDB/`)"
+      - "traefik.http.routers.faf-unitdb-2.entryPoints=web-secure"
+      - "traefik.http.routers.faf-unitdb-2.tls.certresolver=default"
+      - "traefik.http.routers.faf-unitdb-2.middlewares=unitdb-stripprefix"
       - "traefik.http.middlewares.unitdb-stripprefix.stripprefix.prefixes=/faf/unitsDB/"
     logging:
       driver: "json-file"
