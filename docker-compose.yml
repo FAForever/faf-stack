@@ -699,8 +699,9 @@ services:
   # Advanced Message Queuing Protocol (AMQP).
   #
   faf-rabbitmq:
-    image: faforever/faf-rabbitmq:1.0
+    image: rabbitmq:3.8.2-management-alpine
     container_name: faf-rabbitmq
+    hostname: rabbitmq.${DOMAINNAME}
     env_file: ./config/faf-rabbitmq/faf-rabbitmq.env
     user: ${FAF_RABBITMQ_USER}
     restart: unless-stopped
@@ -708,6 +709,14 @@ services:
       faf:
         aliases:
           - "faf-rabbitmq"
+    volumes:
+      - ./data/faf-rabbitmq:/var/lib/rabbitmq
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.faf-rabbitmq.rule=Host(`rabbitmq.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-rabbitmq.entryPoints=web-secure"
+      - "traefik.http.routers.faf-rabbitmq.tls.certresolver=default"
+      - "traefik.http.services.faf-rabbitmq.loadbalancer.server.port=15672"
     logging:
       driver: "json-file"
       options:
