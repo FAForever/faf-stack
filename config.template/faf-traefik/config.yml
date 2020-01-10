@@ -23,6 +23,8 @@ http:
     redirect:
       redirectScheme:
         scheme: https
+    test-compress:
+      compress: {}
 
 # Hardened TLS options by default. 
 tls:
