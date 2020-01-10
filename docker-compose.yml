@@ -293,6 +293,7 @@ services:
       - "traefik.http.routers.faf-website.rule=Host(`www.${DOMAINNAME}`) || Host(`${DOMAINNAME}`) || Host(`clans.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-website.entryPoints=web-secure"
       - "traefik.http.routers.faf-website.tls.certresolver=default"
+      - "traefik.http.routers.faf-website.middlewares=test-compress@file"
       - "traefik.http.services.faf-website.loadbalancer.server.port=3000"
     logging:
       driver: "json-file"
