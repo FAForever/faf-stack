@@ -180,13 +180,6 @@ services:
         hard: 200000
     ports:
       - "8001:8001" # Server
-      - "6112:6112/udp" # STUN
-      - "30351:30351/udp" # STUN
-      - "7:7/udp" # STUN
-      - "194:194/udp" # STUN
-      - "3535:3535/udp" # STUN
-      - "53:53/udp" # STUN
-      - "67:67/udp" # STUN
       - "4000:4000" # Control server
     depends_on:
       - faf-init-volumes
