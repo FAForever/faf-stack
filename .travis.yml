@@ -11,38 +11,13 @@ before_install:
   - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   - sudo apt-get update
   - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
-  - sudo curl -L https://github.com/docker/compose/releases/download/1.24.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+  - sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
   - sudo chmod +x /usr/local/bin/docker-compose
   - sudo apt-get -y install gridsite-clients
   - docker-compose version
 
 install:
-  - cp -r config.template config
-  - cp .env.template .env
-  # download test data from corresponding db-repository tag
-  - wget https://raw.githubusercontent.com/FAForever/db/`grep -oP 'faforever/faf-db-migrations:\K(.*)$' ./docker-compose.yml`/test-data.sql
+  - chmod +x ./ci/build.sh
 
 script:
-  # prepare services under test
-  - scripts/init-db.sh
-  - docker-compose up -d faf-traefik faf-java-api
-  - |
-    echo -n "Waiting for faf-java-api "
-    while ! curl -s --max-time 1 http://localhost:8010 &> /dev/null
-    do
-      echo -n "."
-      sleep 1
-    done
-  - docker-compose up -d faf-website
-  - |
-    echo "Waiting for faf-website "
-    while ! curl -s --max-time 1 http://localhost:8020 &> /dev/null
-    do
-      echo -n "."
-      sleep 1
-    done
-
-  # insert test data
-  - docker exec -i faf-db mysql -uroot -pbanana faf < test-data.sql
-  # run test collection
-  - docker run --network="host" -t postman/newman:alpine run "https://raw.githubusercontent.com/FAForever/faf-stack/$(urlencode "$TRAVIS_BRANCH")/tests/postman-collection.json"
+  - ./ci/build.sh
