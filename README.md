@@ -35,8 +35,10 @@ consistent naming.
 
 ### Prerequisites
 
-* [Docker](https://github.com/docker/docker/releases) 17.09.0-ce or newer (or [Docker Toolbox](https://github.com/docker/toolbox/releases))
-* [Docker Compose](https://github.com/docker/compose/releases) v1.16.1 or newer
+* [Docker](https://github.com/docker/docker/releases) 19.03.5-ce or newer (or [Docker Toolbox](https://github.com/docker/toolbox/releases))
+* [Docker Compose](https://github.com/docker/compose/releases) v1.24.1 or newer
+
+(It might work with older versions but is not tested on these.)
 
 ### Copy configuration template files
 
