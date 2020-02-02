@@ -696,6 +696,8 @@ services:
     image: rabbitmq:3.8.2-management-alpine
     container_name: faf-rabbitmq
     hostname: rabbitmq.${DOMAINNAME}
+    expose:
+      - 15692
     env_file: ./config/faf-rabbitmq/faf-rabbitmq.env
     user: ${FAF_RABBITMQ_USER}
     restart: unless-stopped
@@ -704,6 +706,7 @@ services:
         aliases:
           - "faf-rabbitmq"
     volumes:
+      - ./config/faf-rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins
       - ./data/faf-rabbitmq:/var/lib/rabbitmq
     labels:
       - "traefik.enable=true"
