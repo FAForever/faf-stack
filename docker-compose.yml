@@ -300,7 +300,7 @@ services:
   #
   faf-spring-boot-admin:
     container_name: faf-spring-boot-admin
-    image: slydeveloper/spring-boot-admin:1.0
+    image: slydeveloper/spring-boot-admin:1.1
     user: ${FAF_SPRING_BOOT_ADMIN_USER}
     restart: unless-stopped
     env_file: ./config/faf-spring-boot-admin/faf-spring-boot-admin.env
