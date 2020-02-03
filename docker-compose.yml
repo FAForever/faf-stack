@@ -697,7 +697,7 @@ services:
     container_name: faf-rabbitmq
     hostname: rabbitmq.${DOMAINNAME}
     expose:
-      - 15692
+      - "15692"
     env_file: ./config/faf-rabbitmq/faf-rabbitmq.env
     user: ${FAF_RABBITMQ_USER}
     restart: unless-stopped
@@ -796,7 +796,7 @@ services:
     restart: unless-stopped
     container_name: faf-node-exporter
     expose:
-      - 9100
+      - "9100"
     networks:
       faf:
         aliases:
@@ -822,7 +822,7 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
     expose:
-      - 8080
+      - "8080"
     logging:
       driver: "json-file"
       options:
