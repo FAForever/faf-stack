@@ -483,7 +483,7 @@ services:
   #
   faf-phpbb3:
     container_name: faf-phpbb3
-    image: faforever/nginx-php-fpm:fixed_user
+    image: richarvey/nginx-php-fpm:php5
     user: ${FAF_PHPBB3_USER}
     restart: unless-stopped
     volumes:
