@@ -48,7 +48,7 @@ consistent naming.
 
 ### Recreate security keys (for production systems)
 
-In folder `config/faf-java-api/pki` replace `private.key` and `public.key` with new keys generated with ssh-keygen.
+In folder `config/faf-java-api/pki` replace `private.key` and `public.key` with new keys generated with `ssh-keygen -m pem`. The secret key needs to be in rsa format and the public key in ssh-rsa format (see config.template for examples).
 
 Hint: Some linux distros generate 3072 bit RSA keys by default (e.g. Arch). 3072 bit is not supported. Please use 2048 bit or 4096 bit key length.  
 
