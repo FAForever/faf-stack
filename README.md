@@ -45,6 +45,14 @@ consistent naming.
     cp -R config.template config
     cp .env.template .env
 
+
+### Recreate security keys (for production systems)
+
+In folder `config/faf-java-api/pki` replace `private.key` and `public.key` with new keys generated with ssh-keygen.
+
+Hint: Some linux distros generate 3072 bit RSA keys by default (e.g. Arch). 3072 bit is not supported. Please use 2048 bit or 4096 bit key length.  
+
+
 ### Initialize core database
 
     scripts/init-db.sh
