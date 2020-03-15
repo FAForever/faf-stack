@@ -20,8 +20,6 @@ services:
   # Listens for changes on docker containers and adds them if matching labels are found
   # Runs in dashboard mode, secured by basic http auth
   #
-  # This service has no user set on purpose. It is based on a scratch docker image that does not even offer a shell.
-  #
   faf-traefik:
     image: traefik:v2.1.1
     env_file: ./config/faf-traefik/faf-traefik.env
@@ -57,10 +55,7 @@ services:
     container_name: faf-coturn
     image: faforever/coturn-lt-cred
     env_file: ./config/faf-coturn/faf-coturn.env
-    network_mode: "host"
-    ports:
-      - "3478:3478"
-      - "3478:3478/udp"
+    network_mode: host
     logging:
       driver: "json-file"
       options:
