@@ -26,6 +26,14 @@ scrape_configs:
         labels:
           group: faf-main
 
+  - job_name: 'faf-python-server'
+    scrape_interval: 5s
+    metrics_path: '/'
+    static_configs:
+      - targets: ['faf-aio-replayserver:8011']
+        labels:
+          group: faf-main
+
   - job_name: 'faf-aio-replayserver'
     scrape_interval: 5s
     metrics_path: '/'
