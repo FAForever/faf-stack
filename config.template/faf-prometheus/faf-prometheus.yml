@@ -30,7 +30,7 @@ scrape_configs:
     scrape_interval: 5s
     metrics_path: '/'
     static_configs:
-      - targets: ['faf-aio-replayserver:8011']
+      - targets: ['faf-python-server:8011']
         labels:
           group: faf-main
 
