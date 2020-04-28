@@ -11,7 +11,7 @@ source "$DB_CONFIG_FILE"
 # Ladder1v1 leaderboard
 echo "Processing inactive users for ladder1v1 leaderboard"
 
-docker exec -i faf-db mysql -D "${MYSQL_DATABASE}" <<SQL_SCRIPT
+docker exec -u root -i faf-db mysql -D "${MYSQL_DATABASE}" <<SQL_SCRIPT
   CREATE TEMPORARY TABLE active_players AS
       (
           SELECT DISTINCT gps.playerId
@@ -33,7 +33,7 @@ SQL_SCRIPT
 # Global leaderboard
 echo "Processing inactive users for global leaderboard"
 
-docker exec -i faf-db mysql -D "${MYSQL_DATABASE}" <<SQL_SCRIPT
+docker exec -u root -i faf-db mysql -D "${MYSQL_DATABASE}" <<SQL_SCRIPT
   CREATE TEMPORARY TABLE active_players AS
       (
           SELECT DISTINCT gps.playerId
