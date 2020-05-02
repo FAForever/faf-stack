@@ -79,7 +79,7 @@ services:
         - "127.0.0.1:3306:3306"
     volumes:
       - ./config/faf-db/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld-custom.cnf
-      - ./config/faf-db/mysql.cnf:/root/.my.cnf
+      - ./config/faf-db/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
       - ./data/faf-db:/var/lib/mysql
     depends_on:
       - faf-init-volumes
