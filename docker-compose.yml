@@ -53,7 +53,7 @@ services:
   #
   faf-coturn:
     container_name: faf-coturn
-    image: faforever/coturn-lt-cred
+    image: faforever/coturn-lt-cred:v1.1
     env_file: ./config/faf-coturn/faf-coturn.env
     network_mode: host
     logging:
