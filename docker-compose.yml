@@ -21,7 +21,7 @@ services:
   # Runs in dashboard mode, secured by basic http auth
   #
   faf-traefik:
-    image: traefik:v2.2.0
+    image: traefik:v2.2.1
     env_file: ./config/faf-traefik/faf-traefik.env
     network_mode: host
     volumes:
@@ -53,7 +53,7 @@ services:
   #
   faf-coturn:
     container_name: faf-coturn
-    image: faforever/coturn-lt-cred
+    image: faforever/coturn-lt-cred:v1.1
     env_file: ./config/faf-coturn/faf-coturn.env
     network_mode: host
     logging:
@@ -268,7 +268,7 @@ services:
   #
   faf-website:
     container_name: faf-website
-    image: faforever/faf-website:v1.7.11
+    image: faforever/faf-website:v1.7.12
     user: ${FAF_WEBSITE_USER}
     restart: unless-stopped
     env_file: ./config/faf-website/faf-website.env
@@ -588,7 +588,7 @@ services:
   #
   faf-aio-replayserver:
     container_name: faf-aio-replayserver
-    image: faforever/faf-aio-replayserver:1.0.7
+    image: faforever/faf-aio-replayserver:1.0.8
     user: ${FAF_AIO_REPLAYSERVER_USER}
     restart: unless-stopped
     volumes:
