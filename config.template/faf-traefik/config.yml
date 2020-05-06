@@ -9,16 +9,11 @@ http:
       rule: HostRegexp(`{any:.*}`)
       entryPoints:
         - "web"
-      service: dummy
+        - "web-secure"
+      service: noop@internal
       middlewares:
         - redirect
-
-  services:
-    dummy:
-      loadBalancer:
-        servers:
-          - url: http://127.0.0.1
-
+        
   middlewares:
     redirect:
       redirectScheme:
