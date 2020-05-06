@@ -26,8 +26,7 @@ certificatesResolvers:
     acme:
       email: admin@localhost.com
       storage: /etc/traefik/acme.json
-      httpChallenge:
-        entryPoint: web
+      tlsChallenge: {}
 
 # Observability
 metrics:
