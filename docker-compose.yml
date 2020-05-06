@@ -510,11 +510,10 @@ services:
   #
   faf-content:
     container_name: faf-content
-    image: faforever/nginx-php-fpm:fixed_user
-    user: ${FAF_CONTENT_USER}
+    image: php:5.6-apache
     restart: unless-stopped
     volumes:
-      - ./data/content:/usr/share/nginx/html
+      - ./data/content:/var/www/html
     networks:
       - faf
     depends_on:
