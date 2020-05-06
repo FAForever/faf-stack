@@ -336,6 +336,8 @@ services:
       faf:
         aliases:
           - "faf-prometheus"
+    extra_hosts:
+      - "dockerhost:${HOST_IP}"
     volumes:
       - ./config/faf-prometheus/faf-prometheus.yml:/etc/prometheus/prometheus.yml
       - ./data/faf-prometheus:/prometheus
