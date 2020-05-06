@@ -1,6 +1,4 @@
-# Listen to any domain on port 80 and upgrade it to https.
-# Sadly, a router needs a service even if it will go unused
-# So, we create a dummy service
+# Listen to HTTP requests with any domain and upgrade them to https.
 # This rule has less weight than other rules, so a http-only 
 # service can still be defined elsewhere
 http:
@@ -13,7 +11,7 @@ http:
       service: noop@internal
       middlewares:
         - redirect
-        
+
   middlewares:
     redirect:
       redirectScheme:
