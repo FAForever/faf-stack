@@ -47,7 +47,6 @@
 							"listen": "test",
 							"script": {
 								"id": "5b42d51e-5a51-4785-a3d1-cd5e8a461e2f",
-								"type": "text/javascript",
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {",
 									"    pm.response.to.have.status(200);",
@@ -56,7 +55,8 @@
 									"pm.test(\"Body matches string\", function () {",
 									"    pm.expect(pm.response.text()).to.include(\"The entered username is already in use: test\");",
 									"});"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -79,16 +79,6 @@
 								{
 									"key": "email",
 									"value": "test@test.test",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "123456",
-									"type": "text"
-								},
-								{
-									"key": "password_confirm",
-									"value": "123456",
 									"type": "text"
 								},
 								{
@@ -129,7 +119,7 @@
 									"});",
 									"",
 									"pm.test(\"Body matches string\", function () {",
-									"    pm.expect(pm.response.text()).to.include(\"You have activated your account successfully!\");",
+									"    pm.expect(pm.response.text()).to.include(\"Your account was created successfully\");",
 									"});"
 								],
 								"type": "text/javascript"
@@ -137,23 +127,42 @@
 						}
 					],
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
 								"value": "application/x-www-form-urlencoded"
 							}
 						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "password",
+									"value": "new_password",
+									"type": "text"
+								},
+								{
+									"key": "password_confirm",
+									"value": "new_password",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
-							"raw": "{{api-url}}/users/activate?token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJsaWZldGltZSI6IjIwNTAtMTItMzFUMTk6MzY6MTguMjIzWiIsImFjdGlvbiI6IlJFR0lTVFJBVElPTiIsInBhc3N3b3JkIjoiOGQ5NjllZWY2ZWNhZDNjMjlhM2E2MjkyODBlNjg2Y2YwYzNmNWQ1YTg2YWZmM2NhMTIwMjBjOTIzYWRjNmM5MiIsImVtYWlsIjoibmV3QHVzZXIuZW1haWwiLCJ1c2VybmFtZSI6Im5ld191c2VyIn0.A0Ue-8XfE6xVwvzi6rgtg1wV7RmScXF-7XBEJ8ofbpgviPs6FvEBPh9pxTBsYB1VHRLgMi443N3UKBBUzz50xLo00-uelWbaVgZuVsF6hQECfI5nLh1DdePmHLNUmwISkymAn6tPq-4TYsCJGOG4Ofg_gAV-AKrKPKTpONU3XlcksYXQgXu24hAislShGdTM_jVmBSW3e2g9Ca1x24j1sYsGqLyOzfd-U3bzYee3QvQIDpyAycJZCC-e2Zj020SZ_cyWK7WvEVXb5KGzIl0x9tor134Tsw_0aTBqeAcjDtKydnxDCLV0EYBpbN_yGWBlXIuxfF3ivutDGWfrwqOH-g",
+							"raw": "{{website-url}}/account/activate?username=new_user&token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJsaWZldGltZSI6IjIwNTAtMTItMzFUMTk6MzY6MTguMjIzWiIsImFjdGlvbiI6IlJFR0lTVFJBVElPTiIsInBhc3N3b3JkIjoiOGQ5NjllZWY2ZWNhZDNjMjlhM2E2MjkyODBlNjg2Y2YwYzNmNWQ1YTg2YWZmM2NhMTIwMjBjOTIzYWRjNmM5MiIsImVtYWlsIjoibmV3QHVzZXIuZW1haWwiLCJ1c2VybmFtZSI6Im5ld191c2VyIn0.A0Ue-8XfE6xVwvzi6rgtg1wV7RmScXF-7XBEJ8ofbpgviPs6FvEBPh9pxTBsYB1VHRLgMi443N3UKBBUzz50xLo00-uelWbaVgZuVsF6hQECfI5nLh1DdePmHLNUmwISkymAn6tPq-4TYsCJGOG4Ofg_gAV-AKrKPKTpONU3XlcksYXQgXu24hAislShGdTM_jVmBSW3e2g9Ca1x24j1sYsGqLyOzfd-U3bzYee3QvQIDpyAycJZCC-e2Zj020SZ_cyWK7WvEVXb5KGzIl0x9tor134Tsw_0aTBqeAcjDtKydnxDCLV0EYBpbN_yGWBlXIuxfF3ivutDGWfrwqOH-g",
 							"host": [
-								"{{api-url}}"
+								"{{website-url}}"
 							],
 							"path": [
-								"users",
+								"account",
 								"activate"
 							],
 							"query": [
+								{
+									"key": "username",
+									"value": "new_user"
+								},
 								{
 									"key": "token",
 									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJsaWZldGltZSI6IjIwNTAtMTItMzFUMTk6MzY6MTguMjIzWiIsImFjdGlvbiI6IlJFR0lTVFJBVElPTiIsInBhc3N3b3JkIjoiOGQ5NjllZWY2ZWNhZDNjMjlhM2E2MjkyODBlNjg2Y2YwYzNmNWQ1YTg2YWZmM2NhMTIwMjBjOTIzYWRjNmM5MiIsImVtYWlsIjoibmV3QHVzZXIuZW1haWwiLCJ1c2VybmFtZSI6Im5ld191c2VyIn0.A0Ue-8XfE6xVwvzi6rgtg1wV7RmScXF-7XBEJ8ofbpgviPs6FvEBPh9pxTBsYB1VHRLgMi443N3UKBBUzz50xLo00-uelWbaVgZuVsF6hQECfI5nLh1DdePmHLNUmwISkymAn6tPq-4TYsCJGOG4Ofg_gAV-AKrKPKTpONU3XlcksYXQgXu24hAislShGdTM_jVmBSW3e2g9Ca1x24j1sYsGqLyOzfd-U3bzYee3QvQIDpyAycJZCC-e2Zj020SZ_cyWK7WvEVXb5KGzIl0x9tor134Tsw_0aTBqeAcjDtKydnxDCLV0EYBpbN_yGWBlXIuxfF3ivutDGWfrwqOH-g"
