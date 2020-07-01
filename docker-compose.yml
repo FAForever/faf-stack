@@ -138,7 +138,7 @@ services:
   #
   faf-python-server:
     container_name: faf-python-server
-    image: faforever/faf-python-server:v1.4.1
+    image: faforever/faf-python-server:v1.4.3
     user: ${FAF_PYTHON_SERVER_USER}
     networks:
       faf:
@@ -147,7 +147,7 @@ services:
     restart: unless-stopped
     env_file: ./config/faf-python-server/faf-python-server.env
     volumes:
-      - ./config/faf-python-server/faf-server.pem:/code/faf-server.pem
+      - ./config/faf-python-server/dynamic:/code/config
     ulimits:
       nproc: 65535
       nofile:
@@ -859,4 +859,3 @@ services:
 networks:
   faf:
     driver: bridge
-
