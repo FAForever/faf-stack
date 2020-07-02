@@ -308,7 +308,7 @@ services:
   #
   faf-prometheus:
     container_name: faf-prometheus
-    image: prom/prometheus:v2.11.1
+    image: prom/prometheus:v2.19.2
     user: ${FAF_PROMETHEUS_USER}
     restart: unless-stopped
     env_file: ./config/faf-prometheus/faf-prometheus.env
