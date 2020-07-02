@@ -117,7 +117,7 @@ services:
   #
   faf-mysql-exporter:
     container_name: faf-mysql-exporter
-    image: prom/mysqld-exporter:v0.10.0
+    image: prom/mysqld-exporter:v0.12.1
     networks:
       faf:
         aliases:
