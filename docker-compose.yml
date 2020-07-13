@@ -104,8 +104,6 @@ services:
       - faf
     restart: "no"
     env_file: ./config/faf-db-migrations/faf-db-migrations.env
-    depends_on:
-      - faf-db
     logging:
       driver: "json-file"
       options:
