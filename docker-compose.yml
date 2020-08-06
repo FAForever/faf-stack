@@ -808,7 +808,7 @@ services:
 
   faf-mongodb:
     container_name: faf-mongodb
-    image: mongo:4.2.3
+    image: mongo:4.2.8
     user: ${FAF_MONGODB_USER}
     restart: unless-stopped
     networks:
@@ -829,7 +829,7 @@ services:
   faf-nodebb:
     # for instructions how to initialize the setup check the readme in the config.template/faf-nodebb
     container_name: faf-nodebb
-    image: nodebb/docker:v1.13.3
+    image: nodebb/docker:v1.14.2
     user: ${FAF_NODEBB_USER}
     restart: unless-stopped
     env_file: ./config/faf-nodebb/faf-nodebb.env
