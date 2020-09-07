@@ -805,6 +805,45 @@ services:
       - "traefik.http.routers.faf-nodebb.entryPoints=web-secure"
       - "traefik.http.routers.faf-nodebb.middlewares=test-compress@file"
       - "traefik.http.routers.faf-nodebb.tls.certresolver=default"
+
+  #
+  # FAF League Service
+  #
+  faf-league-service:
+    container_name: faf-league-service
+    image: cleborys/faf-league-service
+    user: ${FAF_LEAGUE_SERVICE_USER}
+    networks:
+      faf:
+        aliases:
+          - "faf-league-service"
+    restart: unless-stopped
+    env_file: ./config/faf-league-service/faf-league-service.env
+    depends_on:
+      - faf-init-volumes
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "${DEFAULT_LOG_SIZE}"
+        max-file: "${HIGH_PRIO_LOG_FILES}"
+
+  #
+  # FAF League Service MySQL database migrations
+  #
+  faf-league-db-migrations:
+    container_name: faf-league-db-migrations
+    image: cleborys/faf-league-db
+    user: ${FAF_LEAGUE_DB_USER}
+    networks:
+      - faf
+    restart: "no"
+    env_file: ./config/faf-league-db-migrations/faf-league-db-migrations.env
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "${DEFAULT_LOG_SIZE}"
+        max-file: "${DEFAULT_LOG_FILES}"
+
 networks:
   faf:
     driver: bridge
