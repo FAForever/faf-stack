@@ -488,10 +488,10 @@ services:
   #
   faf-content:
     container_name: faf-content
-    image: php:5.6-apache
+    image: nginx:1.19
     restart: unless-stopped
     volumes:
-      - ./data/content:/var/www/html
+      - ./data/content:/usr/share/nginx/html
     networks:
       - faf
     depends_on:
