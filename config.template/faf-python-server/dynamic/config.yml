@@ -6,6 +6,13 @@ DB_LOGIN: "faf-python-server"
 DB_PASSWORD: "banana"
 DB_NAME: "faf_lobby"
 
+MQ_SERVER: "faf-rabbitmq"
+MQ_PORT: 5672
+MQ_VHOST: "/faf-core"
+MQ_USER: "faf-python-server"
+MQ_PASSWORD: "banana"
+MQ_EXCHANGE_NAME: "faf-lobby"
+
 ENABLE_METRICS: true
 
 COTURN_HOSTS: ["test.faforever.com"]
