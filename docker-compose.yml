@@ -502,11 +502,13 @@ services:
       - "traefik.http.routers.faf-content.rule=Host(`content.${DOMAINNAME}`) || Host(`replay.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-content.entryPoints=web-secure"
       - "traefik.http.routers.faf-content.tls.certresolver=default"
-      - "traefik.http.routers.faf-content.middlewares=redirect-replay-subdomain, redirect-replay-php, test-compress@file"
+      - "traefik.http.routers.faf-content.middlewares=redirect-replay-subdomain, redirect-replay-php, redirect-old-vault, test-compress@file"
       - "traefik.http.middlewares.redirect-replay-subdomain.redirectregex.regex=^(http|https)://replay.${DOMAINNAME}/(.*)"
       - "traefik.http.middlewares.redirect-replay-subdomain.redirectregex.replacement=$${1}://api.${DOMAINNAME}/game/$${2}/replay"
       - "traefik.http.middlewares.redirect-replay-php.redirectregex.regex=^(http|https)://content.${DOMAINNAME}/faf/vault/replay_vault/replay.php\\?id=(.*)"
       - "traefik.http.middlewares.redirect-replay-php.redirectregex.replacement=$${1}://api.${DOMAINNAME}/game/$${2}/replay"
+      - "traefik.http.middlewares.redirect-old-vault.redirectregex.regex=^https://content.${DOMAINNAME}/faf/vault/(.*)"
+      - "traefik.http.middlewares.redirect-old-vault.redirectregex.replacement=https://content.${DOMAINNAME}/$${1}"
     logging:
       driver: "json-file"
       options:
