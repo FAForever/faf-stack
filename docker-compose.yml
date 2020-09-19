@@ -827,23 +827,6 @@ services:
         max-size: "${DEFAULT_LOG_SIZE}"
         max-file: "${HIGH_PRIO_LOG_FILES}"
 
-  #
-  # FAF League Service MySQL database migrations
-  #
-  faf-league-db-migrations:
-    container_name: faf-league-db-migrations
-    image: cleborys/faf-league-db
-    user: ${FAF_LEAGUE_DB_USER}
-    networks:
-      - faf
-    restart: "no"
-    env_file: ./config/faf-league-db-migrations/faf-league-db-migrations.env
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
-
 networks:
   faf:
     driver: bridge
