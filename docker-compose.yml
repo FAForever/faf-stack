@@ -840,7 +840,7 @@ services:
   faf-nodebb:
     # for instructions how to initialize the setup check the readme in the config.template/faf-nodebb
     container_name: faf-nodebb
-    image: nodebb/docker:v1.14.2
+    image: nodebb/docker:v1.14.3
     user: ${FAF_NODEBB_USER}
     restart: unless-stopped
     env_file: ./config/faf-nodebb/faf-nodebb.env
