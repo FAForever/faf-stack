@@ -306,7 +306,16 @@ services:
   #
   faf-prometheus:
     container_name: faf-prometheus
-    image: prom/prometheus:v2.19.2
+    image: prom/prometheus:v2.21.0
+    command:
+      # Copied from Dockerfile because we lose existing commands, when defining new ones
+      # https://github.com/prometheus/prometheus/blob/master/Dockerfile
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
+      # Increase the storage retention to 12 weeks
+      - "--storage.tsdb.retention.time=12w"
     user: ${FAF_PROMETHEUS_USER}
     restart: unless-stopped
     env_file: ./config/faf-prometheus/faf-prometheus.env
