@@ -819,7 +819,7 @@ services:
 
   faf-mongodb:
     container_name: faf-mongodb
-    image: mongo:4.2.8
+    image: mongo:4.2.9
     user: ${FAF_MONGODB_USER}
     restart: unless-stopped
     networks:
