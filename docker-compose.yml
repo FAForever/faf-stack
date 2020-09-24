@@ -852,8 +852,6 @@ services:
       - ./config/faf-nodebb/config.json:/usr/src/app/config.json
       - ./data/faf-nodebb/node_modules:/usr/src/app/node_modules
       - ./data/faf-nodebb/build:/usr/src/app/build
-    ports:
-      - "4567:4567"
     logging:
       driver: "json-file"
       options:
