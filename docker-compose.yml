@@ -163,41 +163,6 @@ services:
         max-file: "${HIGH_PRIO_LOG_FILES}"
 
   #
-  # FAF game server for clients to connect to.
-  #
-  faf-java-server:
-    container_name: faf-java-server
-    image: faforever/faf-java-server:v1.3.4
-    user: ${FAF_JAVA_SERVER_USER}
-    networks:
-      faf:
-        aliases:
-          - "faf-java-server"
-    # Service currently not in use
-    # restart: always
-    env_file: ./config/faf-java-server/faf-java-server.env
-    expose:
-      - "8089" # HTTP Management API
-    ports:
-      - "8001:8001" # Legacy TCP
-      - "8012" # Websocket
-    volumes:
-      - ./data/faf-java-server/logs:/logs
-    depends_on:
-      - faf-init-volumes
-    # TODO move to Dockerfile
-    healthcheck:
-      test: "wget -q -O /dev/null http://localhost:8089/health"
-      interval: 30s
-      timeout: 5s
-      retries: 3
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${HIGH_PRIO_LOG_FILES}"
-
-  #
   # FAF JSON-API to provide data over HTTP.
   #
   faf-java-api:
