@@ -817,7 +817,6 @@ services:
       - ./config/faf-nodebb/config.json:/usr/src/app/config.json
       - ./data/faf-nodebb/node_modules:/usr/src/app/node_modules
       - ./data/faf-nodebb/build:/usr/src/app/build
-      - ./data/faf-nodebb/public:/usr/src/app/public
       - ./data/faf-nodebb/uploads/:/usr/src/app/public/uploads
     logging:
       driver: "json-file"
