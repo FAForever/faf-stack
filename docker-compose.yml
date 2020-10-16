@@ -515,30 +515,6 @@ services:
         max-file: "${DEFAULT_LOG_FILES}"
 
   #
-  # The legacy update server from which the legacy client gets its update information.
-  #
-  faf-legacy-updater:
-    container_name: faf-legacy-updater
-    image: faforever/faf-legacy-updater
-    user: ${FAF_LEGACY_UPDATER_USER}
-    restart: unless-stopped
-    volumes:
-      - ./data/content:/content
-      - ./config/faf-legacy-updater/updater.conf:/code/updater.conf
-    networks:
-      - faf
-    depends_on:
-      - faf-init-volumes
-    env_file: ./config/faf-legacy-updater/faf-legacy-updater.env
-    ports:
-      - "9001:9001"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
-
-  #
   # The second version of "live replay" server
   #
   faf-aio-replayserver:
