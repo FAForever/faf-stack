@@ -21,7 +21,7 @@ services:
   # Runs in dashboard mode, secured by basic http auth
   #
   faf-traefik:
-    image: traefik:v2.2.11
+    image: traefik:v2.3.4
     env_file: ./config/faf-traefik/faf-traefik.env
     network_mode: host
     volumes:
@@ -167,7 +167,7 @@ services:
   #
   faf-java-api:
     container_name: faf-java-api
-    image: faforever/faf-java-api:v2.9.6
+    image: faforever/faf-java-api:v2.10.0
     user: ${FAF_JAVA_API_USER}
     networks:
       faf:
@@ -239,7 +239,7 @@ services:
   #
   faf-spring-boot-admin:
     container_name: faf-spring-boot-admin
-    image: slydeveloper/spring-boot-admin:1.1
+    image: slydeveloper/spring-boot-admin:1.2
     user: ${FAF_SPRING_BOOT_ADMIN_USER}
     restart: unless-stopped
     env_file: ./config/faf-spring-boot-admin/faf-spring-boot-admin.env
@@ -271,7 +271,7 @@ services:
   #
   faf-prometheus:
     container_name: faf-prometheus
-    image: prom/prometheus:v2.21.0
+    image: prom/prometheus:v2.23.0
     command:
       # Copied from Dockerfile because we lose existing commands, when defining new ones
       # https://github.com/prometheus/prometheus/blob/master/Dockerfile
@@ -316,7 +316,7 @@ services:
   #
   faf-grafana:
     container_name: faf-grafana
-    image: grafana/grafana:6.2.5
+    image: grafana/grafana:7.3.4
     restart: unless-stopped
     networks:
       - "faf"
@@ -622,7 +622,7 @@ services:
   # Advanced Message Queuing Protocol (AMQP).
   #
   faf-rabbitmq:
-    image: rabbitmq:3.8.8-management-alpine
+    image: rabbitmq:3.8.9-management-alpine
     container_name: faf-rabbitmq
     hostname: rabbitmq.${DOMAINNAME}
     expose:
@@ -738,7 +738,7 @@ services:
 
   # Collects docker status for prometheus
   faf-cadvisor:
-    image: google/cadvisor:latest
+    image: google/cadvisor:v0.33.0
     container_name: faf-cadvisor
     restart: unless-stopped
     networks:
