@@ -831,17 +831,20 @@ services:
   # FAF Solr standalone server
   #
   faf-solr:
-    # version: '3'
     container_name: faf-solr
-    image: solr:8
+    image: solr:8.7-slim
     ports:
       - "8983:8983"
+    env_file: ./config/faf-solr/faf-solr.env
     volumes:
       - ./data/faf-solr:/var/solr
-      - ./config/faf-solr/config.json:/usr/src/app/config.json
+    networks:
+      faf:
+        aliases:
+          - "faf-solr"
     command:
       - solr-precreate
-      - gettingstarted
+      - faf-search
 
 networks:
   faf:
