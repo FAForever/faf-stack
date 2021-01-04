@@ -658,6 +658,62 @@ services:
         max-size: "${DEFAULT_LOG_SIZE}"
         max-file: "${HIGH_PRIO_LOG_FILES}"
 
+  #
+  # OAuth2 service
+  #
+  faf-ory-hydra:
+    container_name: faf-ory-hydra
+    image: oryd/hydra:v1.8.5
+    networks:
+      faf:
+        aliases:
+          - "faf-ory-hydra"
+    volumes:
+      - ./config/faf-ory-hydra/hydra.yml:/.hydra
+    restart: unless-stopped
+    env_file: ./config/faf-ory-hydra/faf-ory-hydra.env
+    depends_on:
+      - faf-init-volumes
+    ports:
+      - "127.0.0.1:4445:4445"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.faf-ory-hydra.rule=Host(`user.${DOMAINNAME}`) && Path(`hydra`)"
+      - "traefik.http.routers.faf-ory-hydra.entryPoints=web-secure"
+      - "traefik.http.routers.faf-ory-hydra.tls.certresolver=default"
+      - "traefik.http.services.faf-ory-hydra.loadbalancer.server.port=4444"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "${HIGH_PRIO_LOG_FILES}"
+        max-file: "${HIGH_PRIO_LOG_FILES}"
+
+  #
+  # FAF User Service
+  #
+  faf-user-service:
+    container_name: faf-user-service
+    image: faforever/faf-user-service:master
+    networks:
+      faf:
+        aliases:
+          - "faf-user-service"
+    restart: unless-stopped
+    env_file: ./config/faf-user-service/faf-user-service.env
+    depends_on:
+      - faf-init-volumes
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.faf-user-service.rule=Host(`user.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-user-service.entryPoints=web-secure"
+      - "traefik.http.routers.faf-user-service.tls.certresolver=default"
+      - "traefik.http.services.faf-user-service.loadbalancer.server.port=8080"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "${HIGH_PRIO_LOG_FILES}"
+        max-file: "${HIGH_PRIO_LOG_FILES}"
+
 networks:
   faf:
     driver: bridge
