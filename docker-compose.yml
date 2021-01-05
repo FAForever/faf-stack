@@ -678,7 +678,7 @@ services:
       - "127.0.0.1:4445:4445"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.faf-ory-hydra.rule=Host(`user.${DOMAINNAME}`) && Path(`hydra`)"
+      - "traefik.http.routers.faf-ory-hydra.rule=Host(`hydra.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-ory-hydra.entryPoints=web-secure"
       - "traefik.http.routers.faf-ory-hydra.tls.certresolver=default"
       - "traefik.http.services.faf-ory-hydra.loadbalancer.server.port=4444"
