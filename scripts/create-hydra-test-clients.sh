@@ -5,9 +5,10 @@ if [ ! -f docker-compose.yml ]; then
     exit 1
 fi
 
-docker-compose run --rm faf-ory-hydra clients create \
+docker-compose exec faf-ory-hydra hydra clients create \
     --skip-tls-verify \
-    --endpoint https://faf-ory-hydra:4445 \
+    --endpoint http://127.0.0.1:4445 \
+    --fake-tls-termination \
     --id faf-website \
     --name faforever.com \
     --logo-uri https://faforever.com/images/faf-logo.png \
