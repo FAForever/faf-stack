@@ -685,7 +685,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "${HIGH_PRIO_LOG_FILES}"
+        max-size: "${DEFAULT_LOG_SIZE}"
         max-file: "${HIGH_PRIO_LOG_FILES}"
 
   #
@@ -711,7 +711,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "${HIGH_PRIO_LOG_FILES}"
+        max-size: "${DEFAULT_LOG_SIZE}"
         max-file: "${HIGH_PRIO_LOG_FILES}"
 
 networks:
