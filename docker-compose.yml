@@ -827,6 +827,25 @@ services:
         max-size: "${DEFAULT_LOG_SIZE}"
         max-file: "${HIGH_PRIO_LOG_FILES}"
 
+  #
+  # FAF Solr standalone server
+  #
+  faf-solr:
+    container_name: faf-solr
+    image: solr:8.7-slim
+    ports:
+      - "8983:8983"
+    env_file: ./config/faf-solr/faf-solr.env
+    volumes:
+      - ./data/faf-solr:/var/solr
+    networks:
+      faf:
+        aliases:
+          - "faf-solr"
+    command:
+      - solr-precreate
+      - faf-search
+
 networks:
   faf:
     driver: bridge
