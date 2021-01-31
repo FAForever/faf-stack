@@ -663,7 +663,7 @@ services:
   #
   faf-ory-hydra:
     container_name: faf-ory-hydra
-    image: oryd/hydra:v1.8.5
+    image: oryd/hydra:v1.9.2
     networks:
       faf:
         aliases:
