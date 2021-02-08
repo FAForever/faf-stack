@@ -12,7 +12,6 @@ docker-compose exec faf-ory-hydra hydra clients create \
     --id faf-website \
     --name faforever.com \
     --logo-uri https://faforever.com/images/faf-logo.png \
-    --secret banana \
     --grant-types authorization_code,refresh_token \
     --response-types code \
     --scope openid,offline,public_profile,write_account_data,create_user \

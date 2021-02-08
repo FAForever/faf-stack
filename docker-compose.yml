@@ -664,14 +664,17 @@ services:
   faf-ory-hydra:
     container_name: faf-ory-hydra
     image: oryd/hydra:v1.9.2
+    # We consider the Docker network safe since we are on a single host.
+    # If someone gains access to network, he has root access and can turn off the security anyway.
+    # This can be improved once the login stack was moved outside the main host.
+    command: serve all -c /hydra.yaml --dangerous-force-http
     networks:
       faf:
         aliases:
           - "faf-ory-hydra"
     volumes:
-      - ./config/faf-ory-hydra/hydra.yml:/.hydra
+      - ./config/faf-ory-hydra/hydra.yaml:/hydra.yaml
     restart: unless-stopped
-    env_file: ./config/faf-ory-hydra/faf-ory-hydra.env
     depends_on:
       - faf-init-volumes
     ports:
