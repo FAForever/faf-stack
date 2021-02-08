@@ -675,7 +675,8 @@ services:
     depends_on:
       - faf-init-volumes
     ports:
-      - "127.0.0.1:4445:4445"
+      - "127.0.0.1:4445:4445" # only for testing
+      - "127.0.0.1:4444:4444" # only for testing
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-ory-hydra.rule=Host(`hydra.${DOMAINNAME}`)"
