@@ -738,7 +738,7 @@ services:
 
   # Collects docker status for prometheus
   faf-cadvisor:
-    image: google/cadvisor:v0.33.0
+    image: gcr.io/cadvisor/cadvisor:v0.37.0
     container_name: faf-cadvisor
     restart: unless-stopped
     networks:
