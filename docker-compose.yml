@@ -770,8 +770,6 @@ services:
     env_file: ./config/faf-mongodb/faf-mongodb.env
     volumes:
       - ./data/faf-mongodb/data/db:/data/db
-    ports:
-      - "27017:27017"
     logging:
       driver: "json-file"
       options:
