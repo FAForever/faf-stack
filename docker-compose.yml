@@ -622,7 +622,7 @@ services:
   # Advanced Message Queuing Protocol (AMQP).
   #
   faf-rabbitmq:
-    image: rabbitmq:3.8.9-management-alpine
+    image: rabbitmq:3.8.11-management-alpine
     container_name: faf-rabbitmq
     hostname: rabbitmq.${DOMAINNAME}
     expose:
