@@ -152,7 +152,8 @@ services:
         soft: 100000
         hard: 200000
     ports:
-      - "8001:8001" # Server
+      - "8001:8001" # Server QDataStream
+      - "8002:8002" # Server UTF8 Json
       - "4000:4000" # Control server
     depends_on:
       - faf-init-volumes
