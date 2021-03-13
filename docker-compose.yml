@@ -154,7 +154,7 @@ services:
     ports:
       - "8001:8001" # Server QDataStream
       - "8002:8002" # Server UTF8 Json
-      - "4000:4000" # Control server
+      - "127.0.0.1:4000:4000" # Control server
     depends_on:
       - faf-init-volumes
     logging:
