@@ -44,7 +44,7 @@ create() {
 
   docker exec -i faf-db mysql --user=root --password=${MYSQL_ROOT_PASSWORD} <<SQL_SCRIPT
     CREATE DATABASE IF NOT EXISTS \`${database}\` ${db_options};
-    CREATE USER '${username}'@'%' IDENTIFIED BY '${password}';
+    CREATE USER IF NOT EXISTS '${username}'@'%' IDENTIFIED BY '${password}';
     GRANT ALL PRIVILEGES ON \`${database}\`.* TO '${username}'@'%';
 SQL_SCRIPT
 }
