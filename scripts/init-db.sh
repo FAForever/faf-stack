@@ -40,6 +40,8 @@ create() {
   password=$3
   db_options=${4:-}
 
+  echo "Create database ${database} and create + assign user ${username}"
+
   docker exec -i faf-db mysql --user=root --password=${MYSQL_ROOT_PASSWORD} <<SQL_SCRIPT
     CREATE DATABASE IF NOT EXISTS \`${database}\` ${db_options};
     CREATE USER '${username}'@'%' IDENTIFIED BY '${password}';
