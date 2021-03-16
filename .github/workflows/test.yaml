@@ -1,0 +1,13 @@
+name: Test
+on: [ push, pull_request ]
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Install tools
+        # gridsite-clients is required for urlencode
+        run: sudo apt update && sudo apt install -y gridsite-clients
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: ci/build.sh
+        run: ci/build.sh

@@ -55,4 +55,4 @@ done
 kill -TERM ${log_process_id}
 
 echo "Running test collection"
-docker run --network="host" -t postman/newman:alpine run "https://raw.githubusercontent.com/FAForever/faf-stack/$(urlencode "$TRAVIS_BRANCH")/tests/postman-collection.json"
+docker run --network="host" -t postman/newman:alpine run "https://raw.githubusercontent.com/FAForever/faf-stack/$(urlencode "${GITHUB_REF#refs/*/}")/tests/postman-collection.json"
