@@ -539,6 +539,28 @@ services:
         max-size: "${DEFAULT_LOG_SIZE}"
         max-file: "${DEFAULT_LOG_FILES}"
 
+  # The third version of the "live replay" server, in Rust.
+  faf-rust-replayserver:
+    container_name: faf-rust-replayserver
+    image: faforever/faf-rust-replayserver:0.2.3
+    user: ${FAF_AIO_REPLAYSERVER_USER}
+    restart: unless-stopped
+    volumes:
+      - ./data/content:/content
+      - ./config/faf-rust-replayserver:/config
+    networks:
+      - faf
+    depends_on:
+      - faf-init-volumes
+    env_file: ./config/faf-rust-replayserver/faf-rust-replayserver.env
+    ports:
+      - "15000:15000"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "${DEFAULT_LOG_SIZE}"
+        max-file: "${DEFAULT_LOG_FILES}"
+
   faf-policy-server:
     container_name: faf-policy-server
     image: faforever/faf-policy-server:v1.21

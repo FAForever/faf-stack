@@ -1,0 +1,21 @@
+# See faf-rust-replayserver repository, docs/usage.rst for documentation.
+server:
+    port: 15000
+    prometheus_port: 8011
+    worker_threads: 4
+    connection_accept_timeout_s: 21600
+database:
+    pool_size: 8
+    host: faf-db
+    port: 3306
+    user: faf-aio-replayserver
+    name: faf
+storage:
+    vault_path: /content/faf/vault/replay_vault
+replay:
+    forced_timeout_s: 18000
+    time_with_zero_writers_to_end_replay_s: 30
+    delay_s: 300
+    update_interval_ms: 1000
+    merge_quorum_size: 2
+    stream_comparison_distance_b: 4096
