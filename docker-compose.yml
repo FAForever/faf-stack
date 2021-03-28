@@ -343,13 +343,8 @@ services:
   #
   faf-unrealircd:
     container_name: faf-unrealircd
-    image: faforever/faf-unrealircd:v1.2
-    user: ${FAF_UNREALIRCD_USER}
+    image: ircd/unrealircd
     restart: unless-stopped
-    ulimits:
-      nofile:
-        soft: 8192
-        hard: 8192
     networks:
       faf:
         aliases:
@@ -359,11 +354,7 @@ services:
     depends_on:
       - faf-init-volumes
     volumes:
-      - ./config/faf-unrealircd/ssl/server.cert.pem:/home/unreal/unrealircd/conf/ssl/server.cert.pem
-      - ./config/faf-unrealircd/ssl/server.key.pem:/home/unreal/unrealircd/conf/ssl/server.key.pem
-      - ./config/faf-unrealircd/services.conf:/home/unreal/unrealircd/services/conf/services.conf
-      - ./config/faf-unrealircd/unrealircd.conf:/home/unreal/unrealircd/conf/unrealircd.conf
-      - ./config/faf-unrealircd/motd.txt:/home/unreal/unrealircd/conf/ircd.motd
+      - ./config/faf-unrealircd/:/ircd/
     ports:
       - "6667:6667"
       - "6697:6697"
@@ -377,6 +368,21 @@ services:
       options:
         max-size: "${DEFAULT_LOG_SIZE}"
         max-file: "${DEFAULT_LOG_FILES}"
+
+  faf-anope:
+    container_name: faf-anope
+    image: anope/anope
+    restart: unless-stopped
+    depends_on:
+      - faf-init-volumes
+    volumes:
+      - ./config/faf-unrealircd/services.conf:/anope/conf/services.conf
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "${DEFAULT_LOG_SIZE}"
+        max-file: "${DEFAULT_LOG_FILES}"
+
 
   #
   # QAI irc bot
