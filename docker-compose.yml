@@ -520,7 +520,7 @@ services:
   #
   faf-aio-replayserver:
     container_name: faf-aio-replayserver
-    image: faforever/faf-aio-replayserver:1.0.9
+    image: faforever/faf-aio-replayserver:1.1.2
     user: ${FAF_AIO_REPLAYSERVER_USER}
     restart: unless-stopped
     volumes:
