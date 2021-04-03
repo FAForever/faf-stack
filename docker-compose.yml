@@ -341,20 +341,25 @@ services:
   #
   # IRC for FAF chat.
   #
-  faf-unrealircd:
-    container_name: faf-unrealircd
-    image: ircd/unrealircd
+  faf-ircd:
+    container_name: faf-ircd
+    image: bbriggs/unrealircd
     restart: unless-stopped
     networks:
       faf:
         aliases:
+          - "faf-ircd"
           - "faf-unrealircd"
           - "irc.faforever.com"
           - "services.faforever.com"
     depends_on:
       - faf-init-volumes
     volumes:
-      - ./config/faf-unrealircd/:/ircd/
+      - ./config/faf-ircd/ssl/server.cert.pem:/data/unrealircd/conf/tls/server.cert.pem
+      - ./config/faf-ircd/ssl/server.key.pem:/data/unrealircd/conf/tls/server.key.pem
+      - ./config/faf-ircd/unrealircd.conf:/data/unrealircd/conf/unrealircd.conf
+      - ./config/faf-ircd/motd.txt:/data/unrealircd/conf/ircd.motd
+      - ./data/faf-ircd/:/data/unrealircd/data/
     ports:
       - "6667:6667"
       - "6697:6697"
@@ -363,20 +368,28 @@ services:
       - "8067:8067"
       - "7070:7070"
       - "8167:8167"
+    expose:
+      - 7000
     logging:
       driver: "json-file"
       options:
         max-size: "${DEFAULT_LOG_SIZE}"
         max-file: "${DEFAULT_LOG_FILES}"
 
+
+  #
+  # IRC Services
+  #
   faf-anope:
     container_name: faf-anope
     image: anope/anope
     restart: unless-stopped
+    networks:
+      - faf
     depends_on:
-      - faf-init-volumes
+      - faf-ircd
     volumes:
-      - ./config/faf-unrealircd/services.conf:/anope/conf/services.conf
+      - ./config/faf-anope/services.conf:/anope/conf/services.conf
     logging:
       driver: "json-file"
       options:
