@@ -343,7 +343,7 @@ services:
   #
   faf-ircd:
     container_name: faf-ircd
-    image: bbriggs/unrealircd
+    image: faforever/faf-unrealircd:5.0.9.1
     restart: unless-stopped
     networks:
       faf:
@@ -369,6 +369,7 @@ services:
       - "7070:7070"
       - "8167:8167"
     expose:
+      # Internal port for Anope to connect
       - 7000
     logging:
       driver: "json-file"
@@ -382,7 +383,7 @@ services:
   #
   faf-anope:
     container_name: faf-anope
-    image: anope/anope
+    image: anope/anope:2.0.8
     restart: unless-stopped
     networks:
       - faf
