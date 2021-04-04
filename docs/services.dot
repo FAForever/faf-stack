@@ -1,0 +1,69 @@
+graph FAF {
+    #rankdir=LR;
+
+    subgraph cluster_coreservices {
+        label = "Core Services";
+        // These can hiccup for a few a second or two without anyone noticing, but they can't be missing 
+        "traefik"; "db"; 
+        "db-migrations" -- "db";
+    }
+
+    subgraph cluster_critical {
+        label = "Critical";
+        // Restarting will kill all games mid-way, annoying everyone
+        "coturn";         
+        "python-server" -- "db";
+    }
+
+    subgraph cluster_gameservices {
+        label = "Game Services";
+        // Restarting will introduce ghost games, crashes, and overall bad UX
+        "rabbitmq" -- "traefik";
+        "java-api" -- { "traefik" "db" };
+        "aio-replayserver" -- "db";
+        "rust-replayserver" -- "db";
+        "policy-server";
+        "league-service";
+    }
+    
+    subgraph cluster_observability {
+        label = "Observability";
+        "prometheus" -- "traefik";
+        "grafana" -- { "traefik" "prometheus" };
+        "node-exporter" -- "prometheus";
+        "cadvisor" -- "prometheus";
+        "mysql-exporter" -- "db";
+    }
+    subgraph cluster_irc {
+        label = "IRC";
+        "anope" -- "ircd";
+        "anope" -- "db"; 
+        "qai" -- "ircd";
+    }
+    subgraph cluster_websites {
+        label = "Websites";
+        "website" -- { "traefik" "java-api" "wordpress" };
+        "wordpress" -- "traefik";
+        "content" -- "traefik";
+        "wiki" -- { "traefik" "db" };
+        "unitdb" -- "traefik";
+        "nodebb" -- { "traefik" "mongodb" };
+        "phpbb3" -- { "traefik" "db" };
+        "voting" -- "traefik"
+
+    }
+
+    subgraph cluster_management {
+        label = "Management";
+        "postal" -- "traefik";
+        "mautic" -- "traefik";
+        "spring-boot-admin" -- "traefik";
+
+    }
+
+
+
+
+
+   
+}
