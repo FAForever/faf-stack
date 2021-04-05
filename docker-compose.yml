@@ -232,36 +232,6 @@ services:
         max-size: "${DEFAULT_LOG_SIZE}"
         max-file: "${DEFAULT_LOG_FILES}"
 
-  #
-  # Interface to administer Spring Boot applications.
-  #
-  faf-spring-boot-admin:
-    container_name: faf-spring-boot-admin
-    image: slydeveloper/spring-boot-admin:1.2
-    user: ${FAF_SPRING_BOOT_ADMIN_USER}
-    restart: unless-stopped
-    env_file: ./config/faf-spring-boot-admin/faf-spring-boot-admin.env
-    networks:
-      faf:
-        aliases:
-          - "faf-spring-boot-admin"
-    # Service currently not in use
-    # restart: always
-    healthcheck:
-      test: "wget -q -O /dev/null http://localhost:1111/health"
-      interval: 30s
-      timeout: 5s
-      retries: 3
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.faf-spring-boot-admin.rule=Host(`bootadmin.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-spring-boot-admin.entryPoints=web-secure"
-      - "traefik.http.services.faf-spring-boot-admin.loadbalancer.server.port=1111"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
 
   #
   # Prometheus is a monitoring and alerting tool that scrapes and stores time-series data.
