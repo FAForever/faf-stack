@@ -423,27 +423,23 @@ services:
         max-file: "${DEFAULT_LOG_FILES}"
 
   #
-  # FAF phpBB forum software.
+  # Static copy of the old phpbb3 forum
   #
-  faf-phpbb3:
-    container_name: faf-phpbb3
-    image: richarvey/nginx-php-fpm:php5
-    user: ${FAF_PHPBB3_USER}
+  faf-phpbb3-archive:
+    container_name: faf-phpbb3-archive
+    image: nginx:1.19
     restart: unless-stopped
     volumes:
-      - ./data/faf-phpbb3/phpbb3/www:/usr/share/nginx/html
-      - ./data/faf-phpbb3/phpbb3:/usr/share/phpbb3
-      - ./config/faf-phpbb3/database.inc.php:/etc/phpbb3/database.inc.php
+      - ./data/faf-phpbb3-archive:/usr/share/nginx/html
     networks:
       - faf
     depends_on:
       - faf-init-volumes
-    env_file: ./config/faf-phpbb3/faf-phpbb3.env
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.faf-phpbb3.rule=Host(`forums.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-phpbb3.entryPoints=web-secure"
-      - "traefik.http.routers.faf-phpbb3.middlewares=test-compress@file"
+      - "traefik.http.routers.faf-phpbb3-archive.rule=Host(`forums.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-phpbb3-archive.entryPoints=web-secure"
+      - "traefik.http.routers.faf-phpbb3-archive.middlewares=test-compress@file"
     logging:
       driver: "json-file"
       options:
