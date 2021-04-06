@@ -671,27 +671,6 @@ services:
         max-size: "${DEFAULT_LOG_SIZE}"
         max-file: "${DEFAULT_LOG_FILES}"
 
-  # replay api for testing purposes, don't deploy, just let it live on test.
-  faf-replay-api:
-    build: git://github.com/norraxx/faf-scfa-replay-api.git
-    restart: unless-stopped
-    ports:
-      - "13666:13666"
-    networks:
-      faf:
-        aliases:
-          - "faf-replay-api"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.faf-replay-api.rule=Host(`replay-api.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-replay-api.entryPoints=web-secure"
-      - "traefik.http.services.faf-replay-api.loadbalancer.server.port=13666"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
-
   # Collects system information for prometheus
   faf-node-exporter:
     image: prom/node-exporter
