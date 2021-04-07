@@ -400,7 +400,8 @@ services:
     image: nginx:1.19
     restart: unless-stopped
     volumes:
-      - ./data/faf-phpbb3-archive:/usr/share/nginx/html
+      - ./config/faf-phpbb3-archive/:/etc/nginx/conf.d/
+      - ./data/faf-phpbb3-archive/:/usr/share/nginx/html/
     networks:
       - faf
     depends_on:
