@@ -305,42 +305,52 @@ services:
   #
   # IRC for FAF chat.
   #
-  faf-unrealircd:
-    container_name: faf-unrealircd
-    image: faforever/faf-unrealircd:v1.2
-    user: ${FAF_UNREALIRCD_USER}
+  faf-ircd:
+    container_name: faf-ircd
+    image: faforever/faf-unrealircd:5.0.9.1
     restart: unless-stopped
-    ulimits:
-      nofile:
-        soft: 8192
-        hard: 8192
     networks:
-      faf:
-        aliases:
-          - "faf-unrealircd"
-          - "irc.faforever.com"
-          - "services.faforever.com"
+      - faf
     depends_on:
       - faf-init-volumes
     volumes:
-      - ./config/faf-unrealircd/ssl/server.cert.pem:/home/unreal/unrealircd/conf/ssl/server.cert.pem
-      - ./config/faf-unrealircd/ssl/server.key.pem:/home/unreal/unrealircd/conf/ssl/server.key.pem
-      - ./config/faf-unrealircd/services.conf:/home/unreal/unrealircd/services/conf/services.conf
-      - ./config/faf-unrealircd/unrealircd.conf:/home/unreal/unrealircd/conf/unrealircd.conf
-      - ./config/faf-unrealircd/motd.txt:/home/unreal/unrealircd/conf/ircd.motd
+      - ./config/faf-ircd/ssl/server.cert.pem:/data/unrealircd/conf/tls/server.cert.pem
+      - ./config/faf-ircd/ssl/server.key.pem:/data/unrealircd/conf/tls/server.key.pem
+      - ./config/faf-ircd/unrealircd.conf:/data/unrealircd/conf/unrealircd.conf
+      - ./config/faf-ircd/motd.txt:/data/unrealircd/conf/ircd.motd
+      - ./data/faf-ircd/:/data/unrealircd/data/
     ports:
-      - "6667:6667"
       - "6697:6697"
-      - "6665:6665"
-      - "6666:6666"
-      - "8067:8067"
-      - "7070:7070"
-      - "8167:8167"
+    expose:
+      # Plaintext Internal ports for QAI and Anope to connect
+      - 6667
+      - 7000
     logging:
       driver: "json-file"
       options:
         max-size: "${DEFAULT_LOG_SIZE}"
         max-file: "${DEFAULT_LOG_FILES}"
+
+
+  #
+  # IRC Services
+  #
+  faf-anope:
+    container_name: faf-anope
+    image: anope/anope:2.0.8
+    restart: unless-stopped
+    networks:
+      - faf
+    depends_on:
+      - faf-ircd
+    volumes:
+      - ./config/faf-anope/services.conf:/anope/conf/services.conf
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "${DEFAULT_LOG_SIZE}"
+        max-file: "${DEFAULT_LOG_FILES}"
+
 
   #
   # QAI irc bot
