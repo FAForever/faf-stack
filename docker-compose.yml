@@ -361,13 +361,7 @@ services:
       - ./config/faf-ircd/motd.txt:/data/unrealircd/conf/ircd.motd
       - ./data/faf-ircd/:/data/unrealircd/data/
     ports:
-      - "6667:6667"
       - "6697:6697"
-      - "6665:6665"
-      - "6666:6666"
-      - "8067:8067"
-      - "7070:7070"
-      - "8167:8167"
     expose:
       # Internal port for Anope to connect
       - 7000
