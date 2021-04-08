@@ -363,7 +363,8 @@ services:
     ports:
       - "6697:6697"
     expose:
-      # Internal port for Anope to connect
+      # Plaintext Internal ports for QAI and Anope to connect
+      - 6667
       - 7000
     logging:
       driver: "json-file"
