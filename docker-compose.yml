@@ -346,12 +346,7 @@ services:
     image: faforever/faf-unrealircd:5.0.9.1
     restart: unless-stopped
     networks:
-      faf:
-        aliases:
-          - "faf-ircd"
-          - "faf-unrealircd"
-          - "irc.faforever.com"
-          - "services.faforever.com"
+      - faf
     depends_on:
       - faf-init-volumes
     volumes:
