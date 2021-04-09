@@ -18,14 +18,6 @@ scrape_configs:
         labels:
           group: faf-main
 
-  - job_name: 'faf-java-server'
-    scrape_interval: 5s
-    metrics_path: '/actuator/prometheus'
-    static_configs:
-      - targets: ['faf-java-server:8089']
-        labels:
-          group: faf-main
-
   - job_name: 'faf-python-server'
     scrape_interval: 5s
     metrics_path: '/'
@@ -42,29 +34,23 @@ scrape_configs:
         labels:
           group: faf-main
 
-  - job_name: 'faf-statsd-exporter'
+  - job_name: 'mysql-exporter'
     static_configs:
-      - targets: ['faf-statsd-exporter:9102']
-        labels:
-          group: faf-main
-
-  - job_name: 'faf-mysql-exporter'
-    static_configs:
-      - targets: ['faf-mysql-exporter:9104']
+      - targets: ['mysql-exporter:9104']
         labels:
           alias: faf-db
 
-  - job_name: 'faf-node-exporter'
+  - job_name: 'node-exporter'
     scrape_interval: 5s
     metrics_path: '/metrics'
     static_configs:
-      - targets: ['faf-node-exporter:9100']
+      - targets: ['node-exporter:9100']
         labels:
           alias: faf-main
 
-  - job_name: 'faf-cadvisor'
+  - job_name: 'cadvisor'
     static_configs:
-      - targets: ['faf-cadvisor:8080']
+      - targets: ['cadvisor:8080']
         labels:
           alias: faf-main
 

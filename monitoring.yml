@@ -7,7 +7,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '2'
+          cpus: "1"
     command:
       # Copied from Dockerfile because we lose existing commands, when defining new ones
       # https://github.com/prometheus/prometheus/blob/master/Dockerfile
@@ -40,7 +40,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '2'
+          cpus: "1"
     restart: unless-stopped
     networks:
       - monitoring
