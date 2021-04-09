@@ -4,6 +4,10 @@ services:
 
   prometheus:
     image: prom/prometheus:v2.24.1
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
     command:
       # Copied from Dockerfile because we lose existing commands, when defining new ones
       # https://github.com/prometheus/prometheus/blob/master/Dockerfile
@@ -33,6 +37,10 @@ services:
 
   grafana:
     image: grafana/grafana:7.4.1
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
     restart: unless-stopped
     networks:
       - monitoring
@@ -66,6 +74,7 @@ services:
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor
+    command: "--max_procs=1"
     restart: unless-stopped
     networks:
       - monitoring
@@ -79,4 +88,6 @@ services:
 
 networks:
   monitoring:
+    driver: bridge
+  faf:
     driver: bridge
