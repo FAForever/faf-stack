@@ -229,10 +229,11 @@ services:
       - ./config/faf-ircd/motd.txt:/data/unrealircd/conf/ircd.motd
       - ./data/faf-ircd/:/data/unrealircd/data/
     ports:
-      - "6697:6697"
+      - "6667:6667" # plain text for QAI and Python client
+      - "6697:6697" # ssl only
+      - "8167:8167" # ssl only
     expose:
-      # Plaintext Internal ports for QAI and Anope to connect
-      - 6667
+      # Anope
       - 7000
     logging:
       driver: "json-file"
