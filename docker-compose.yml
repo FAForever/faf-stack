@@ -240,24 +240,6 @@ services:
       - "traefik.http.routers.faf-wordpress-http.entryPoints=web"
 
 
-  #
-  # Static copy of the old phpbb3 forum
-  #
-  faf-phpbb3-archive:
-    container_name: faf-phpbb3-archive
-    image: nginx:1.19
-    restart: unless-stopped
-    volumes:
-      - ./config/faf-phpbb3-archive/:/etc/nginx/conf.d/
-      - ./data/faf-phpbb3-archive/:/usr/share/nginx/html/
-    networks:
-      - faf
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.faf-phpbb3-archive.rule=Host(`forums.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-phpbb3-archive.entryPoints=web-secure"
-      - "traefik.http.routers.faf-phpbb3-archive.middlewares=test-compress@file"
-
 
   #
   # Serves static files such as maps, mods, game files etc.
@@ -278,27 +260,6 @@ services:
       - "traefik.http.routers.faf-content.middlewares=redirect-replay-subdomain, test-compress@file"
       - "traefik.http.middlewares.redirect-replay-subdomain.redirectregex.regex=^(http|https)://replay.${DOMAINNAME}/(.*)"
       - "traefik.http.middlewares.redirect-replay-subdomain.redirectregex.replacement=$${1}://api.${DOMAINNAME}/game/$${2}/replay"
-
-
-  #
-  # The FAF media wiki.
-  #
-  faf-wiki:
-    container_name: faf-wiki
-    image: mediawiki:lts
-    user: ${FAF_WIKI_USER}
-    restart: unless-stopped
-    networks:
-      - faf
-    volumes:
-      - ./data/faf-wiki/images:/var/www/html/images
-      - ./data/faf-wiki/LocalSettings.php:/var/www/html/LocalSettings.php
-    env_file: ./config/faf-wiki/faf-wiki.env
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.faf-wiki.rule=Host(`wiki.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-wiki.entryPoints=web-secure"
-
 
   #
   # The second version of "live replay" server
@@ -348,27 +309,6 @@ services:
       - "8097"
     volumes:
       - ./data/faf-policy-server/faf-uid-verifier/verifier:/app/verifier
-
-
-  #
-  # FAF unit database
-  #
-  faf-unitdb:
-    container_name: faf-unitdb
-    image: faforever/faf-unitdb:v1.3.1
-    restart: unless-stopped
-    networks:
-      - faf
-    volumes:
-      - ./config/faf-unitdb/datafiles.json:/var/www/html/config/datafiles.json
-      - ./config/faf-unitdb/locfiles.json:/var/www/html/config/locfiles.json
-    env_file: ./config/faf-unitdb/faf-unitdb.env
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.faf-unitdb.rule=Host(`unitdb.${DOMAINNAME}`) || Host(`direct.${DOMAINNAME}`) && PathPrefix(`/faf/unitsDB`)"
-      - "traefik.http.routers.faf-unitdb.entryPoints=web-secure"
-      - "traefik.http.routers.faf-unitdb.middlewares=unitdb-stripprefix, test-compress@file"
-      - "traefik.http.middlewares.unitdb-stripprefix.stripprefix.prefixes=/faf/unitsDB"
 
 
   #
@@ -443,59 +383,6 @@ services:
       - "traefik.http.routers.faf-mautic.rule=Host(`mautic.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-mautic.entryPoints=web-secure"
 
-
-  faf-voting:
-    image: faforever/faf-voting:v2.0.1
-    user: ${FAF_VOTING_USER}
-    restart: unless-stopped
-    networks:
-      faf:
-        aliases:
-          - "faf-voting"
-    env_file: ./config/faf-voting/faf-voting.env
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.faf-voting.rule=Host(`voting.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-voting.entryPoints=web-secure"
-      - "traefik.http.routers.faf-voting.middlewares=test-compress@file"
-      - "traefik.http.services.faf-voting.loadbalancer.server.port=3000"
-
-
-  faf-mongodb:
-    container_name: faf-mongodb
-    image: mongo:4.2.13
-    user: ${FAF_MONGODB_USER}
-    restart: unless-stopped
-    networks:
-      faf:
-        aliases:
-          - "faf-mongodb"
-    env_file: ./config/faf-mongodb/faf-mongodb.env
-    volumes:
-      - ./data/faf-mongodb/data/db:/data/db
-
-
-  faf-nodebb:
-    # for instructions how to initialize the setup check the readme in the config.template/faf-nodebb
-    container_name: faf-nodebb
-    image: nodebb/docker:v1.16.2
-    user: ${FAF_NODEBB_USER}
-    restart: unless-stopped
-    env_file: ./config/faf-nodebb/faf-nodebb.env
-    networks:
-      faf:
-        aliases:
-          - "faf-nodebb"
-    volumes:
-      - ./config/faf-nodebb/config.json:/usr/src/app/config.json
-      - ./data/faf-nodebb/node_modules:/usr/src/app/node_modules
-      - ./data/faf-nodebb/build:/usr/src/app/build
-      - ./data/faf-nodebb/uploads/:/usr/src/app/public/uploads
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.faf-nodebb.rule=Host(`forum.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-nodebb.entryPoints=web-secure"
-      - "traefik.http.routers.faf-nodebb.middlewares=test-compress@file"
 
   #
   # FAF League Service
