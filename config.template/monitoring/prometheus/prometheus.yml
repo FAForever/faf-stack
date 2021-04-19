@@ -34,6 +34,14 @@ scrape_configs:
         labels:
           group: faf-main
 
+  - job_name: 'faf-rust-replayserver'
+    scrape_interval: 5s
+    metrics_path: '/'
+    static_configs:
+      - targets: ['faf-rust-replayserver:8011']
+        labels:
+          group: faf-main
+
   - job_name: 'mysql-exporter'
     static_configs:
       - targets: ['mysql-exporter:9104']
