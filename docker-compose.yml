@@ -358,6 +358,10 @@ services:
       - "traefik.http.routers.faf-content.middlewares=redirect-replay-subdomain, test-compress@file"
       - "traefik.http.middlewares.redirect-replay-subdomain.redirectregex.regex=^(http|https)://replay.${DOMAINNAME}/(.*)"
       - "traefik.http.middlewares.redirect-replay-subdomain.redirectregex.replacement=$${1}://api.${DOMAINNAME}/game/$${2}/replay"
+      - "traefik.http.middlewares.testheader.headers.accesscontrolallowmethods=GET"
+      - "traefik.http.middlewares.testheader.headers.accesscontrolalloworiginlist=*"
+      - "traefik.http.middlewares.testheader.headers.accesscontrolmaxage=60"
+      - "traefik.http.middlewares.testheader.headers.addvaryheader=false"
     logging:
       driver: "json-file"
       options:
