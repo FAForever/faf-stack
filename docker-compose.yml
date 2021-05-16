@@ -355,13 +355,13 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-content.rule=Host(`content.${DOMAINNAME}`) || Host(`replay.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-content.entryPoints=web-secure"
-      - "traefik.http.routers.faf-content.middlewares=redirect-replay-subdomain, test-compress@file"
+      - "traefik.http.routers.faf-content.middlewares=redirect-replay-subdomain, test-compress@file, cors"
       - "traefik.http.middlewares.redirect-replay-subdomain.redirectregex.regex=^(http|https)://replay.${DOMAINNAME}/(.*)"
       - "traefik.http.middlewares.redirect-replay-subdomain.redirectregex.replacement=$${1}://api.${DOMAINNAME}/game/$${2}/replay"
-      - "traefik.http.middlewares.testheader.headers.accesscontrolallowmethods=GET"
-      - "traefik.http.middlewares.testheader.headers.accesscontrolalloworiginlist=*"
-      - "traefik.http.middlewares.testheader.headers.accesscontrolmaxage=60"
-      - "traefik.http.middlewares.testheader.headers.addvaryheader=false"
+      - "traefik.http.middlewares.cors.headers.accesscontrolallowmethods=GET"
+      - "traefik.http.middlewares.cors.headers.accesscontrolalloworiginlist=*"
+      - "traefik.http.middlewares.cors.headers.accesscontrolmaxage=60"
+      - "traefik.http.middlewares.cors.headers.addvaryheader=false"
     logging:
       driver: "json-file"
       options:
