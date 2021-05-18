@@ -97,7 +97,7 @@ services:
   #
   faf-db-migrations:
     container_name: faf-db-migrations
-    image: faforever/faf-db-migrations:v114
+    image: faforever/faf-db-migrations:v116
     user: ${FAF_DB_USER}
     networks:
       - faf
