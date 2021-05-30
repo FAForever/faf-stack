@@ -572,7 +572,7 @@ services:
         max-file: "${DEFAULT_LOG_FILES}"
 
   faf-voting:
-    image: faforever/faf-voting:v2.0.1
+    image: faforever/faf-voting:v2.0.3
     user: ${FAF_VOTING_USER}
     restart: unless-stopped
     networks:
