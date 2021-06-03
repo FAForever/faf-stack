@@ -1,0 +1,14 @@
+# Customize this to your need
+dsn: mysql://hydra:banana@tcp(faf-db:3306)/hydra
+secrets:
+  system:
+    - bananapineapplepizza
+urls:
+  self:
+    issuer: http://localhost:4444
+  login: http://localhost:8080/login
+  consent: http://localhost:8080/consent
+
+# Static configuration
+strategies:
+  access_token: jwt
