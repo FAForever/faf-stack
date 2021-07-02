@@ -3,19 +3,6 @@ version: '3.7'
 services:
 
   #
-  # Initialize all data directories with correct permissions.
-  # This is a workaround for the fact that Docker always creates volumes as root. This could also be done outside
-  # docker-compose in a shell script, but it would add yet another manual maintenance step. This way, permissions are
-  # set correctly by simply using docker-compose.
-  #
-  faf-init-volumes:
-    container_name: faf-init-volumes
-    image: alpine:latest
-    volumes:
-      - ./:/faf-stack
-    command: sh -c "cd /faf-stack && sh scripts/init-volumes.sh"
-
-  #
   # Traefik server for reverse proxying, load balancing and fetching Let's encrypt certificates
   # Listens for changes on docker containers and adds them if matching labels are found
   # Runs in dashboard mode, secured by basic http auth
@@ -39,11 +26,6 @@ services:
       - "traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_USERNAME}:${TRAEFIK_PASSWORD}"
       - "traefik.http.routers.faf-traefik.service=api@internal"
       - "traefik.http.services.faf-traefik.loadbalancer.server.port=8080" # Dummy port so Docker doesn't complain
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${HIGH_PRIO_LOG_FILES}"
 
 
   #
@@ -55,11 +37,7 @@ services:
     image: faforever/coturn-lt-cred:v1.1
     env_file: ./config/faf-coturn/faf-coturn.env
     network_mode: host
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
+
 
   #
   # FAF MySQL database.
@@ -80,17 +58,11 @@ services:
       - ./config/faf-db/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld-custom.cnf
       - ./config/faf-db/mysql.cnf:/root/.my.cnf
       - ./data/faf-db:/var/lib/mysql
-    depends_on:
-      - faf-init-volumes
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
+
 
   #
   # FAF MySQL database migrations creates & updates the database tables and some required data
@@ -103,11 +75,7 @@ services:
       - faf
     restart: "no"
     env_file: ./config/faf-db-migrations/faf-db-migrations.env
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
+
 
   #
   # FAF game server for clients to connect to.
@@ -133,13 +101,7 @@ services:
       - "8001:8001" # Server QDataStream
       - "8002:8002" # Server UTF8 Json
       - "127.0.0.1:4000:4000" # Control server
-    depends_on:
-      - faf-init-volumes
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${HIGH_PRIO_LOG_FILES}"
+
 
   #
   # FAF JSON-API to provide data over HTTP.
@@ -164,8 +126,6 @@ services:
       - "8011" # HTTP Management API
     ports:
       - "127.0.0.1:8010:8010" # For internal testing only
-    depends_on:
-      - faf-init-volumes
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-java-api.rule=Host(`api.${DOMAINNAME}`)"
@@ -178,11 +138,7 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${HIGH_PRIO_LOG_FILES}"
+
 
   #
   # FAF website.
@@ -205,11 +161,7 @@ services:
       - "traefik.http.routers.faf-website.entryPoints=web-secure"
       - "traefik.http.routers.faf-website.middlewares=test-compress@file"
       - "traefik.http.services.faf-website.loadbalancer.server.port=3000"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
+
 
   #
   # IRC for FAF chat.
@@ -220,8 +172,6 @@ services:
     restart: unless-stopped
     networks:
       - faf
-    depends_on:
-      - faf-init-volumes
     volumes:
       - ./config/faf-ircd/ssl/server.cert.pem:/data/unrealircd/conf/tls/server.cert.pem
       - ./config/faf-ircd/ssl/server.key.pem:/data/unrealircd/conf/tls/server.key.pem
@@ -235,11 +185,6 @@ services:
     expose:
       # Anope
       - 7000
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
 
 
   #
@@ -255,11 +200,6 @@ services:
       - faf-ircd
     volumes:
       - ./config/faf-anope/services.conf:/anope/conf/services.conf
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
 
 
   #
@@ -270,17 +210,11 @@ services:
     image: faforever/faf-qai:v1.1
     user: ${FAF_QAI_USER}
     restart: unless-stopped
-    depends_on:
-      - faf-init-volumes
     volumes:
       - ./config/faf-qai:/config
     networks:
       - faf
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
+
 
   #
   # The content management system which is still being used as a backend for the website. The website accesses
@@ -297,8 +231,6 @@ services:
       faf:
         aliases:
           - "faf-wordpress"
-    depends_on:
-      - faf-init-volumes
     env_file: ./config/faf-wordpress/faf-wordpress.env
     labels:
       - "traefik.enable=true"
@@ -306,36 +238,8 @@ services:
       - "traefik.http.routers.faf-wordpress.entryPoints=web-secure"
       - "traefik.http.routers.faf-wordpress-http.rule=Host(`direct.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-wordpress-http.entryPoints=web"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
 
-  #
-  # Static copy of the old phpbb3 forum
-  #
-  faf-phpbb3-archive:
-    container_name: faf-phpbb3-archive
-    image: nginx:1.19
-    restart: unless-stopped
-    volumes:
-      - ./config/faf-phpbb3-archive/:/etc/nginx/conf.d/
-      - ./data/faf-phpbb3-archive/:/usr/share/nginx/html/
-    networks:
-      - faf
-    depends_on:
-      - faf-init-volumes
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.faf-phpbb3-archive.rule=Host(`forums.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-phpbb3-archive.entryPoints=web-secure"
-      - "traefik.http.routers.faf-phpbb3-archive.middlewares=test-compress@file"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
+
 
   #
   # Serves static files such as maps, mods, game files etc.
@@ -348,8 +252,6 @@ services:
       - ./data/content:/usr/share/nginx/html
     networks:
       - faf
-    depends_on:
-      - faf-init-volumes
     env_file: ./config/faf-content/faf-content.env
     labels:
       - "traefik.enable=true"
@@ -362,36 +264,6 @@ services:
       - "traefik.http.middlewares.cors.headers.accesscontrolalloworiginlist=*"
       - "traefik.http.middlewares.cors.headers.accesscontrolmaxage=60"
       - "traefik.http.middlewares.cors.headers.addvaryheader=false"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
-
-  #
-  # The FAF media wiki.
-  #
-  faf-wiki:
-    container_name: faf-wiki
-    image: mediawiki:lts
-    user: ${FAF_WIKI_USER}
-    restart: unless-stopped
-    networks:
-      - faf
-    volumes:
-      - ./data/faf-wiki/images:/var/www/html/images
-      - ./data/faf-wiki/LocalSettings.php:/var/www/html/LocalSettings.php
-    env_file: ./config/faf-wiki/faf-wiki.env
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.faf-wiki.rule=Host(`wiki.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-wiki.entryPoints=web-secure"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
-
   #
   # The second version of "live replay" server
   #
@@ -405,16 +277,10 @@ services:
       - ./config/faf-aio-replayserver:/config
     networks:
       - faf
-    depends_on:
-      - faf-init-volumes
     env_file: ./config/faf-aio-replayserver/faf-aio-replayserver.env
     ports:
       - "15000:15000"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
+
 
   # The third version of the "live replay" server, in Rust.
   faf-rust-replayserver:
@@ -427,16 +293,10 @@ services:
       - ./config/faf-rust-replayserver:/config
     networks:
       - faf
-    depends_on:
-      - faf-init-volumes
     env_file: ./config/faf-rust-replayserver/faf-rust-replayserver.env
     ports:
       - "15000:15000"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
+
 
   faf-policy-server:
     container_name: faf-policy-server
@@ -452,39 +312,7 @@ services:
       - "8097"
     volumes:
       - ./data/faf-policy-server/faf-uid-verifier/verifier:/app/verifier
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
 
-  #
-  # FAF unit database
-  #
-  faf-unitdb:
-    container_name: faf-unitdb
-    image: faforever/faf-unitdb:v1.3.1
-    restart: unless-stopped
-    networks:
-      - faf
-    volumes:
-      - ./config/faf-unitdb/datafiles.json:/var/www/html/config/datafiles.json
-      - ./config/faf-unitdb/locfiles.json:/var/www/html/config/locfiles.json
-    depends_on:
-      - faf-init-volumes
-    env_file: ./config/faf-unitdb/faf-unitdb.env
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.faf-unitdb.rule=Host(`unitdb.${DOMAINNAME}`) || Host(`direct.${DOMAINNAME}`) && PathPrefix(`/faf/unitsDB`)"
-      - "traefik.http.routers.faf-unitdb.entryPoints=web-secure"
-      - "traefik.http.routers.faf-unitdb.middlewares=unitdb-stripprefix, test-compress@file"
-      - "traefik.http.middlewares.unitdb-stripprefix.stripprefix.prefixes=/faf/unitsDB"
-
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
 
   #
   # Postal is a fully featured open source mail delivery platform for incoming & outgoing e-mail.
@@ -509,11 +337,7 @@ services:
       - "traefik.http.routers.faf-postal.rule=Host(`postal.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-postal.entryPoints=web-secure"
       - "traefik.http.services.faf-postal.loadbalancer.server.port=5000"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
+
 
   #
   # RabbitMQ is open source message broker software (sometimes called message-oriented middleware) that implements the
@@ -540,11 +364,7 @@ services:
       - "traefik.http.routers.faf-rabbitmq.rule=Host(`rabbitmq.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-rabbitmq.entryPoints=web-secure"
       - "traefik.http.services.faf-rabbitmq.loadbalancer.server.port=15672"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
+
 
   #
   # Mautic is an open source marketing automation software.
@@ -565,77 +385,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-mautic.rule=Host(`mautic.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-mautic.entryPoints=web-secure"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
 
-  faf-voting:
-    image: faforever/faf-voting:v2.0.3
-    user: ${FAF_VOTING_USER}
-    restart: unless-stopped
-    networks:
-      faf:
-        aliases:
-          - "faf-voting"
-    env_file: ./config/faf-voting/faf-voting.env
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.faf-voting.rule=Host(`voting.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-voting.entryPoints=web-secure"
-      - "traefik.http.routers.faf-voting.middlewares=test-compress@file"
-      - "traefik.http.services.faf-voting.loadbalancer.server.port=3000"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
-
-  faf-mongodb:
-    container_name: faf-mongodb
-    image: mongo:4.2.13
-    user: ${FAF_MONGODB_USER}
-    restart: unless-stopped
-    networks:
-      faf:
-        aliases:
-          - "faf-mongodb"
-    env_file: ./config/faf-mongodb/faf-mongodb.env
-    volumes:
-      - ./data/faf-mongodb/data/db:/data/db
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
-
-  faf-nodebb:
-    # for instructions how to initialize the setup check the readme in the config.template/faf-nodebb
-    container_name: faf-nodebb
-    image: nodebb/docker:v1.16.2
-    user: ${FAF_NODEBB_USER}
-    restart: unless-stopped
-    env_file: ./config/faf-nodebb/faf-nodebb.env
-    networks:
-      faf:
-        aliases:
-          - "faf-nodebb"
-    volumes:
-      - ./config/faf-nodebb/config.json:/usr/src/app/config.json
-      - ./data/faf-nodebb/node_modules:/usr/src/app/node_modules
-      - ./data/faf-nodebb/build:/usr/src/app/build
-      - ./data/faf-nodebb/uploads/:/usr/src/app/public/uploads
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${DEFAULT_LOG_FILES}"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.faf-nodebb.rule=Host(`forum.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-nodebb.entryPoints=web-secure"
-      - "traefik.http.routers.faf-nodebb.middlewares=test-compress@file"
 
   #
   # FAF League Service
@@ -650,13 +400,6 @@ services:
           - "faf-league-service"
     restart: unless-stopped
     env_file: ./config/faf-league-service/faf-league-service.env
-    depends_on:
-      - faf-init-volumes
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${HIGH_PRIO_LOG_FILES}"
 
   #
   # OAuth2 service
@@ -675,8 +418,6 @@ services:
     volumes:
       - ./config/faf-ory-hydra/hydra.yaml:/hydra.yaml
     restart: unless-stopped
-    depends_on:
-      - faf-init-volumes
     ports:
       - "127.0.0.1:4445:4445" # only for testing
       - "127.0.0.1:4444:4444" # only for testing
@@ -686,11 +427,6 @@ services:
       - "traefik.http.routers.faf-ory-hydra.entryPoints=web-secure"
       - "traefik.http.routers.faf-ory-hydra.tls.certresolver=default"
       - "traefik.http.services.faf-ory-hydra.loadbalancer.server.port=4444"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${HIGH_PRIO_LOG_FILES}"
 
   #
   # FAF User Service
@@ -704,19 +440,12 @@ services:
           - "faf-user-service"
     restart: unless-stopped
     env_file: ./config/faf-user-service/faf-user-service.env
-    depends_on:
-      - faf-init-volumes
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-user-service.rule=Host(`user.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-user-service.entryPoints=web-secure"
       - "traefik.http.routers.faf-user-service.tls.certresolver=default"
       - "traefik.http.services.faf-user-service.loadbalancer.server.port=8080"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "${DEFAULT_LOG_SIZE}"
-        max-file: "${HIGH_PRIO_LOG_FILES}"
 
 networks:
   faf:

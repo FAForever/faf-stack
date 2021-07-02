@@ -1,3 +1,6 @@
+#
+# This file contains generic monitoring services for FAForever that are not required to run FAF.
+#
 version: '3.7'
 
 services:

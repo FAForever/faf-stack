@@ -6,5 +6,5 @@
 !/tests/
 !.env.template
 !.gitignore
-!docker-compose.yml
+!*.yml
 !README.md
