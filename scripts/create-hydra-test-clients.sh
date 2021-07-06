@@ -16,3 +16,17 @@ docker-compose exec faf-ory-hydra hydra clients create \
     --response-types code \
     --scope openid,offline,public_profile,write_account_data,create_user \
     --callbacks https://test.faforever.com/callback,http://localhost:3000/callback
+
+docker-compose exec faf-ory-hydra hydra clients create \
+    --skip-tls-verify \
+    --endpoint http://127.0.0.1:4445 \
+    --fake-tls-termination \
+    --id faf-java-client \
+    --name fafClient \
+    --logo-uri https://faforever.com/images/faf-logo.png \
+    --grant-types authorization_code,refresh_token \
+    --response-types code \
+    --scope openid,offline,public_profile,read_events,read_achievements,upload_map,upload_mod \
+    --callbacks http://localhost \
+    --token-endpoint-auth-method none
+
