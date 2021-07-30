@@ -26,7 +26,7 @@ docker-compose exec faf-ory-hydra hydra clients create \
     --logo-uri https://faforever.com/images/faf-logo.png \
     --grant-types authorization_code,refresh_token \
     --response-types code \
-    --scope openid,offline,public_profile,read_events,read_achievements,upload_map,upload_mod \
+    --scope openid,offline,public_profile,lobby,upload_map,upload_mod \
     --callbacks http://localhost \
     --token-endpoint-auth-method none
 
