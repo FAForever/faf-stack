@@ -697,7 +697,7 @@ services:
   #
   faf-user-service:
     container_name: faf-user-service
-    image: faforever/faf-user-service:1.0.0
+    image: faforever/faf-user-service:1.0.4
     networks:
       faf:
         aliases:
