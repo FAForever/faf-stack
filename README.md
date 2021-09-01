@@ -61,6 +61,11 @@ This will launch the faf-db and generate the current database scheme.
 
 ### Update database schema
 
+Before updating the database schema you may need to update the configuration files.
+
+    cp -R config.template/* config
+    cp .env.template .env
+
     docker-compose run --rm faf-db-migrations migrate
 
 ### Start all at once
