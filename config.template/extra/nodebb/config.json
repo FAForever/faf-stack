@@ -4,7 +4,7 @@
   "database": "mongo",
   "port": 4567,
   "mongo": {
-    "host": "faf-mongodb",
+    "host": "mongodb",
     "port": "27017",
     "username": "nodebb",
     "password": "banana",
