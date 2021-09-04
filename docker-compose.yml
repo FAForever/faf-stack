@@ -3,19 +3,6 @@ version: '3.7'
 services:
 
   #
-  # Initialize all data directories with correct permissions.
-  # This is a workaround for the fact that Docker always creates volumes as root. This could also be done outside
-  # docker-compose in a shell script, but it would add yet another manual maintenance step. This way, permissions are
-  # set correctly by simply using docker-compose.
-  #
-  faf-init-volumes:
-    container_name: faf-init-volumes
-    image: alpine:latest
-    volumes:
-      - ./:/faf-stack
-    command: sh -c "cd /faf-stack && sh scripts/init-volumes.sh"
-
-  #
   # Traefik server for reverse proxying, load balancing and fetching Let's encrypt certificates
   # Listens for changes on docker containers and adds them if matching labels are found
   # Runs in dashboard mode, secured by basic http auth
@@ -80,8 +67,6 @@ services:
       - ./config/faf-db/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld-custom.cnf
       - ./config/faf-db/mysql.cnf:/root/.my.cnf
       - ./data/faf-db:/var/lib/mysql
-    depends_on:
-      - faf-init-volumes
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
@@ -133,8 +118,6 @@ services:
       - "8001:8001" # Server QDataStream
       - "8002:8002" # Server UTF8 Json
       - "127.0.0.1:4000:4000" # Control server
-    depends_on:
-      - faf-init-volumes
     logging:
       driver: "json-file"
       options:
@@ -164,8 +147,6 @@ services:
       - "8011" # HTTP Management API
     ports:
       - "127.0.0.1:8010:8010" # For internal testing only
-    depends_on:
-      - faf-init-volumes
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-java-api.rule=Host(`api.${DOMAINNAME}`)"
@@ -220,8 +201,6 @@ services:
     restart: unless-stopped
     networks:
       - faf
-    depends_on:
-      - faf-init-volumes
     volumes:
       - ./config/faf-ircd/ssl/server.cert.pem:/data/unrealircd/conf/tls/server.cert.pem
       - ./config/faf-ircd/ssl/server.key.pem:/data/unrealircd/conf/tls/server.key.pem
@@ -270,8 +249,6 @@ services:
     image: faforever/faf-qai:v1.1
     user: ${FAF_QAI_USER}
     restart: unless-stopped
-    depends_on:
-      - faf-init-volumes
     volumes:
       - ./config/faf-qai:/config
     networks:
@@ -297,8 +274,6 @@ services:
       faf:
         aliases:
           - "faf-wordpress"
-    depends_on:
-      - faf-init-volumes
     env_file: ./config/faf-wordpress/faf-wordpress.env
     labels:
       - "traefik.enable=true"
@@ -323,8 +298,6 @@ services:
       - ./data/content:/usr/share/nginx/html
     networks:
       - faf
-    depends_on:
-      - faf-init-volumes
     env_file: ./config/faf-content/faf-content.env
     labels:
       - "traefik.enable=true"
@@ -356,8 +329,6 @@ services:
       - ./config/faf-aio-replayserver:/config
     networks:
       - faf
-    depends_on:
-      - faf-init-volumes
     env_file: ./config/faf-aio-replayserver/faf-aio-replayserver.env
     ports:
       - "15000:15000"
@@ -378,8 +349,6 @@ services:
       - ./config/faf-rust-replayserver:/config
     networks:
       - faf
-    depends_on:
-      - faf-init-volumes
     env_file: ./config/faf-rust-replayserver/faf-rust-replayserver.env
     ports:
       - "15000:15000"
@@ -507,8 +476,6 @@ services:
           - "faf-league-service"
     restart: unless-stopped
     env_file: ./config/faf-league-service/faf-league-service.env
-    depends_on:
-      - faf-init-volumes
     logging:
       driver: "json-file"
       options:
@@ -532,8 +499,6 @@ services:
     volumes:
       - ./config/faf-ory-hydra/hydra.yaml:/hydra.yaml
     restart: unless-stopped
-    depends_on:
-      - faf-init-volumes
     ports:
       - "127.0.0.1:4445:4445" # only for testing
       - "127.0.0.1:4444:4444" # only for testing
@@ -561,8 +526,6 @@ services:
           - "faf-user-service"
     restart: unless-stopped
     env_file: ./config/faf-user-service/faf-user-service.env
-    depends_on:
-      - faf-init-volumes
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-user-service.rule=Host(`user.${DOMAINNAME}`)"
