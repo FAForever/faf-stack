@@ -95,7 +95,7 @@ services:
   # Database used by Wiki.js
   #
   postgres-wikijs:
-    image: postgres
+    image: postgres:13-alpine
     restart: unless-stopped
     networks:
       - faf-extra
