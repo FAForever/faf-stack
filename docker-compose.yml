@@ -8,7 +8,7 @@ services:
   # Runs in dashboard mode, secured by basic http auth
   #
   faf-traefik:
-    image: traefik:v2.4
+    image: traefik:v2.5.2
     env_file: ./config/faf-traefik/faf-traefik.env
     network_mode: host
     volumes:
