@@ -66,7 +66,7 @@ services:
   #
   faf-db-migrations:
     container_name: faf-db-migrations
-    image: faforever/faf-db-migrations:v119
+    image: faforever/faf-db-migrations:v121
     user: ${FAF_DB_USER}
     networks:
       - faf
@@ -78,7 +78,7 @@ services:
   #
   faf-python-server:
     container_name: faf-python-server
-    image: faforever/faf-python-server:v1.8.0
+    image: faforever/faf-python-server:v1.9.0
     user: ${FAF_PYTHON_SERVER_USER}
     networks:
       faf:
@@ -103,7 +103,7 @@ services:
   #
   faf-java-api:
     container_name: faf-java-api
-    image: faforever/faf-java-api:v2.15.10
+    image: faforever/faf-java-api:v2.15.11
     user: ${FAF_JAVA_API_USER}
     networks:
       faf:
