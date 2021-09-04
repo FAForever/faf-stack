@@ -33,7 +33,7 @@ services:
       - faf-extra
     env_file: ./config/extra/mongodb/mongodb.env
     volumes:
-      - ./data/faf-mongodb/data/db:/data/db
+      - ./data/mongodb/data/db:/data/db
 
   #
   # Forum software
