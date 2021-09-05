@@ -66,6 +66,14 @@ services:
     env_file: config/monitoring/mysql-exporter/mysql-exporter.env
     expose:
       - "9104"
+    command: >-
+      --collect.binlog_size
+      --collect.auto_increment.columns
+      --collect.info_schema.processlist
+      --collect.info_schema.tables
+      --collect.info_schema.tablestats
+      --collect.info_schema.userstats
+      --collect.info_schema.query_response_time
 
   node-exporter:
     image: prom/node-exporter
