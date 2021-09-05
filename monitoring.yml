@@ -39,11 +39,11 @@ services:
       - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
 
   grafana:
-    image: grafana/grafana:7.4.1
+    image: grafana/grafana:8.1.2
     deploy:
       resources:
         limits:
-          cpus: "1"
+          cpus: "2"
     restart: unless-stopped
     networks:
       - monitoring
