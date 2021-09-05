@@ -184,7 +184,7 @@ services:
   #
   faf-anope:
     container_name: faf-anope
-    image: anope/anope:2.0.8
+    image: anope/anope:2.0.10
     restart: unless-stopped
     networks:
       - faf
