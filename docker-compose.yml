@@ -42,7 +42,7 @@ services:
   #
   faf-db:
     container_name: faf-db
-    image: mysql:5.7
+    image: mariadb:10.6
     user: ${FAF_DB_USER}
     networks:
       faf:
