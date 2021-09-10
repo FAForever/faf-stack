@@ -431,3 +431,5 @@ services:
 networks:
   faf:
     driver: bridge
+  faf-extra:
+    driver: bridge
