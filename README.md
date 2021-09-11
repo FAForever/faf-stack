@@ -59,12 +59,16 @@ Hint: Some linux distros generate 3072 bit RSA keys by default (e.g. Arch). 3072
     
 This will launch the faf-db and generate the current database scheme.
 
-### Update database schema
+### Updating the configuration files
 
-Before updating the database schema you may need to update the configuration files.
+Simply override the config files with the template files again.
 
     cp -R config.template/* config
     cp .env.template .env
+
+### Update database schema
+
+Before updating the database schema you may need to update the configuration files.
 
     docker-compose run --rm faf-db-migrations migrate
 
