@@ -9,6 +9,17 @@ docker-compose exec faf-ory-hydra hydra clients create \
     --skip-tls-verify \
     --endpoint http://127.0.0.1:4445 \
     --fake-tls-termination \
+    --id faf-lobby-server \
+    --name faf-lobby-server \
+    --secret banana \
+    --scope write_achievements,write_events \
+    --token-endpoint-auth-method client_secret_post \
+    -g client_credentials
+
+docker-compose exec faf-ory-hydra hydra clients create \
+    --skip-tls-verify \
+    --endpoint http://127.0.0.1:4445 \
+    --fake-tls-termination \
     --id faf-website \
     --name faforever.com \
     --logo-uri https://faforever.com/images/faf-logo.png \
