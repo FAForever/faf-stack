@@ -12,3 +12,7 @@ urls:
 # Static configuration
 strategies:
   access_token: jwt
+
+oauth2:
+  client_credentials:
+    default_grant_allowed_scope: true
