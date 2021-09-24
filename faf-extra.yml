@@ -101,7 +101,7 @@ services:
   # Web frontend for voting
   #
   voting:
-    image: faforever/faf-voting:v2.0.3
+    image: faforever/faf-voting:v2.1.1
     user: ${FAF_VOTING_USER}
     restart: unless-stopped
     networks:
