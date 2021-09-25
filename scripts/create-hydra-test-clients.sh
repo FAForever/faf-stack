@@ -40,4 +40,17 @@ docker-compose exec faf-ory-hydra hydra clients create \
     --scope openid,offline,public_profile,lobby,upload_map,upload_mod \
     --callbacks http://localhost \
     --token-endpoint-auth-method none
+	
+docker-compose exec faf-ory-hydra hydra clients create \
+    --skip-tls-verify \
+    --endpoint http://127.0.0.1:4445 \
+    --fake-tls-termination \
+    --id faf-moderator-client \
+    --name fafModClient \
+    --logo-uri https://faforever.com/images/faf-logo.png \
+    --grant-types authorization_code,refresh_token \
+    --response-types code \
+    --scope upload_avatar,administrative_actions,read_sensible_userdata,manage_vault \
+    --callbacks http://localhost \
+    --token-endpoint-auth-method none
 
