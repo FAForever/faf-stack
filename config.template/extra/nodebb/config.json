@@ -11,11 +11,11 @@
     "database": "nodebb"
   },
   "oauth": {
-    "authorizationURL": "http://localhost:8010/oauth/authorize",
-    "tokenURL": "http://faf-java-api:8010/oauth/token",
+    "authorizationURL": "http://faf-ory-hydra:4444/oauth2/auth",
+    "tokenURL": "http://faf-ory-hydra:4444/oauth2/token",
     "fafApiProfileURL": "http://faf-java-api:8010/me",
-    "id": "faf-nodebb",
-    "secret": "banana-pizza",
+    "id": "faf-forum",
+    "secret": "{tokenFromScripts-create-hydra-test-clients.sh}",
     "scope": "public_profile"
   }
 }

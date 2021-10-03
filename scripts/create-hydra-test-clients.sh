@@ -54,3 +54,15 @@ docker-compose exec faf-ory-hydra hydra clients create \
     --callbacks http://localhost \
     --token-endpoint-auth-method none
 
+docker-compose exec faf-ory-hydra hydra clients create \
+    --skip-tls-verify \
+    --endpoint http://127.0.0.1:4445 \
+    --fake-tls-termination \
+    --id faf-forum \
+    --name forum.faforever.com \
+    --logo-uri https://faforever.com/images/faf-logo.png \
+    --grant-types authorization_code,refresh_token \
+    --response-types code \
+    --token-endpoint-auth-method client_secret_post \
+    --scope openid,public_profile \
+    --callbacks http://localhost:4567/auth/faf-nodebb/callback
