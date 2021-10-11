@@ -9,14 +9,15 @@ services:
   #
   faf-traefik:
     image: traefik:v2.5.2
-    env_file: ./config/faf-traefik/faf-traefik.env
+    environment:
+      DOMAINNAME: ${DOMAINNAME}
     network_mode: host
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
       # Config folder contains 3 files:
       # traefik.yml  - Static configuration (change requires restart)
-      # config.yml   - Dynamic configuration (traefik listens for changes)
-      # acme.json    - Make sure to set chmod to 600 (will be populated by traefik)
+      # config.yml   - Dynamic configuration (Traefik listens for changes)
+      # acme.json    - Make sure to set chmod to 600 (will be populated by Traefik)
       - ./config/faf-traefik:/etc/traefik
     labels:
       - "traefik.enable=true"

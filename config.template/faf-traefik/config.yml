@@ -7,10 +7,31 @@ http:
       rule: HostRegexp(`{any:.*}`)
       entryPoints:
         - "web"
-        - "web-secure"
       service: noop@internal
       middlewares:
         - redirect
+
+    unavailable-fallback:
+      entryPoints:
+        - "web-secure"
+      # catchall rule for user facing faf services
+      rule: >
+        Host(`{{env "DOMAINNAME"}}`) || Host(`www.{{env "DOMAINNAME"}}`) ||
+        Host(`hydra.{{env "DOMAINNAME"}}`) ||
+        Host(`user.{{env "DOMAINNAME"}}`) ||
+        Host(`api.{{env "DOMAINNAME"}}`) ||
+        Host(`content.{{env "DOMAINNAME"}}`) || Host(`replay.{{env "DOMAINNAME"}}`) ||
+        Host(`direct.{{env "DOMAINNAME"}}`)
+      service: unavailable
+      # lowest possible priority
+      # evaluated when no other router is matched
+      priority: 1
+
+  services:
+    # Service that will always answer a 503 Service Unavailable response
+    unavailable:
+      loadBalancer:
+        servers: {}
 
   middlewares:
     redirect:
