@@ -429,6 +429,24 @@ services:
       - "traefik.http.routers.faf-user-service.tls.certresolver=default"
       - "traefik.http.services.faf-user-service.loadbalancer.server.port=8080"
 
+
+  #
+  # FAF Tournament Launcher
+  # Allows launching auto-lobby games for players via REST.
+  #
+  faf-tournament-launcher:
+    image: faforever/faf-tournament-launcher:main
+    networks:
+      - faf
+    restart: unless-stopped
+    env_file: ./config/faf-tournament-launcher/faf-tournament-launcher.env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.faf-tournament-launcher.rule=Host(`tournaments.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-tournament-launcher.entryPoints=web-secure"
+      - "traefik.http.routers.faf-tournament-launcher.tls.certresolver=default"
+      - "traefik.http.services.faf-tournament-launcher.loadbalancer.server.port=8080"
+
 networks:
   faf:
     driver: bridge
