@@ -102,7 +102,7 @@ services:
   #
   faf-java-api:
     container_name: faf-java-api
-    image: faforever/faf-java-api:v2.17.0
+    image: faforever/faf-java-api:v2.17.1
     user: ${FAF_JAVA_API_USER}
     networks:
       faf:
