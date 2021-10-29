@@ -65,7 +65,7 @@ services:
   #
   faf-db-migrations:
     container_name: faf-db-migrations
-    image: faforever/faf-db-migrations:v121
+    image: faforever/faf-db-migrations:v122
     user: ${FAF_DB_USER}
     networks:
       - faf
@@ -77,7 +77,7 @@ services:
   #
   faf-python-server:
     container_name: faf-python-server
-    image: faforever/faf-python-server:v1.9.0
+    image: faforever/faf-python-server:v1.10.0
     user: ${FAF_PYTHON_SERVER_USER}
     networks:
       faf:
@@ -102,7 +102,7 @@ services:
   #
   faf-java-api:
     container_name: faf-java-api
-    image: faforever/faf-java-api:v2.16.0
+    image: faforever/faf-java-api:v2.17.0
     user: ${FAF_JAVA_API_USER}
     networks:
       faf:
@@ -328,7 +328,7 @@ services:
   # Advanced Message Queuing Protocol (AMQP).
   #
   faf-rabbitmq:
-    image: rabbitmq:3.8.22-management-alpine
+    image: rabbitmq:3.8.23-management-alpine
     container_name: faf-rabbitmq
     hostname: rabbitmq.${DOMAINNAME}
     expose:
@@ -388,7 +388,7 @@ services:
   #
   faf-ory-hydra:
     container_name: faf-ory-hydra
-    image: oryd/hydra:v1.10.2
+    image: oryd/hydra:v1.10.7
     # We consider the Docker network safe since we are on a single host.
     # If someone gains access to network, he has root access and can turn off the security anyway.
     # This can be improved once the login stack was moved outside the main host.
