@@ -15,7 +15,7 @@ if [ -d "./data/faf-nodebb" ]; then
 fi
 
 #docker-compose run --rm faf-nodebb sh -c "npm install && npm cache clean --force"
-docker-compose -f faf-extra.yml run --rm nodebb sh -c "./nodebb setup \
+docker-compose -f faf-extra.yml run --rm -u node nodebb sh -c "./nodebb setup \
 && npm install nodebb-plugin-sso-oauth-faforever \
 && ./nodebb activate nodebb-plugin-sso-oauth-faforever \
 && ./nodebb build"

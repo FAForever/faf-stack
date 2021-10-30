@@ -40,7 +40,7 @@ services:
   #
   nodebb:
     # for instructions how to initialize the setup check the readme in the config.template/faf-nodebb
-    image: nodebb/docker:v1.17.2
+    image: nodebb/docker:1.18.5
     user: ${FAF_NODEBB_USER}
     restart: unless-stopped
     networks:
