@@ -24,7 +24,7 @@ do
     exit 1
   fi
   current_wait=$((current_wait+1))
-  sleep 1
+  sleep 2
 done
 
 kill ${log_process_id}

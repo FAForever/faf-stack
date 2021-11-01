@@ -14,6 +14,10 @@ if [ -d "./data/nodebb" ]; then
     exit 1
 fi
 
+echo "Fixing config permissions"
+sudo chown -R 1000:1000 ./config/extra/nodebb
+sudo chmod -R g+w ./config/extra/nodebb
+
 echo "Setting up nodebb data directories (using sudo)"
 sudo mkdir -p ./data/nodebb/build
 sudo mkdir -p ./data/nodebb/node_modules
