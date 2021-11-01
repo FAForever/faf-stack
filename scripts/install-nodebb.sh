@@ -9,10 +9,16 @@ if [ ! -f faf-extra.yml ]; then
 fi
 
 
-if [ -d "./data/faf-nodebb" ]; then
-    echo "faf-nodebb directory already exists! Installation aborted."
+if [ -d "./data/nodebb" ]; then
+    echo "nodebb directory already exists! Installation aborted."
     exit 1
 fi
+
+echo "Setting up nodebb data directories (using sudo)"
+sudo mkdir -p ./data/nodebb/build
+sudo mkdir -p ./data/nodebb/node_modules
+sudo mkdir -p ./data/nodebb/uploads
+sudo chown -R 1000:1000 ./data/nodebb
 
 #docker-compose run --rm faf-nodebb sh -c "npm install && npm cache clean --force"
 docker-compose -f faf-extra.yml run --rm -u node nodebb sh -c "./nodebb setup \
@@ -20,4 +26,4 @@ docker-compose -f faf-extra.yml run --rm -u node nodebb sh -c "./nodebb setup \
 && ./nodebb activate nodebb-plugin-sso-oauth-faforever \
 && ./nodebb build"
 
-echo "faf-nodebb setup done! Don't forget to write down the admin accounts password!"
+echo "NodeBB setup done! Don't forget to write down the admin accounts password!"

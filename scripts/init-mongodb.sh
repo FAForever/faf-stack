@@ -20,14 +20,14 @@ while ! docker-compose -f faf-extra.yml exec -T mongodb mongo --eval 'quit(db.ru
 do
   if [ ${current_wait} -ge ${MAX_WAIT} ]; then
     echo "Timeout on startup of mongodb"
-    kill -TERM ${log_process_id}
+    kill ${log_process_id}
     exit 1
   fi
   current_wait=$((current_wait+1))
   sleep 1
 done
 
-kill -TERM ${log_process_id}
+kill ${log_process_id}
 
 echo "Create mongodb database and user for nodebb"
 . config/extra/mongodb/mongodb.env

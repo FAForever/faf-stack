@@ -23,14 +23,14 @@ while ! curl -s --max-time 1 http://localhost:8010 > /dev/null 2>&1
 do
   if [ ${current_wait} -ge ${MAX_WAIT} ]; then
     echo "Timeout on startup of faf-java-api"
-    kill -TERM ${log_process_id}
+    kill ${log_process_id}
     exit 1
   fi
   current_wait=$((current_wait+1))
   sleep 1
 done
 
-kill -TERM ${log_process_id}
+kill ${log_process_id}
 
 echo "Creating test-data in faf-db"
 docker exec -i faf-db mysql -uroot -pbanana faf < test-data.sql
@@ -45,14 +45,14 @@ while ! curl -s --max-time 1 http://localhost:8020 >/dev/null 2>&1
 do
   if [ ${current_wait} -ge ${MAX_WAIT} ]; then
     echo "Timeout on startup of faf-website"
-    kill -TERM ${log_process_id}
+    kill ${log_process_id}
     exit 1
   fi
   current_wait=$((current_wait+1))
   sleep 1
 done
 
-kill -TERM ${log_process_id}
+kill ${log_process_id}
 
 echo "Running test collection"
 docker run --network="host" -t postman/newman:alpine run "https://raw.githubusercontent.com/FAForever/faf-stack/$(urlencode "${GITHUB_REF#refs/*/}")/tests/postman-collection.json"
