@@ -27,7 +27,6 @@ services:
   #
   mongodb:
     image: mongo:4.2.13
-    user: ${FAF_MONGODB_USER}
     restart: unless-stopped
     networks:
       - faf-extra
@@ -41,7 +40,6 @@ services:
   nodebb:
     # for instructions how to initialize the setup check the readme in the config.template/faf-nodebb
     image: nodebb/docker:1.18.5
-    user: ${FAF_NODEBB_USER}
     restart: unless-stopped
     networks:
       - faf-extra

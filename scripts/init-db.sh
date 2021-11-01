@@ -19,14 +19,14 @@ while ! docker exec -i faf-db sh -c "mysqladmin ping -h 127.0.0.1 -uroot -pbanan
 do
   if [ ${current_wait} -ge ${MAX_WAIT} ]; then
     echo "Timeout on startup of faf-db"
-    kill -TERM ${log_process_id}
+    kill ${log_process_id}
     exit 1
   fi
   current_wait=$((current_wait+1))
   sleep 1
 done
 
-kill -TERM ${log_process_id}
+kill ${log_process_id}
 
 
 echo "Waiting for faf-db-migrations"
