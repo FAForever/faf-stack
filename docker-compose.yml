@@ -77,7 +77,8 @@ services:
   #
   faf-python-server:
     container_name: faf-python-server
-    image: faforever/faf-python-server:v1.10.0
+    #image: faforever/faf-python-server:v1.10.0
+    build: https://github.com/Askaholic/server#675-matchmaking-from-rabbitmq
     user: ${FAF_PYTHON_SERVER_USER}
     networks:
       faf:
@@ -428,6 +429,22 @@ services:
       - "traefik.http.routers.faf-user-service.entryPoints=web-secure"
       - "traefik.http.routers.faf-user-service.tls.certresolver=default"
       - "traefik.http.services.faf-user-service.loadbalancer.server.port=8080"
+
+  #
+  # FAF Galactic War backend
+  #
+  gw-backend:
+    container_name: gw-backend
+    image: faforever/gw-backend:develop
+    networks:
+      - faf
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gw-backend.rule=Host(`gw-api.${DOMAINNAME}`)"
+      - "traefik.http.routers.gw-backend.entryPoints=web-secure"
+      - "traefik.http.routers.gw-backend.tls.certresolver=default"
+      - "traefik.http.services.gw-backend.loadbalancer.server.port=8080"
 
 networks:
   faf:
