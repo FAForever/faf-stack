@@ -57,25 +57,6 @@ services:
 
 
   #
-  # Wiki software (same as Wikipedia)
-  #
-  mediawiki:
-    image: mediawiki:lts
-    user: ${FAF_WIKI_USER}
-    restart: unless-stopped
-    networks:
-      - faf-extra
-    volumes:
-      - ./data/mediawiki/images:/var/www/html/images
-      - ./data/mediawiki/LocalSettings.php:/var/www/html/LocalSettings.php
-    env_file: ./config/extra/mediawiki/mediawiki.env
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.faf-wiki.rule=Host(`wiki.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-wiki.entryPoints=web-secure"
-
-
-  #
   # FAF unit database
   #
   unitdb:
