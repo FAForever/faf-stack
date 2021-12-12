@@ -74,6 +74,33 @@ services:
       - "traefik.http.routers.faf-wiki.rule=Host(`wiki.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-wiki.entryPoints=web-secure"
 
+  #
+  # New Wiki software (not the same as Wikipedia)
+  #
+  wikijs:
+    image: requarks/wiki:2
+    restart: unless-stopped
+    networks:
+      - faf-extra
+    env_file: ./config/extra/wikijs/wikijs.env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wikijs.rule=Host(`wiki.${DOMAINNAME}`)"
+      - "traefik.http.routers.wikijs.entryPoints=web-secure"
+      - "traefik.http.services.wikijs.loadbalancer.server.port=3000"
+
+  #
+  # Database used by Wiki.js
+  #
+  postgres-wikijs:
+    image: postgres:13-alpine
+    restart: unless-stopped
+    networks:
+      - faf-extra
+    env_file: ./config/extra/postgres-wikijs/postgres-wikijs.env
+    volumes:
+      - ./data/extra/postgres-wikijs:/var/lib/postgresql/data      
+
 
   #
   # FAF unit database
