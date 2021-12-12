@@ -87,7 +87,7 @@ services:
     env_file: ./config/extra/wikijs/wikijs.env
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.wikijs.rule=Host(`wikijs.${DOMAINNAME}`)"
+      - "traefik.http.routers.wikijs.rule=Host(`wiki.${DOMAINNAME}`)"
       - "traefik.http.routers.wikijs.entryPoints=web-secure"
       - "traefik.http.services.wikijs.loadbalancer.server.port=3000"
 
