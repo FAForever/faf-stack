@@ -12,6 +12,7 @@ database:
     name: faf
 storage:
     vault_path: /content/faf/vault/replay_vault
+    compression_level: 10
 replay:
     forced_timeout_s: 18000
     time_with_zero_writers_to_end_replay_s: 30

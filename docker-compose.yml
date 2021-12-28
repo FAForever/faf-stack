@@ -273,7 +273,7 @@ services:
   # The third version of the "live replay" server, in Rust.
   faf-rust-replayserver:
     container_name: faf-rust-replayserver
-    image: faforever/faf-rust-replayserver:0.2.5
+    image: faforever/faf-rust-replayserver:0.3.1
     user: ${FAF_AIO_REPLAYSERVER_USER}
     restart: unless-stopped
     volumes:
