@@ -416,7 +416,7 @@ services:
   #
   faf-user-service:
     container_name: faf-user-service
-    image: faforever/faf-user-service:1.0.7
+    image: faforever/faf-user-service:1.0.8
     networks:
       faf:
         aliases:
