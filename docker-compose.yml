@@ -102,7 +102,7 @@ services:
   #
   faf-java-api:
     container_name: faf-java-api
-    image: faforever/faf-java-api:v2.17.6
+    image: faforever/faf-java-api:v2.18.1
     user: ${FAF_JAVA_API_USER}
     networks:
       faf:
@@ -112,6 +112,7 @@ services:
     env_file: ./config/faf-java-api/faf-java-api.env
     volumes:
       - ./config/faf-java-api/pki:/pki
+      - ./config/faf-java-api/mail:/config/mail
       - ./data/content:/content
       - ./data/faf-java-api/logs:/logs
       - ./data/faf-java-api/repositories:/repositories
