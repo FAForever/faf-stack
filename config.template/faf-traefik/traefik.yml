@@ -8,6 +8,8 @@ entryPoints:
     address: ":80"
   web-secure:
     address: ":443"
+  client-upload:
+    address: ":8022"
 
 # Listen for changes on docker and the dynamic configuration file
 providers:

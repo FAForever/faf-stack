@@ -431,6 +431,30 @@ services:
       - "traefik.http.routers.faf-user-service.tls.certresolver=default"
       - "traefik.http.services.faf-user-service.loadbalancer.server.port=8080"
 
+  #
+  # An SCP server that allows uploading client update files via rsync. Example command:
+  #
+  # rsync -avz -e "ssh -p 8022" /build/client/ data@content.faforever.com:8022
+  #
+  faf-client-upload:
+    container_name: faf-client-upload
+    image: panubo/sshd@sha256:4be2259311faba55fe9aa5bcac7ae5a3766c8dc64c71af45c0c002d48743e7d9
+    networks:
+      faf:
+        aliases:
+          - "faf-client-upload"
+    restart: unless-stopped
+    volumes:
+      - ./data/content/client:/home/data/client
+      - ./config/faf-client-upload/authorized_keys:/etc/authorized_keys/data:ro
+    env_file: ./config/faf-client-upload/faf-client-upload.env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.tcp.routers.faf-client-upload.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.faf-client-upload.entryPoints=client-upload"
+      - "traefik.tcp.routers.faf-client-upload.service=faf-client-upload"
+      - "traefik.tcp.services.faf-client-upload.loadbalancer.server.port=22"
+
 networks:
   faf:
     driver: bridge
