@@ -89,62 +89,30 @@ Once Postal is running, create a user by executing the following command:
 docker exec -it faf-postal /opt/postal/bin/postal make-user
 ```
 
-### Set up a mail server for Mautic
+### Set up a mail server for different services
+
+In this example we use it for faf-java-api
 
 1. Access Postal's web interface and log in with the user created above
 1. Click `Create the first organization` and follow the instructions
 1. Create a new mail server
     1. Click `Build your first mail server` and enter the following
-    1. Name: FAF Mautic
-    1. Short name: faf-mautic
+    1. Name: FAF Java API
+    1. Short name: faf-java-api
     1. Mode: Choose what's appropriate
 1. Set up the email domain
     1. Go to `Domain` and select `Add your first domain`
     1. Enter the domain name and continue
     1. Follow the instructions to set up the DNS correctly
     1. Click `Check my records are correct` and make sure everything is green
-1. Set up an SMTP user for faf-mautic
+1. Set up an SMTP user for faf-java-api
     1. Go to `Credentials` and select `Add your first credential`
-    1. Type: `SMTP`, Name: `FAF Mautic User`, Key: `faf-mautic`, Hold: `Process all messages`
+    1. Type: `SMTP`, Name: `FAF API User`, Key: `faf-java-api`, Hold: `Process all messages`
     1. Click `Create credential`
-1. Check the credentials for Mautic
+1. Check the credentialss
     1. Go to `Overview` and select `Read about sending e-mail`
     1. Note `Username` and `Password`
 
-## Mautic
-
-Make sure you set up Postal first.
-
-### Initial Setup
-
-1. Access Mautic's web interface and follow the instructions until `Email Configuration` 
-1. Enter the email configuration
-    1. Email handling: `Send immediately`, Mailer transport: `Other SMTP Server`. Enter Server: `faf-postal`, Port: `25`, Encryption: `None`, Authentication mode: `Plain`
-    1. Enter `Username` and `Password` as seen in Postal (check the Postal setup instructions above) 
-1. Log in with the admin username and password (as created before)
-1. Find and open the the `Settings` menu (top right corner)
-    1. Configure API access
-        1. Go to `Configuration`, then `API Settings`
-        1. Set API enabled: `Yes`. If mautic/mautic#5743 is still unresolved, set Enable HTTP basic auth: `Yes`
-        1. Click `Apply`
-        1. If mautic/mautic#5743 is resolved, in the Settings menu, go to `API Credentials` and set up credentials for `faf-java-api`
-        1. If mautic/mautic#5743 is still unresolved, go to `Users` in the settings menu and add a user for `faf-java-api`. Preferably, create a role with proper permissions first.
-        1. Delete Mautic's cache, otherwise the API won't work. Delete `data/faf-mautic/html/app/cache`
-    1. Configure E-Mail
-        1. Go to `Configuration`, then `Email Settings`
-        1. Click `Test connection` and expect `Success!`
-        1. Click `Send test email` and expect to receive an email in the inbox of your user's email account
-        1. Preferably, configure an inbox and configure Bounces, Unsubscribe Requests and Contact Replies
-        1. Under `Message Settings`, set Disable trackable urls: `Yes`
-        1. Under `Unsubscribe Settings`, set all `Show ...` options to `Yes`
-        1. Click `Apply`
-    1. Configure Custom Fields
-        1. Go to `Custom Fields`
-        1. Uncheck all except (Alias): country, preferred_locale
-        1. Click `New` and enter Label: `FAF User ID`, Alias: `faf_user_id`, Object: `Contact`, Group: `Core`, Data Type: `Text`, Required: `Yes`, Available for segments: `No`, Is Unique Identifier: `Yes`. Click `Save & Close`
-        1. Click `New` and enter Label: `FAF Username`, Alias: `faf_username`, Object: `Contact`, Group: `Core`, Data Type: `Text`, Required: `Yes`, Available for segments: `No`, Is Unique Identifier: `Yes`. Click `Save & Close`
-        1. Open the field `Email` and set Required: `Yes`
-        
 ## Grafana
 
 ### Initial Setup
