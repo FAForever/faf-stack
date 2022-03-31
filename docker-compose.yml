@@ -8,7 +8,7 @@ services:
   # Runs in dashboard mode, secured by basic http auth
   #
   faf-traefik:
-    image: traefik:v2.6.1
+    image: traefik:v2.6.3
     environment:
       DOMAINNAME: ${DOMAINNAME}
     network_mode: host
@@ -102,7 +102,7 @@ services:
   #
   faf-java-api:
     container_name: faf-java-api
-    image: faforever/faf-java-api:v2.19.0
+    image: faforever/faf-java-api:v2.19.1
     user: ${FAF_JAVA_API_USER}
     networks:
       faf:
@@ -397,7 +397,7 @@ services:
   #
   faf-user-service:
     container_name: faf-user-service
-    image: faforever/faf-user-service:1.0.8
+    image: faforever/faf-user-service:1.0.10
     networks:
       faf:
         aliases:
