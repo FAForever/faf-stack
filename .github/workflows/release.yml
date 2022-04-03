@@ -23,7 +23,7 @@ jobs:
       - name: Get Body
         id: get_body
         run: |
-          git log --pretty=format:"* %s" {{ steps.latest_tag.outputs.release }}..HEAD > body.md 
+          git log --pretty=format:"* %s" ${{ steps.latest_tag.outputs.release }}..HEAD > body.md 
         
       - name: Set Tag
         id: set_tag
