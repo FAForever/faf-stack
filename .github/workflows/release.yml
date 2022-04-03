@@ -32,6 +32,7 @@ jobs:
         run: |
           baseTag=$(date +v%y.%-m.%-d)
           tag=$baseTag
+          count=1
         
           while [ $(git tag -l "$tag") ]; 
           do 
