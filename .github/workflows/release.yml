@@ -1,0 +1,60 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: 'Release Title'
+        required: false
+        
+jobs:
+  release:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Get Latest Tag
+        id: latest_tag
+        uses: pozetroninc/github-action-get-latest-release@master
+        with:
+          repository: ${{ github.repository }}
+          excludes: prerelease, draft
+      
+      - name: Get Body
+        id: get_body
+        run: |
+          git log --pretty=format:"* %s" {{ steps.latest_tag.outputs.release }}..HEAD > body.md 
+        
+      - name: Set Tag
+        id: set_tag
+        run: |
+          baseTag=$(date +v%y.%-m.%-d)
+          tag=$baseTag
+        
+          while [ $(git tag -l "$tag") ]; 
+          do 
+            tag=$baseTag.$count; 
+            count=$(($count+1)); 
+          done
+          echo ::set-output name=tag::$tag
+      
+      - name: Set Name
+        id: set_name
+        run: |
+          if [[ ${{ github.event.inputs.title }} ]]; then
+            echo ::set-output name=name::"${{ steps.set_tag.outputs.tag }} - ${{ github.event.inputs.title }}"
+          else 
+            echo ::set-output name=name::${{ steps.set_tag.outputs.tag }}
+          fi
+          
+      - name: Create Draft Release
+        id: create_release
+        uses: ncipollo/release-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          commit: ${{ github.sha }}
+          tag: ${{ steps.set_tag.outputs.tag }}
+          draft: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          bodyFile: body.md
