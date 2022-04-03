@@ -57,6 +57,7 @@ jobs:
         with:
           commit: ${{ github.sha }}
           tag: ${{ steps.set_tag.outputs.tag }}
+          name: ${{ steps.set_name.outputs.name }}
           draft: true
           token: ${{ secrets.GITHUB_TOKEN }}
           bodyFile: body.md
