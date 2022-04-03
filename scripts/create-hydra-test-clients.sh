@@ -38,7 +38,7 @@ docker-compose exec faf-ory-hydra hydra clients create \
     --grant-types authorization_code,refresh_token \
     --response-types code \
     --scope openid,offline,public_profile,lobby,upload_map,upload_mod \
-    --callbacks http://localhost \
+    --callbacks http://localhost,http://localhost:51111 \
     --token-endpoint-auth-method none
 	
 docker-compose exec faf-ory-hydra hydra clients create \
