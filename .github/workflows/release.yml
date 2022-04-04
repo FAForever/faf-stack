@@ -62,3 +62,4 @@ jobs:
           draft: true
           token: ${{ secrets.GITHUB_TOKEN }}
           bodyFile: body.md
+          generateReleaseNotes: true
