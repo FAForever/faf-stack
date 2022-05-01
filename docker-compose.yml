@@ -412,7 +412,7 @@ services:
   #
   faf-user-service:
     container_name: faf-user-service
-    image: faforever/faf-user-service:1.0.10
+    image: faforever/faf-user-service:1.0.11
     networks:
       faf:
         aliases:
