@@ -245,7 +245,7 @@ services:
   #
   faf-content:
     container_name: faf-content
-    image: nginx:1.20.2
+    image: nginx:1.20
     restart: unless-stopped
     volumes:
       - ./data/content:/usr/share/nginx/html
