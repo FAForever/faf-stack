@@ -96,6 +96,10 @@ services:
       - "8001:8001" # Server QDataStream
       - "8002:8002" # Server UTF8 Json
       - "127.0.0.1:4000:4000" # Control server
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   #
   # FAF JSON-API to provide data over HTTP.
@@ -133,6 +137,10 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   #
   # FAF website.
@@ -155,7 +163,10 @@ services:
       - "traefik.http.routers.faf-website.entryPoints=web-secure"
       - "traefik.http.routers.faf-website.middlewares=test-compress@file"
       - "traefik.http.services.faf-website.loadbalancer.server.port=3000"
-
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
   #
   # IRC for FAF chat.
   #
@@ -285,6 +296,10 @@ services:
     env_file: ./config/faf-rust-replayserver/faf-rust-replayserver.env
     ports:
       - "15000:15000"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   faf-policy-server:
     container_name: faf-policy-server
@@ -333,8 +348,8 @@ services:
     image: rabbitmq:3.9.11-management-alpine
     container_name: faf-rabbitmq
     hostname: rabbitmq.${DOMAINNAME}
-    expose:
-      - "15692"
+    ports:
+    - "15692:15692"
     env_file: ./config/faf-rabbitmq/faf-rabbitmq.env
     user: ${FAF_RABBITMQ_USER}
     restart: unless-stopped
