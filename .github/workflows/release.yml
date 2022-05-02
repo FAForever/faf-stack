@@ -15,6 +15,16 @@ jobs:
         with:
           fetch-depth: 0
       
+      - name: Install tools
+        # gridsite-clients is required for urlencode
+        run: sudo apt update && sudo apt install -y gridsite-clients
+        
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Run build
+        run: ci/build.sh
+      
       - name: Get Latest Tag
         id: latest_tag
         uses: pozetroninc/github-action-get-latest-release@master
