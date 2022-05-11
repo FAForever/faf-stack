@@ -65,6 +65,8 @@ services:
     networks:
       - faf-extra
     env_file: ./config/extra/wikijs/wikijs.env
+    volumes:
+      - ./data/wikijs/authentication/faf-hydra:/wiki/server/modules/authentication/faf-hydra:ro
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.wikijs.rule=Host(`wiki.${DOMAINNAME}`)"
