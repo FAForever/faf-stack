@@ -60,7 +60,7 @@ jobs:
             echo ::set-output name=name::${{ steps.set_tag.outputs.tag }}
           fi
           
-      - name: Create Draft Release
+      - name: Create Release
         id: create_release
         uses: ncipollo/release-action@v1
         env:
@@ -69,7 +69,6 @@ jobs:
           commit: ${{ github.sha }}
           tag: ${{ steps.set_tag.outputs.tag }}
           name: ${{ steps.set_name.outputs.name }}
-          draft: true
           token: ${{ secrets.GITHUB_TOKEN }}
           bodyFile: body.md
           generateReleaseNotes: true
