@@ -371,7 +371,7 @@ services:
   #
   faf-league-service:
     container_name: faf-league-service
-    image: faforever/faf-league-service:1.1.0
+    image: faforever/faf-league-service:1.2.0
     user: ${FAF_LEAGUE_SERVICE_USER}
     networks:
       faf:
