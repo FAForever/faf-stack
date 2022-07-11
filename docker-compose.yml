@@ -412,11 +412,7 @@ services:
   #
   faf-user-service:
     container_name: faf-user-service
-    image: faforever/faf-user-service:1.0.11
-    networks:
-      faf:
-        aliases:
-          - "faf-user-service"
+    image: faforever/faf-user-service:2.0.0
     restart: unless-stopped
     env_file: ./config/faf-user-service/faf-user-service.env
     labels:
