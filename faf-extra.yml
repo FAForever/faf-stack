@@ -123,6 +123,15 @@ services:
       - "traefik.http.routers.faf-voting.middlewares=test-compress@file"
       - "traefik.http.services.faf-voting.loadbalancer.server.port=3000"
 
+  #
+  # QAI & Dostya combined
+  #
+  qai:
+    image: faforever/faf-qai:main
+    restart: unless-stopped
+    env_file: ./config/extra/qai/qai.env
+    volumes:
+      - ./data/qai/Database:/app/Database
 
 networks:
   faf-extra:
