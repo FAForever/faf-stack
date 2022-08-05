@@ -77,7 +77,7 @@ services:
   #
   faf-python-server:
     container_name: faf-python-server
-    image: faforever/faf-python-server:v1.12.2
+    image: faforever/faf-python-server:v1.12.4
     user: ${FAF_PYTHON_SERVER_USER}
     networks:
       faf:
@@ -147,7 +147,7 @@ services:
   #
   faf-website:
     container_name: faf-website
-    image: faforever/faf-website:v1.15
+    image: faforever/faf-website:v1.15.1
     user: ${FAF_WEBSITE_USER}
     restart: unless-stopped
     env_file: ./config/faf-website/faf-website.env
