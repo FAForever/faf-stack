@@ -412,7 +412,7 @@ services:
   #
   faf-user-service:
     container_name: faf-user-service
-    image: faforever/faf-user-service:2.1.0
+    image: faforever/faf-user-service:2.1.1
     networks:
       - faf
     restart: unless-stopped
