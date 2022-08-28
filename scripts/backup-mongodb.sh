@@ -3,9 +3,10 @@
 # Subfolder 01 contains the newewst, subfolder 07 the latest backup.
 
 # modify the following to suit your environment
-export DB_BACKUP="/opt/faf/backups/faf-db"
+source /opt/faf/config/extra/mongodb/mongodb.env
+export DB_BACKUP="/opt/faf/backups/mongodb"
 
-echo "*** MySQL backup"
+echo "*** MongoDB backup"
 echo "* Rotate existing backups"
 echo "------------------------"
 
@@ -20,6 +21,7 @@ mkdir -p $DB_BACKUP/01
 
 echo "* Creating backup..."
 echo "------------------------"
-docker exec -i -u root faf-db mysqldump --single-transaction --triggers --routines --all-databases | bzip2  > ${DB_BACKUP}/01/$(date +"%Y-%m-%d-%H-%M-%S").sql.bz2
+docker-compose --compatibility --project-directory /opt/faf -f /opt/faf/faf-extra.yml exec mongodb mongodump -u "$MONGO_NODEBB_USERNAME" -p "$MONGO_NODEBB_PASSWORD" -d "$MONGO_NODEBB_DATABASE" --archive=/backup/archive.gz --gzip
+mv ./data/mongodb/backup/archive.gz "$DB_BACKUP/01/$(date +"%Y-%m-%d-%H-%M-%S").gz"
 echo "Done"
 exit 0
