@@ -33,6 +33,8 @@ services:
     env_file: ./config/extra/mongodb/mongodb.env
     volumes:
       - ./data/mongodb/data/db:/data/db
+      # Mongodump is corrupting the backup file when piping out via stdout
+      - ./data/mongodb/backup:/backup
 
   #
   # Forum software
