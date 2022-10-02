@@ -429,14 +429,14 @@ services:
   #
   faf-telemetry-server:
     container_name: faf-telemetry-server
-    image: faforever/faf-telemetry-server:latest
+    image: faforever/faf-telemetry-server:main
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.faf-user-service.rule=Host(`ice-telemetry.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-user-service.entryPoints=web-secure"
-      - "traefik.http.routers.faf-user-service.tls.certresolver=default"
-      - "traefik.http.services.faf-user-service.loadbalancer.server.port=8080"
+      - "traefik.http.routers.faf-telemetry-server.rule=Host(`ice-telemetry.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-telemetry-server.entryPoints=web-secure"
+      - "traefik.http.routers.faf-telemetry-server.tls.certresolver=default"
+      - "traefik.http.services.faf-telemetry-server.loadbalancer.server.port=8080"
 
 networks:
   faf:
