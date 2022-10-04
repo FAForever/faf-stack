@@ -21,12 +21,13 @@ docker-compose exec faf-ory-hydra hydra clients create \
     --endpoint http://127.0.0.1:4445 \
     --fake-tls-termination \
     --id faf-website \
+    --secret banana \
     --name faforever.com \
     --logo-uri https://faforever.com/images/faf-logo.png \
     --grant-types authorization_code,refresh_token \
     --response-types code \
     --scope openid,offline,public_profile,write_account_data,create_user \
-    --callbacks https://test.faforever.com/callback,http://localhost:3000/callback
+    --callbacks https://test.faforever.com/callback,http://localhost:3000/callback,http://localhost:8020/callback
 
 docker-compose exec faf-ory-hydra hydra clients create \
     --skip-tls-verify \
@@ -46,7 +47,7 @@ docker-compose exec faf-ory-hydra hydra clients create \
     --endpoint http://127.0.0.1:4445 \
     --fake-tls-termination \
     --id faf-moderator-client \
-    --name fafModClient \
+    --name faf-moderator-client \
     --logo-uri https://faforever.com/images/faf-logo.png \
     --grant-types authorization_code,refresh_token \
     --response-types code \

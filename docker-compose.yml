@@ -418,6 +418,8 @@ services:
       - faf
     restart: unless-stopped
     env_file: ./config/faf-user-service/faf-user-service.env
+    ports:
+      - "127.0.0.1:8030:8080" # only for testing
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-user-service.rule=Host(`user.${DOMAINNAME}`)"
