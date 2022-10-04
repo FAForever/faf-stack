@@ -7,8 +7,8 @@ urls:
   self:
     issuer: http://faf-ory-hydra:4444
     public: http://localhost:4444
-  login: http://localhost:8080/oauth2/login
-  consent: http://localhost:8080/oauth2/consent
+  login: http://localhost:8030/oauth2/login
+  consent: http://localhost:8030/oauth2/consent
 
 # Static configuration
 strategies:
