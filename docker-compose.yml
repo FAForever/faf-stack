@@ -331,6 +331,7 @@ services:
           - "faf-postal"
     expose:
       - "25"
+      # We have reports that in order to create an initial user via `/opt/postal/bin/postal make-user` you have to expose port 5000 too.
     volumes:
       - ./data/faf-postal/assets:/opt/postal/public/assets
       - ./config/faf-postal/config:/opt/postal/config
