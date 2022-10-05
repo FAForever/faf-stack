@@ -62,7 +62,7 @@ create "${LEAGUE_DATABASE}" "faf-java-api" "${MYSQL_JAVA_API_PASSWORD}"
 create "${LEAGUE_DATABASE}" "faf-league-service" "${LEAGUE_SERVICE_PASSWORD}"
 create "hydra" "hydra" "${HYDRA_PASSWORD}" "CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci"
 
-# To update the IRC password, we give the server/api full bloated access to all of anope's tables.
+# Postal creates additional databases for each "server" in postal
 docker exec -i faf-db mysql --user=root --password=${MYSQL_ROOT_PASSWORD} <<SQL_SCRIPT
     GRANT ALL PRIVILEGES ON \`${POSTAL_MESSAGE_DATABASE_PREFIX}-%\`.* to 'faf-postal'@'%';
 SQL_SCRIPT
