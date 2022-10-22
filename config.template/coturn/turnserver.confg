@@ -1,0 +1,23 @@
+# Coturn TURN SERVER configuration file
+#
+# Boolean values note: where a boolean value is supposed to be used,
+# you can use '0', 'off', 'no', 'false', or 'f' as 'false,
+# and you can use '1', 'on', 'yes', 'true', or 't' as 'true'
+# If the value is missing, then it means 'true' by default.
+#
+#
+# ~~ customized for FAForever.com ~~
+#
+# The reference configuration with all available settings can be found here:
+# https://github.com/coturn/coturn/blob/master/docker/coturn/turnserver.conf
+
+listening-port=3478
+min-port=10000
+max-port=20000
+lt-cred-mech
+prometheus
+static-auth-secret=banana
+realm=faforever.com
+no-tls
+# token lifetime 12 hours
+max-allocate-lifetime=43200

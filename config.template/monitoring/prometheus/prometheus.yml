@@ -10,6 +10,14 @@ scrape_configs:
         labels:
           alias: faf-main
 
+  - job_name: 'coturn'
+    scrape_interval: 5s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['dockerhost:9641']
+        labels:
+          alias: faf-main
+
   - job_name: 'faf-java-api'
     scrape_interval: 5s
     metrics_path: '/actuator/prometheus'

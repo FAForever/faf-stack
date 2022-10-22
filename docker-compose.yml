@@ -32,11 +32,12 @@ services:
   # Coturn server for proxying between players
   # It uses net: "host" for performance reasons.
   #
-  faf-coturn:
-    container_name: faf-coturn
-    image: faforever/coturn-lt-cred:v1.1
-    env_file: ./config/faf-coturn/faf-coturn.env
+  coturn:
+    container_name: coturn
+    image: coturn/coturn:4.6.0-alpine
     network_mode: host
+    volumes:
+      - ./config/coturn/turnserver.conf:/etc/turnserver.conf:ro
 
   #
   # FAF MySQL database.
