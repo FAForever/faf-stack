@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Set all leaderboard records to inactive, where no game was played in the last 3 months
 SCRIPT_BASE_DIR=$(cd "$(dirname "$0")" || exit; cd ../; pwd)
 DB_CONFIG_FILE="$SCRIPT_BASE_DIR/config/faf-db/faf-db.env"
