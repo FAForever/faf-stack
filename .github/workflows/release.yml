@@ -28,7 +28,6 @@ jobs:
         uses: pozetroninc/github-action-get-latest-release@master
         with:
           repository: ${{ github.repository }}
-          excludes: prerelease, draft
       
       - name: Get Body
         id: get_body
@@ -47,15 +46,15 @@ jobs:
             tag=$baseTag.$count; 
             count=$(($count+1)); 
           done
-          echo ::set-output name=tag::$tag
+          echo tag=$tag >> $GITHUB_OUTPUT
       
       - name: Set Name
         id: set_name
         run: |
           if [[ "${{ github.event.inputs.title }}" != "" ]]; then
-            echo ::set-output name=name::"${{ steps.set_tag.outputs.tag }} - ${{ github.event.inputs.title }}"
+            echo name="${{ steps.set_tag.outputs.tag }} - ${{ github.event.inputs.title }}" >> $GITHUB_OUTPUT
           else 
-            echo ::set-output name=name::${{ steps.set_tag.outputs.tag }}
+            echo name=${{ steps.set_tag.outputs.tag }} >> $GITHUB_OUTPUT
           fi
           
       - name: Create Release
