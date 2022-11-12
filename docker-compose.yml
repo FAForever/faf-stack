@@ -386,7 +386,7 @@ services:
   #
   faf-ory-hydra:
     container_name: faf-ory-hydra
-    image: oryd/hydra:v1.11.7
+    image: oryd/hydra:v1.11.10
     # We consider the Docker network safe since we are on a single host.
     # If someone gains access to network, he has root access and can turn off the security anyway.
     # This can be improved once the login stack was moved outside the main host.
