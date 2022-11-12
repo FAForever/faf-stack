@@ -131,6 +131,8 @@ services:
   qai:
     image: faforever/faf-qai:main
     restart: unless-stopped
+    networks:
+      - faf
     env_file: ./config/extra/qai/qai.env
     volumes:
       - ./data/qai/Database:/app/Database
