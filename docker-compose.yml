@@ -99,10 +99,8 @@ services:
       - "8001:8001" # Server QDataStream
       - "8002:8002" # Server UTF8 Json
       - "127.0.0.1:4000:4000" # Control server
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
+    labels:
+      - "loki_retention=long"
 
   #
   # FAF JSON-API to provide data over HTTP.
@@ -129,6 +127,7 @@ services:
     ports:
       - "127.0.0.1:8010:8010" # For internal testing only
     labels:
+      - "loki_retention=long"
       - "traefik.enable=true"
       - "traefik.http.routers.faf-java-api.rule=Host(`api.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-java-api.entryPoints=web-secure"
@@ -161,6 +160,7 @@ services:
     ports:
       - "127.0.0.1:8020:3000" # For internal testing only
     labels:
+      - "loki_retention=long"
       - "traefik.enable=true"
       - "traefik.http.routers.faf-website.rule=Host(`www.${DOMAINNAME}`) || Host(`${DOMAINNAME}`) || Host(`clans.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-website.entryPoints=web-secure"
@@ -219,6 +219,8 @@ services:
       - ./config/faf-qai:/config
     networks:
       - faf
+    labels:
+      - "loki_retention=long"
 
   #
   # The content management system which is still being used as a backend for the website. The website accesses
@@ -284,6 +286,8 @@ services:
     env_file: ./config/faf-aio-replayserver/faf-aio-replayserver.env
     ports:
       - "15000:15000"
+    labels:
+      - "loki_retention=long"
 
   # The third version of the "live replay" server, in Rust.
   faf-rust-replayserver:
@@ -299,10 +303,8 @@ services:
     env_file: ./config/faf-rust-replayserver/faf-rust-replayserver.env
     ports:
       - "15000:15000"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
+    labels:
+      - "loki_retention=long"
 
   faf-policy-server:
     container_name: faf-policy-server
@@ -318,6 +320,8 @@ services:
       - "8097"
     volumes:
       - ./data/faf-policy-server/faf-uid-verifier/verifier:/app/verifier
+    labels:
+      - "loki_retention=long"
 
   #
   # Postal is a fully featured open source mail delivery platform for incoming & outgoing e-mail.
@@ -339,6 +343,7 @@ services:
       - ./data/faf-postal/assets:/opt/postal/public/assets
       - ./config/faf-postal/config:/opt/postal/config
     labels:
+      - "loki_retention=long"
       - "traefik.enable=true"
       - "traefik.http.routers.faf-postal.rule=Host(`postal.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-postal.entryPoints=web-secure"
@@ -383,6 +388,8 @@ services:
           - "faf-league-service"
     restart: unless-stopped
     env_file: ./config/faf-league-service/faf-league-service.env
+    labels:
+      - "loki_retention=long"
 
   #
   # OAuth2 service
@@ -424,6 +431,7 @@ services:
     ports:
       - "127.0.0.1:8030:8080" # only for testing
     labels:
+      - "loki_retention=long"
       - "traefik.enable=true"
       - "traefik.http.routers.faf-user-service.rule=Host(`user.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-user-service.entryPoints=web-secure"
@@ -438,6 +446,7 @@ services:
     image: faforever/faf-telemetry-server:main
     restart: unless-stopped
     labels:
+      - "loki_retention=long"
       - "traefik.enable=true"
       - "traefik.http.routers.faf-telemetry-server.rule=Host(`ice-telemetry.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-telemetry-server.entryPoints=web-secure"
