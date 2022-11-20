@@ -80,7 +80,7 @@ services:
   #
   faf-python-server:
     container_name: faf-python-server
-    image: faforever/faf-python-server:v1.12.5
+    image: faforever/faf-python-server:v1.12.4
     user: ${FAF_PYTHON_SERVER_USER}
     networks:
       faf:
