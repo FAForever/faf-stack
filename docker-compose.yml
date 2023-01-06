@@ -149,7 +149,7 @@ services:
   #
   faf-website:
     container_name: faf-website
-    image: faforever/faf-website:v2.0.7
+    image: faforever/faf-website:v2.0.8
     user: ${FAF_WEBSITE_USER}
     restart: unless-stopped
     env_file: ./config/faf-website/faf-website.env
