@@ -20,6 +20,6 @@ mkdir -p $DB_BACKUP/01
 
 echo "* Creating backup..."
 echo "------------------------"
-docker exec -i -u root faf-db mysqldump --single-transaction --triggers --routines --all-databases | bzip2  > ${DB_BACKUP}/01/$(date +"%Y-%m-%d-%H-%M-%S").sql.bz2
+docker exec -i -u root faf-db mysqldump --single-transaction --triggers --routines --all-databases | zstd -10 -T4  > ${DB_BACKUP}/01/$(date +"%Y-%m-%d-%H-%M-%S").sql.zstd
 echo "Done"
 exit 0
