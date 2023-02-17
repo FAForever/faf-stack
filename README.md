@@ -67,14 +67,13 @@ Hint: Some linux distros generate 3072 bit RSA keys by default (e.g. Arch). 3072
 
 ### Initialize core services
 
-    scripts/init-db.sh
-    scripts/init-rabbitmq.sh
-    scripts/init-hydra.sh
-    scripts/create-hydra-test-clients.sh
+    scripts/init-all.sh
 
 This will launch some core services and generate users, database schemas and OAuth clients.
 
 ### Update database schema
+
+If new migrations were added since you've initialized your environment, you can run them with -
 
     docker-compose run --rm faf-db-migrations migrate
 
