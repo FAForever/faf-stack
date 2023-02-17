@@ -69,7 +69,15 @@ Hint: Some linux distros generate 3072 bit RSA keys by default (e.g. Arch). 3072
 
     scripts/init-all.sh
 
-This will launch some core services and generate users, database schemas and OAuth clients.
+This will launch some core services and generate system users, database schemas and OAuth clients.
+
+### Load test data
+
+After initialization you will have a blank database - no logins, no maps, etc. In all likelihood you'd like to load some data to use this environment. You could look at the [test data](https://github.com/FAForever/db/blob/develop/test-data.sql), the [sanitized db dump](https://github.com/FAForever/faf-db-dump/tree/2294e41bae36acaed4a52c8a7d090ddd76001a25) or [API server integration test data](https://github.com/FAForever/faf-java-api/tree/develop/src/inttest/resources/sql). Each of these has pros and cons and commonly becomes stale (as schema evolves etc), and you may need to fiddle with data to match new schemas; database repository history may help.
+
+To load the data, you'd run a command along the lines of -
+
+    docker exec -i  faf-db mysql -D faf -uroot -pbanana < $DB_REPO/test-data.sql
 
 ### Update database schema
 
