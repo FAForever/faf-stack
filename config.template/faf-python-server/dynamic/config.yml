@@ -4,7 +4,7 @@ LOG_LEVEL: "TRACE"
 DB_SERVER: "faf-db"
 DB_LOGIN: "faf-python-server"
 DB_PASSWORD: "banana"
-DB_NAME: "faf_lobby"
+DB_NAME: "faf"
 
 MQ_SERVER: "faf-rabbitmq"
 MQ_PORT: 5672
@@ -18,10 +18,13 @@ ENABLE_METRICS: true
 COTURN_HOSTS: ["test.faforever.com"]
 COTURN_KEYS: ["banana"]
 
-FAF_POLICY_SERVER_BASE_URL: "http://faf-policy-server:8097"
+USE_POLICY_SERVER: false
+#FAF_POLICY_SERVER_BASE_URL: "http://faf-policy-server:8097"
 
 FORCE_STEAM_LINK: false
 # Seconds since epoch
 FORCE_STEAM_LINK_AFTER_DATE: 0
 
 QUEUE_POP_TIME_MAX: 60
+
+HYDRA_JWKS_URI: "http://faf-ory-hydra:4444/.well-known/jwks.json"
