@@ -5,6 +5,21 @@ if [ ! -f docker-compose.yml ]; then
     exit 1
 fi
 
+MAX_WAIT=60 # max. 1 minute waiting time in loop before timeout
+
+echo -n "Waiting for hydra clients list "
+current_wait=0
+while ! docker-compose exec faf-ory-hydra hydra clients list --endpoint http://127.0.0.1:4445 >/dev/null 2>&1
+do
+  if [ ${current_wait} -ge ${MAX_WAIT} ]; then
+    echo "Timeout on listing hydra clients"
+    exit 1
+  fi
+  current_wait=$((current_wait+1))
+  sleep 1
+done
+echo ok
+
 docker-compose exec faf-ory-hydra hydra clients create \
     --skip-tls-verify \
     --endpoint http://127.0.0.1:4445 \
