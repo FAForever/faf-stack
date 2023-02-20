@@ -8,3 +8,5 @@
 !.gitignore
 !*.yml
 !README.md
+!Pipfile
+!Pipfile.lock
