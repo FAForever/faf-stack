@@ -1,31 +1,57 @@
-#!/usr/bin/env python
-
-import sys
 import argparse
 import configparser
+import contextlib
+import functools
 import pathlib
+import re
+import subprocess
+import sys
 
 import pymysql
 
+# Based on https://docs.oracle.com/cd/E26505_01/html/E37384/gbcpt.html
+SNAPSHOT_NAME_PATTERN = re.compile('[-a-zA-Z0-9_:.]+/[-a-zA-Z0-9_:./]+@[-a-zA-Z0-9_:.]+')
+
+def zfs(args, timeout=10, stdout=subprocess.PIPE, **kwargs):
+    return subprocess.run(["zfs"] + args, timeout=timeout, stdout=stdout, stderr=subprocess.PIPE, check=True, **kwargs)
+
 def parse_arguments(argv):
     parser = argparse.ArgumentParser()
-    parser.add_argument('faf_stack', help='location of faf-stack directory', type=pathlib.Path)
-    parser.add_argument('db_filesystem', help='zfs dataset name of the database data directory', type=pathlib.Path)
+    parser.add_argument('mysql_config', help='path to mysql.cnf for snapshotted database', type=argparse.FileType('r'))
+    parser.add_argument('snapshot_name', help='zfs dataset name for the snapshotted database data directory')
+    parser.add_argument('send_file', help='filename for where zfs-send output should be written',
+                        type=argparse.FileType('wb'))
     options = parser.parse_args(argv[1:])
+    if not SNAPSHOT_NAME_PATTERN.match(options.snapshot_name):
+        parser.error(f"{options.snapshot_name} doesn't look like a valid snapshot name")
     return options
 
-def main(options):
-    config = configparser.ConfigParser()
-    config.read(options.faf_stack / "config/faf-db/mysql.cnf")
-    kwargs = {k: config['client'][k] for k in ('user', 'password', 'host')}
-
-    conn = pymysql.Connection(**kwargs)
+@contextlib.contextmanager
+def frozen_database(conn):
     with conn:
         with conn.cursor() as cursor:
             cursor.execute("BACKUP STAGE START;")
             cursor.execute("BACKUP STAGE BLOCK_COMMIT;")
-            # zfs snap
+            yield
             cursor.execute("BACKUP STAGE END;")
+
+def main(options):
+    config = configparser.ConfigParser()
+    with options.mysql_config:
+        config.read_file(options.mysql_config)
+    kwargs = {k: config['client'][k] for k in ('user', 'password', 'host')}
+
+    try:
+        zfs(["destroy", options.snapshot_name])
+    except subprocess.CalledProcessError as error:
+        if b'does not exist' not in error.stderr:
+            raise
+
+    conn = pymysql.Connection(**kwargs)
+    with frozen_database(conn):
+        zfs(["snapshot", options.snapshot_name])
+
+    zfs(["send", options.snapshot_name], stdout=options.send_file)
 
 if __name__ == '__main__':
     main(parse_arguments(sys.argv))
