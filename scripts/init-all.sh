@@ -5,8 +5,14 @@ if [ ! -f docker-compose.yml ]; then
     exit 1
 fi
 
-[ ! -d config ] && ln -s config.template config
-[ ! -f .env ] && ln -s .env.template .env
+if [ ! -d config ]; then
+    echo "NOTE: symlinking config.template into config (make a copy to make local changes)"
+    ln -s config.template config
+fi
+if [ ! -f .env ]; then
+    echo "NOTE: symlinking .env.template into .env (make a copy to make local changes)"
+    ln -s .env.template .env
+fi
 
 echo "initializing database"
 scripts/init-db.sh
