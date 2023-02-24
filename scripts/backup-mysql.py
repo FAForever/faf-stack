@@ -44,7 +44,7 @@ def main(options):
     try:
         zfs(["destroy", options.snapshot_name])
     except subprocess.CalledProcessError as error:
-        if b'does not exist' not in error.stderr:
+        if b'could not find any snapshots to destroy' not in error.stderr:
             raise
 
     conn = pymysql.Connection(**kwargs)
