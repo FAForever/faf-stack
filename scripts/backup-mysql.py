@@ -1,9 +1,8 @@
+"Backup a MySQL database using ZFS snapshot and send (zstd compressed)"
 import argparse
 import configparser
 import contextlib
-import functools
 import logging
-import pathlib
 import re
 import subprocess
 import sys
@@ -14,15 +13,18 @@ import pymysql
 SNAPSHOT_NAME_PATTERN = re.compile('[-a-zA-Z0-9_:.]+/[-a-zA-Z0-9_:./]+@[-a-zA-Z0-9_:.]+')
 
 def zfs(args, timeout=10, stdout=subprocess.PIPE, **kwargs):
-    return subprocess.run(["zfs"] + args, timeout=timeout, stdout=stdout, stderr=subprocess.PIPE, check=True, **kwargs)
+    return subprocess.run(["zfs"] + args, timeout=timeout, stdout=stdout,
+                          stderr=subprocess.PIPE, check=True, **kwargs)
 
 def parse_arguments(argv):
     parser = argparse.ArgumentParser()
     parser.add_argument('--log_file')
-    parser.add_argument('mysql_config', help='path to mysql.cnf for snapshotted database', type=argparse.FileType('r'))
-    parser.add_argument('snapshot_name', help='zfs dataset name for the snapshotted database data directory')
-    parser.add_argument('send_file', help='filename for where zfs-send output should be written',
-                        type=argparse.FileType('wb'))
+    parser.add_argument('mysql_config', type=argparse.FileType('r'),
+                        help='path to mysql.cnf for snapshotted database')
+    parser.add_argument('snapshot_name',
+                        help='zfs dataset name for the snapshotted database data directory')
+    parser.add_argument('send_file', type=argparse.FileType('wb'),
+                        help='filename for where zfs-send output should be written')
     options = parser.parse_args(argv[1:])
     if not SNAPSHOT_NAME_PATTERN.match(options.snapshot_name):
         parser.error(f"{options.snapshot_name} doesn't look like a valid snapshot name")
@@ -55,7 +57,7 @@ def logged_step(message):
     except subprocess.CalledProcessError as error:
         logging.error(f"{error.cmd} failed ({error.returncode}); stderr: {error.stderr}")
         raise SystemExit(1)
-    except Exception as error:
+    except Exception:
         logging.exception("step failed")
         raise
 
@@ -72,7 +74,7 @@ def main(options):
         except subprocess.CalledProcessError as error:
             if b'could not find any snapshots to destroy' not in error.stderr:
                 raise
-    
+
     with logged_step("connecting to database"):
         conn = pymysql.Connection(**kwargs)
 
