@@ -51,7 +51,13 @@ def main(options):
     with frozen_database(conn):
         zfs(["snapshot", options.snapshot_name])
 
-    zfs(["send", options.snapshot_name], stdout=options.send_file)
+    send = subprocess.Popen(["zfs", "send", options.snapshot_name], stdout=subprocess.PIPE)
+    zstd = subprocess.Popen(["zstd", "-10", "-T4"], stdout=options.send_file, stdin=send.stdout)
+    send.wait()
+    if send.returncode != 0:
+        raise CalledProcessError(send.returncode, "zfs send")
+    zstd.wait()
+
 
 if __name__ == '__main__':
     main(parse_arguments(sys.argv))
