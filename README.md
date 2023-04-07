@@ -87,39 +87,6 @@ If new migrations were added since you've initialized your environment, you can 
 
 # Service specific configurations
 
-## Postal
-
-### Create initial user
-
-Once Postal is running, create a user by executing the following command:
-```
-docker exec -it faf-postal /opt/postal/bin/postal make-user
-```
-
-### Set up a mail server for different services
-
-In this example we use it for faf-java-api
-
-1. Access Postal's web interface and log in with the user created above
-1. Click `Create the first organization` and follow the instructions
-1. Create a new mail server
-    1. Click `Build your first mail server` and enter the following
-    1. Name: FAF Java API
-    1. Short name: faf-java-api
-    1. Mode: Choose what's appropriate
-1. Set up the email domain
-    1. Go to `Domain` and select `Add your first domain`
-    1. Enter the domain name and continue
-    1. Follow the instructions to set up the DNS correctly
-    1. Click `Check my records are correct` and make sure everything is green
-1. Set up an SMTP user for faf-java-api
-    1. Go to `Credentials` and select `Add your first credential`
-    1. Type: `SMTP`, Name: `FAF API User`, Key: `faf-java-api`, Hold: `Process all messages`
-    1. Click `Create credential`
-1. Check the credentialss
-    1. Go to `Overview` and select `Read about sending e-mail`
-    1. Note `Username` and `Password`
-
 ## Grafana
 
 ### Initial Setup
