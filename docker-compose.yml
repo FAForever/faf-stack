@@ -11,7 +11,7 @@ services:
     # traefik >= 2.7.2 breaks requests to the api. traefik will replace all `;` with `&` which turns the api filter list into their own 
     # query parameters. This breaks the api causing it to return 400. Until resolved we are limited to 2.7.1
     # See https://github.com/traefik/traefik/issues/9164 for more details
-    image: traefik:v2.10.1
+    image: traefik:v2.7.1
     environment:
       DOMAINNAME: ${DOMAINNAME}
     network_mode: host
