@@ -6,7 +6,9 @@ import logging
 import subprocess
 
 import pymysql
+from dotenv import dotenv_values
 from pymysql.cursors import DictCursor
+from mailjet_rest import Client
 
 
 def parse_arguments():
@@ -14,6 +16,9 @@ def parse_arguments():
     parser.add_argument('--mysql_config', type=argparse.FileType('r'),
                         help='path to mysql.cnf for snapshotted database',
                         default='config/faf-db/mysql.cnf')
+    parser.add_argument('--api_config',
+                        help='path to faf-java-api.env', # for mailjet / forum api access
+                        default='config/faf-java-api/faf-java-api.env')
     parser.add_argument('--database', help='FAF core database',
                         default='faf_lobby')
 
@@ -45,10 +50,13 @@ def logged_step(message):
 
 def main(options):
     with logged_step("reading MySQL config"):
-        config = configparser.ConfigParser()
+        db_config = configparser.ConfigParser()
         with options.mysql_config:
-            config.read_file(options.mysql_config)
-        kwargs = {k: config['client'][k] for k in ('user', 'password', 'host')}
+            db_config.read_file(options.mysql_config)
+        kwargs = {k: db_config['client'][k] for k in ('user', 'password', 'host')}
+
+    with logged_step("reading API config"):
+        api_config = dotenv_values(dotenv_path=options.api_config)
 
     with logged_step("analyzing user"):
         conn = pymysql.Connection(**kwargs, database=options.database)
@@ -122,6 +130,47 @@ def main(options):
             conn.commit()
 
             print("!! IMPORTANT: Please delete user ", user['login'], " from wiki & forum manually!!")
+
+            while (input("Please confirm by typing CONFIRM: ") != 'CONFIRM'):
+                pass
+
+            # nodebb_url = ''
+            # nodebb_api_user_id = api_config['NODEBB_USER_ID']
+            # nodebb_api_token = api_config['NODEBB_MASTER_TOKEN']
+
+            mailjet_apikey_public = api_config['MAIL_USERNAME']
+            mailjet_apikey_private = api_config['MAIL_PASSWORD']
+
+            mailjet = Client(auth=(mailjet_apikey_public, mailjet_apikey_private), version='v3.1')
+            data = {
+                'Messages': [
+                    {
+                        "From": {
+                            "Email": "admin@faforever.com",
+                            "Name": "FAForever"
+                        },
+                        "To": [
+                            {
+                                "Email": user['email'],
+                                "Name": user['login']
+                            }
+                        ],
+                        "TemplateID": 4773154,
+                        "TemplateLanguage": True,
+                        "Subject": "Your account was deleted",
+                        "Variables": {
+                            "username": user['login']
+                        }
+                    }
+                ]
+            }
+            result = mailjet.send.create(data=data)
+
+            if result.status_code == 200:
+                print("Confirmation email to user successfully sent")
+            else:
+                print("Error on sending confirmation email! Please check response:")
+                print(result.json())
 
 
 if __name__ == '__main__':
