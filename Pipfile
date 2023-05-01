@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [scripts]
-mysqlbackup = "scripts/backup-mysql.py"
+mysqlbackup = "python scripts/backup-mysql.py"
 
 [packages]
 pymysql = "*"
