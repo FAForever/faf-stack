@@ -20,6 +20,10 @@ mkdir -p $DB_BACKUP/01
 
 echo "* Creating backup..."
 echo "------------------------"
-docker exec -i -u root faf-db mysqldump --single-transaction --triggers --routines --all-databases | zstd -10 -T4  > ${DB_BACKUP}/01/$(date +"%Y-%m-%d-%H-%M-%S").sql.zstd
+pushd /opt/faf
+pipenv install
+pipenv run mysqlbackup "${DB_BACKUP}/01/$(date +"%Y-%m-%d-%H-%M-%S").sql.zstd"
+popd
+chown -R faforever:faforever "${DB_BACKUP}"
 echo "Done"
 exit 0

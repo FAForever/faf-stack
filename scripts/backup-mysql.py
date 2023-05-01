@@ -21,10 +21,12 @@ def zfs(args, timeout=10, stdout=subprocess.PIPE, **kwargs):
 def parse_arguments(argv):
     parser = argparse.ArgumentParser()
     parser.add_argument('--log_file')
-    parser.add_argument('mysql_config', type=argparse.FileType('r'),
-                        help='path to mysql.cnf for snapshotted database')
-    parser.add_argument('snapshot_name',
-                        help='zfs dataset name for the snapshotted database data directory')
+    parser.add_argument('--mysql_config', type=argparse.FileType('r'),
+                        help='path to mysql.cnf for snapshotted database',
+                        default='config/faf-db/mysql.cnf')
+    parser.add_argument('--snapshot_name',
+                        help='zfs dataset name for the snapshotted database data directory',
+                        default='tank/mysql@rotating_backup')
     parser.add_argument('send_file', type=argparse.FileType('wb'),
                         help='filename for where zfs-send output should be written')
     options = parser.parse_args(argv[1:])
