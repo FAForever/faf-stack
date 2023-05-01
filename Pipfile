@@ -8,5 +8,7 @@ mysqlbackup = "python scripts/backup-mysql.py"
 
 [packages]
 pymysql = "*"
+python-dotenv = "*"
+mailjet_rest = "*"
 
 [dev-packages]
