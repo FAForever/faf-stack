@@ -270,24 +270,6 @@ services:
       - "traefik.http.middlewares.cors.headers.accesscontrolmaxage=60"
       - "traefik.http.middlewares.cors.headers.addvaryheader=false"
 
-  #
-  # The second version of "live replay" server
-  #
-  faf-aio-replayserver:
-    container_name: faf-aio-replayserver
-    image: faforever/faf-aio-replayserver:1.1.4
-    user: ${FAF_AIO_REPLAYSERVER_USER}
-    restart: unless-stopped
-    volumes:
-      - ./data/content:/content
-      - ./config/faf-aio-replayserver:/config
-    networks:
-      - faf
-    env_file: ./config/faf-aio-replayserver/faf-aio-replayserver.env
-    ports:
-      - "15000:15000"
-    labels:
-      - "loki_retention=long"
 
   # The third version of the "live replay" server, in Rust.
   faf-rust-replayserver:
@@ -359,6 +341,7 @@ services:
     hostname: rabbitmq.${DOMAINNAME}
     ports:
     - "15692:15692"
+    - "5672:5672"
     env_file: ./config/faf-rabbitmq/faf-rabbitmq.env
     user: ${FAF_RABBITMQ_USER}
     restart: unless-stopped
