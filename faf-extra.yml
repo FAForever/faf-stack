@@ -19,8 +19,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-phpbb3-archive.rule=Host(`forums.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-phpbb3-archive.entryPoints=web-secure"
-      - "traefik.http.routers.faf-phpbb3-archive.middlewares=test-compress@file"
+      - "traefik.http.routers.faf-phpbb3-archive.entryPoints=websecure"
 
   #
   # NoSQL database specifically used for nodebb
@@ -54,8 +53,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-nodebb.rule=Host(`forum.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-nodebb.entryPoints=web-secure"
-      - "traefik.http.routers.faf-nodebb.middlewares=test-compress@file"
+      - "traefik.http.routers.faf-nodebb.entryPoints=websecure"
 
 
   #
@@ -72,7 +70,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.wikijs.rule=Host(`wiki.${DOMAINNAME}`)"
-      - "traefik.http.routers.wikijs.entryPoints=web-secure"
+      - "traefik.http.routers.wikijs.entryPoints=websecure"
       - "traefik.http.services.wikijs.loadbalancer.server.port=3000"
 
   #
@@ -103,8 +101,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-unitdb.rule=Host(`unitdb.${DOMAINNAME}`) || Host(`direct.${DOMAINNAME}`) && PathPrefix(`/faf/unitsDB`)"
-      - "traefik.http.routers.faf-unitdb.entryPoints=web-secure"
-      - "traefik.http.routers.faf-unitdb.middlewares=unitdb-stripprefix, test-compress@file"
+      - "traefik.http.routers.faf-unitdb.entryPoints=websecure"
+      - "traefik.http.routers.faf-unitdb.middlewares=unitdb-stripprefix"
       - "traefik.http.middlewares.unitdb-stripprefix.stripprefix.prefixes=/faf/unitsDB"
 
 
@@ -121,8 +119,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-voting.rule=Host(`voting.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-voting.entryPoints=web-secure"
-      - "traefik.http.routers.faf-voting.middlewares=test-compress@file"
+      - "traefik.http.routers.faf-voting.entryPoints=websecure"
       - "traefik.http.services.faf-voting.loadbalancer.server.port=3000"
 
   #

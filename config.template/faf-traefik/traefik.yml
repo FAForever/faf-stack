@@ -6,7 +6,7 @@ api:
 entryPoints:
   web:
     address: ":80"
-  web-secure:
+  websecure:
     address: ":443"
 
 # Listen for changes on docker and the dynamic configuration file

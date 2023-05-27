@@ -33,7 +33,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.prometheus.rule=Host(`prometheus.${DOMAINNAME}`)"
-      - "traefik.http.routers.prometheus.entryPoints=web-secure"
+      - "traefik.http.routers.prometheus.entryPoints=websecure"
       - "traefik.http.routers.prometheus.middlewares=prometheus-auth"
       - "traefik.http.middlewares.prometheus-auth.basicauth.users=${PROMETHEUS_USERNAME}:${PROMETHEUS_PASSWORD}"
       - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
@@ -73,7 +73,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAINNAME}`)"
-      - "traefik.http.routers.grafana.entryPoints=web-secure"
+      - "traefik.http.routers.grafana.entryPoints=websecure"
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
 
   mysql-exporter:

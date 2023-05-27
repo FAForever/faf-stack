@@ -13,7 +13,7 @@ http:
 
     unavailable-fallback:
       entryPoints:
-        - "web-secure"
+        - "websecure"
       # catchall rule for user facing faf services
       rule: >
         Host(`{{env "DOMAINNAME"}}`) || Host(`www.{{env "DOMAINNAME"}}`) ||
@@ -37,8 +37,6 @@ http:
     redirect:
       redirectScheme:
         scheme: https
-    test-compress:
-      compress: {}
 
 # Hardened TLS options by default. 
 tls:
