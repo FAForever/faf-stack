@@ -311,32 +311,6 @@ services:
       - "loki_retention=long"
 
   #
-  # Postal is a fully featured open source mail delivery platform for incoming & outgoing e-mail.
-  #
-  faf-postal:
-    container_name: faf-postal
-    image: faforever/faf-postal:1.1
-    env_file: ./config/faf-postal/faf-postal.env
-    user: ${FAF_POSTAL_USER}
-    restart: unless-stopped
-    networks:
-      faf:
-        aliases:
-          - "faf-postal"
-    expose:
-      - "25"
-      # We have reports that in order to create an initial user via `/opt/postal/bin/postal make-user` you have to expose port 5000 too.
-    volumes:
-      - ./data/faf-postal/assets:/opt/postal/public/assets
-      - ./config/faf-postal/config:/opt/postal/config
-    labels:
-      - "loki_retention=long"
-      - "traefik.enable=true"
-      - "traefik.http.routers.faf-postal.rule=Host(`postal.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-postal.entryPoints=websecure"
-      - "traefik.http.services.faf-postal.loadbalancer.server.port=5000"
-
-  #
   # RabbitMQ is open source message broker software (sometimes called message-oriented middleware) that implements the
   # Advanced Message Queuing Protocol (AMQP).
   #
