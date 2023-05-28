@@ -176,7 +176,7 @@ services:
   #
   faf-ircd:
     container_name: faf-ircd
-    image: faforever/faf-unrealircd:5.2.4
+    image: faforever/faf-unrealircd:6.0.3
     restart: unless-stopped
     networks:
       - faf
