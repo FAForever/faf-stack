@@ -251,6 +251,10 @@ services:
     image: nginx:1.20
     restart: unless-stopped
     volumes:
+      - ./data/maps:/usr/share/nginx/html/maps
+      - ./data/mods:/usr/share/nginx/html/mods
+      - ./data/replays:/usr/share/nginx/html/replays
+      - ./data/legacy-featured-mod-files:/usr/share/nginx/html/legacy-featured-mod-files
       - ./data/content:/usr/share/nginx/html
       - ./config/faf-content/default.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
