@@ -283,7 +283,7 @@ services:
     user: ${FAF_AIO_REPLAYSERVER_USER}
     restart: unless-stopped
     volumes:
-      - ./data/content:/content
+      - ./data/replays:/content/replays
       - ./config/faf-rust-replayserver:/config
     networks:
       - faf
