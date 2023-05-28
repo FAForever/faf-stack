@@ -1,6 +1,16 @@
 CONFIGURATION_REFRESH_TIME: 60
 LOG_LEVEL: "TRACE"
 
+LISTEN:
+  - ADDRESS:
+    PORT: 8001
+    PROTOCOL: QDataStreamProtocol
+    PROXY: false
+  - ADDRESS:
+    PORT: 8002
+    PROTOCOL: SimpleJsonProtocol
+    PROXY: false
+
 DB_SERVER: "faf-db"
 DB_LOGIN: "faf-python-server"
 DB_PASSWORD: "banana"
