@@ -118,7 +118,7 @@ def main(options):
             if games == 0:
                 print("Player has no games! Starting complete account wipe!")
 
-                cursor.execute("DELETE FROM service_links WHERE user_id = %s and ownership = 0", user_id)
+                cursor.execute("DELETE FROM service_links WHERE user_id = %s", user_id)
                 cursor.execute("DELETE FROM leaderboard_rating WHERE login_id = %s", user_id)
                 cursor.execute("DELETE FROM login WHERE id = %s", user_id)
             else:
