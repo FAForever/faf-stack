@@ -118,9 +118,9 @@ services:
     volumes:
       - ./config/faf-java-api/pki:/pki
       - ./config/faf-java-api/mail:/config/mail
-      - ./data/maps:/content/maps
-      - ./data/mods:/content/mods
-      - ./data/legacy-featured-mod-files:/content/legacy-featured-mod-files
+      - ./data/maps:/maps
+      - ./data/mods:/mods
+      - ./data/legacy-featured-mod-files:/legacy-featured-mod-files
       - ./data/content:/content
       - ./data/faf-java-api/logs:/logs
       - ./data/faf-java-api/repositories:/repositories
