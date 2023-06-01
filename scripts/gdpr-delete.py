@@ -101,6 +101,7 @@ def main(options):
 
             cursor.execute("DELETE FROM login_log WHERE login_id = %s", user_id)
             cursor.execute("DELETE FROM name_history WHERE user_id = %s", user_id)
+            cursor.execute("DELETE FROM unique_id_users WHERE user_id = %s", user_id)
             cursor.execute("""
                 UPDATE login 
                 SET password = 'anonymized', 

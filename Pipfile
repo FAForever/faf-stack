@@ -5,6 +5,7 @@ name = "pypi"
 
 [scripts]
 mysqlbackup = "python scripts/backup-mysql.py"
+gdpr-delete = "python scripts/gdpr-delete.py"
 
 [packages]
 pymysql = "*"
