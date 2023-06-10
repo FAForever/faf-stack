@@ -268,7 +268,7 @@ services:
       - "traefik.http.routers.faf-content.rule=Host(`content.${DOMAINNAME}`) || Host(`replay.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-content.entryPoints=websecure"
       - "traefik.http.routers.faf-content.middlewares=redirect-replay-subdomain, cors"
-      - "traefik.http.middlewares.redirect-replay-subdomain.redirectregex.regex=^(http|https)://replay.${DOMAINNAME}/(.*)"
+      - "traefik.http.middlewares.redirect-replay-subdomain.redirectregex.regex=^(http|https)://replay.${DOMAINNAME}/(\\d+)"
       - "traefik.http.middlewares.redirect-replay-subdomain.redirectregex.replacement=$${1}://api.${DOMAINNAME}/game/$${2}/replay"
       - "traefik.http.middlewares.cors.headers.accesscontrolallowmethods=GET"
       - "traefik.http.middlewares.cors.headers.accesscontrolalloworiginlist=*"
