@@ -90,7 +90,7 @@ services:
   # FAF unit database
   #
   unitdb:
-    image: faforever/faf-unitdb:v1.3.1
+    image: faforever/faf-unitdb:v1.4.0
     restart: unless-stopped
     networks:
       - faf-extra
