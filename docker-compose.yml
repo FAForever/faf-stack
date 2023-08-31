@@ -80,7 +80,7 @@ services:
   #
   faf-python-server:
     container_name: faf-python-server
-    image: faforever/faf-python-server:v1.13.0
+    image: faforever/faf-python-server:v1.13.1
     user: ${FAF_PYTHON_SERVER_USER}
     networks:
       faf:
@@ -385,7 +385,7 @@ services:
   #
   faf-user-service:
     container_name: faf-user-service
-    image: faforever/faf-user-service:3.0.0
+    image: faforever/faf-user-service:3.0.1
     networks:
       - faf
     restart: unless-stopped
