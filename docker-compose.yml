@@ -103,6 +103,27 @@ services:
       - "loki_retention=long"
 
   #
+  # FAF game server for clients to connect to.
+  #
+  faf-ws-bridge:
+    container_name: faf-ws-bridge
+    image: faforever/ws_bridge_rs:0.1.1
+    user: rust
+    networks:
+      faf:
+        aliases:
+          - "faf-ws-bridge"
+    restart: unless-stopped
+    ports:
+      - "8003:8003"
+    command: ws_to_tcp -vvv faf-ws-bridge:8003 faf-python-server:8002
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.faf-ws-bridge.rule=Host(`ws.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-ws-bridge.entryPoints=websecure"
+      - "traefik.http.services.faf-ws-bridge.loadbalancer.server.port=8003"
+
+  #
   # FAF JSON-API to provide data over HTTP.
   #
   faf-java-api:
