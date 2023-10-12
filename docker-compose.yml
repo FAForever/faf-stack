@@ -95,6 +95,8 @@ services:
       nofile:
         soft: 100000
         hard: 200000
+    expose:
+      - "8003" # Websocket Server UTF8 Json
     ports:
       - "8001:8001" # Server QDataStream
       - "8002:8002" # Server UTF8 Json
@@ -114,9 +116,9 @@ services:
         aliases:
           - "faf-ws-bridge"
     restart: unless-stopped
-    ports:
-      - "8003:8003"
-    command: ws_to_tcp -vvv faf-ws-bridge:8003 faf-python-server:8002
+    expose:
+      - "8003"
+    command: ws_to_tcp -vvv faf-ws-bridge:8003 faf-python-server:8003
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-ws-bridge.rule=Host(`ws.${DOMAINNAME}`)"
