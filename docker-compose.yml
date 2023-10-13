@@ -1,7 +1,6 @@
 version: '3.7'
 
 services:
-
   #
   # Traefik server for reverse proxying, load balancing and fetching Let's encrypt certificates
   # Listens for changes on docker containers and adds them if matching labels are found
@@ -194,42 +193,21 @@ services:
       driver: "json-file"
       options:
         max-size: "100m"
+
   #
   # IRC for FAF chat.
   #
-  faf-ircd:
-    container_name: faf-ircd
-    image: faforever/faf-unrealircd:6.0.3
-    restart: unless-stopped
+  ergochat:
+    image: ghcr.io/ergochat/ergo:v2.12.0
+    volumes:
+      - ./config/ergochat/auth.sh:/ircd/auth.sh
+      - ./config/ergochat/ircd.yaml:/ircd/ircd.yaml
+      - ./data/ergochat:/data
     networks:
       - faf
-    volumes:
-      - ./config/faf-ircd/ssl/server.cert.pem:/data/unrealircd/conf/tls/server.cert.pem
-      - ./config/faf-ircd/ssl/server.key.pem:/data/unrealircd/conf/tls/server.key.pem
-      - ./config/faf-ircd/unrealircd.conf:/data/unrealircd/conf/unrealircd.conf
-      - ./config/faf-ircd/motd.txt:/data/unrealircd/conf/ircd.motd
-      - ./data/faf-ircd/:/data/unrealircd/data/
     ports:
-      - "6667:6667" # plain text for QAI and Python client
-      - "6697:6697" # ssl only
-      - "8167:8167" # ssl only
-    expose:
-      # Anope
-      - 7000
-
-  #
-  # IRC Services
-  #
-  faf-anope:
-    container_name: faf-anope
-    image: anope/anope:2.0.10
-    restart: unless-stopped
-    networks:
-      - faf
-    depends_on:
-      - faf-ircd
-    volumes:
-      - ./config/faf-anope/services.conf:/anope/conf/services.conf
+      - "6667:6667/tcp"
+      - "6697:6697/tcp"
 
   #
   # QAI irc bot
@@ -408,7 +386,7 @@ services:
   #
   faf-user-service:
     container_name: faf-user-service
-    image: faforever/faf-user-service:3.0.1
+    image: faforever/faf-user-service:3.0.3.2
     networks:
       - faf
     restart: unless-stopped

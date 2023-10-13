@@ -55,17 +55,10 @@ create "${MYSQL_DATABASE}" "faf-aio-replayserver" "${MYSQL_AIO_REPLAYSERVER_PASS
 create "${MYSQL_DATABASE}" "faf-policy-server" "${MYSQL_POLICY_SERVER_PASSWORD}"
 create "${MYSQL_DATABASE}" "faf-python-server" "${MYSQL_PYTHON_SERVER_PASSWORD}"
 create "${MYSQL_DATABASE}" "faf-user-service" "${MYSQL_USER_SERVICE_PASSWORD}"
-create "faf-anope" "faf-anope" "${MYSQL_ANOPE_PASSWORD}"
 create "faf-wordpress" "faf-wordpress" "${MYSQL_WORDPRESS_PASSWORD}"
 create "${LEAGUE_DATABASE}" "faf-java-api" "${MYSQL_JAVA_API_PASSWORD}"
 create "${LEAGUE_DATABASE}" "faf-league-service" "${LEAGUE_SERVICE_PASSWORD}"
 create "hydra" "hydra" "${HYDRA_PASSWORD}" "CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci"
-
-# To update the IRC password, we give the server/api full bloated access to all of anope's tables.
-docker exec -i faf-db mysql --user=root --password=${MYSQL_ROOT_PASSWORD} <<SQL_SCRIPT
-    GRANT ALL PRIVILEGES ON \`faf-anope\`.* TO 'faf-python-server'@'%';
-    GRANT ALL PRIVILEGES ON \`faf-anope\`.* TO 'faf-java-api'@'%';
-SQL_SCRIPT
 
 # Allows faf-mysql-exporter to read metrics. It is recommended to set a max connection limit for the user to avoid
 # overloading the server with monitoring scrapes under heavy load.
