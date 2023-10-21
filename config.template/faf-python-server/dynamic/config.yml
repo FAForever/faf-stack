@@ -1,5 +1,5 @@
 CONFIGURATION_REFRESH_TIME: 60
-LOG_LEVEL: "TRACE"
+LOG_LEVEL: "DEBUG"
 
 LISTEN:
   - ADDRESS:
@@ -8,6 +8,11 @@ LISTEN:
     PROXY: false
   - ADDRESS:
     PORT: 8002
+    PROTOCOL: SimpleJsonProtocol
+    PROXY: false
+  # Websocket Bridge
+  - ADDRESS:
+    PORT: 8003
     PROTOCOL: SimpleJsonProtocol
     PROXY: false
 
