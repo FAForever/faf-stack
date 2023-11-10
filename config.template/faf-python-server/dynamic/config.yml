@@ -14,7 +14,7 @@ LISTEN:
   - ADDRESS:
     PORT: 8003
     PROTOCOL: SimpleJsonProtocol
-    PROXY: false
+    PROXY: true
 
 DB_SERVER: "faf-db"
 DB_LOGIN: "faf-python-server"

@@ -108,7 +108,7 @@ services:
   #
   faf-ws-bridge:
     container_name: faf-ws-bridge
-    image: faforever/ws_bridge_rs:0.1.1
+    image: faforever/ws_bridge_rs:0.1.3
     user: rust
     networks:
       faf:
@@ -117,7 +117,7 @@ services:
     restart: unless-stopped
     expose:
       - "8003"
-    command: ws_to_tcp -vvv faf-ws-bridge:8003 faf-python-server:8003
+    command: ws_to_tcp -vvv --proxy faf-ws-bridge:8003 faf-python-server:8003
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.faf-ws-bridge.rule=Host(`ws.${DOMAINNAME}`)"
