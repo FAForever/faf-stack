@@ -67,7 +67,7 @@ services:
   #
   faf-db-migrations:
     container_name: faf-db-migrations
-    image: faforever/faf-db-migrations:v133
+    image: faforever/faf-db-migrations:v129
     user: ${FAF_DB_USER}
     networks:
       - faf
@@ -129,7 +129,7 @@ services:
   #
   faf-java-api:
     container_name: faf-java-api
-    image: faforever/faf-java-api:v3.3.1
+    image: faforever/faf-java-api:v3.2.0
     user: ${FAF_JAVA_API_USER}
     networks:
       faf:
@@ -317,7 +317,7 @@ services:
   # Advanced Message Queuing Protocol (AMQP).
   #
   faf-rabbitmq:
-    image: rabbitmq:3.9.29-management-alpine
+    image: rabbitmq:3.9.16-management-alpine
     container_name: faf-rabbitmq
     hostname: rabbitmq.${DOMAINNAME}
     ports:
