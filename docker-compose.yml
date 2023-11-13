@@ -211,21 +211,6 @@ services:
       - "6697:6697/tcp"
 
   #
-  # QAI irc bot
-  #
-  faf-qai:
-    container_name: faf-qai
-    image: faforever/faf-qai:v1.1
-    user: ${FAF_QAI_USER}
-    restart: unless-stopped
-    volumes:
-      - ./config/faf-qai:/config
-    networks:
-      - faf
-    labels:
-      - "loki_retention=long"
-
-  #
   # The content management system which is still being used as a backend for the website. The website accesses
   # Wordpress over a JSON API plugin.
   #
