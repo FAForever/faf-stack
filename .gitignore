@@ -4,6 +4,7 @@
 !/config.template/
 !/scripts/
 !/tests/
+!/k8s-archive/
 !.env.template
 !.gitignore
 !*.yml

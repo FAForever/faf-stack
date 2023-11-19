@@ -1,0 +1,48 @@
+#
+# This file contains additional services for FAForever that are highly relevant but uncritical to run FAF.
+#
+version: '3.7'
+
+services:
+
+  #
+  # FAF unit database
+  #
+  unitdb:
+    image: faforever/faf-unitdb:v1.3.1
+    restart: unless-stopped
+    networks:
+      - faf-extra
+    volumes:
+      - ./config/extra/unitdb/datafiles.json:/var/www/html/config/datafiles.json
+      - ./config/extra/unitdb/locfiles.json:/var/www/html/config/locfiles.json
+    env_file: ./config/extra/unitdb/unitdb.env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.faf-unitdb.rule=Host(`unitdb.${DOMAINNAME}`) || Host(`direct.${DOMAINNAME}`) && PathPrefix(`/faf/unitsDB`)"
+      - "traefik.http.routers.faf-unitdb.entryPoints=websecure"
+      - "traefik.http.routers.faf-unitdb.middlewares=unitdb-stripprefix"
+      - "traefik.http.middlewares.unitdb-stripprefix.stripprefix.prefixes=/faf/unitsDB"
+
+
+  #
+  # Web frontend for voting
+  #
+  voting:
+    image: faforever/faf-voting:v2.1.1
+    user: ${FAF_VOTING_USER}
+    restart: unless-stopped
+    networks:
+      - faf-extra
+    env_file: ./config/extra/voting/voting.env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.faf-voting.rule=Host(`voting.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-voting.entryPoints=websecure"
+      - "traefik.http.services.faf-voting.loadbalancer.server.port=3000"
+
+networks:
+  faf-extra:
+    driver: bridge
+  faf:
+    driver: bridge

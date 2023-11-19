@@ -1,44 +1,6 @@
 version: '3.7'
 
 services:
-  #
-  # Traefik server for reverse proxying, load balancing and fetching Let's encrypt certificates
-  # Listens for changes on docker containers and adds them if matching labels are found
-  # Runs in dashboard mode, secured by basic http auth
-  #
-  faf-traefik:
-    # traefik >= 2.7.2 breaks requests to the api. traefik will replace all `;` with `&` which turns the api filter list into their own 
-    # query parameters. This breaks the api causing it to return 400. Until resolved we are limited to 2.7.1
-    # See https://github.com/traefik/traefik/issues/9164 for more details
-    image: traefik:v2.7.1
-    environment:
-      DOMAINNAME: ${DOMAINNAME}
-    network_mode: host
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
-      # Config folder contains 3 files:
-      # traefik.yml  - Static configuration (change requires restart)
-      # config.yml   - Dynamic configuration (Traefik listens for changes)
-      # acme.json    - Make sure to set chmod to 600 (will be populated by Traefik)
-      - ./config/faf-traefik:/etc/traefik
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.faf-traefik.entryPoints=websecure"
-      - "traefik.http.routers.faf-traefik.rule=Host(`traefik.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-traefik.middlewares=auth"
-      - "traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_USERNAME}:${TRAEFIK_PASSWORD}"
-      - "traefik.http.routers.faf-traefik.service=api@internal"
-      - "traefik.http.services.faf-traefik.loadbalancer.server.port=8080" # Dummy port so Docker doesn't complain
-
-  #
-  # Coturn server for proxying between players
-  # It uses net: "host" for performance reasons.
-  #
-  faf-coturn:
-    container_name: faf-coturn
-    image: faforever/coturn-lt-cred:v1.1
-    env_file: ./config/faf-coturn/faf-coturn.env
-    network_mode: host
 
   #
   # FAF MySQL database.
@@ -323,22 +285,6 @@ services:
       - "traefik.http.routers.faf-rabbitmq.rule=Host(`rabbitmq.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-rabbitmq.entryPoints=websecure"
       - "traefik.http.services.faf-rabbitmq.loadbalancer.server.port=15672"
-
-  #
-  # FAF League Service
-  #
-  faf-league-service:
-    container_name: faf-league-service
-    image: faforever/faf-league-service:1.5.0
-    user: ${FAF_LEAGUE_SERVICE_USER}
-    networks:
-      faf:
-        aliases:
-          - "faf-league-service"
-    restart: unless-stopped
-    env_file: ./config/faf-league-service/faf-league-service.env
-    labels:
-      - "loki_retention=long"
 
   #
   # OAuth2 service
