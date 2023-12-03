@@ -131,32 +131,6 @@ services:
         max-size: "100m"
 
   #
-  # FAF website.
-  #
-  faf-website:
-    container_name: faf-website
-    image: faforever/faf-website:v2.1.2
-    user: ${FAF_WEBSITE_USER}
-    restart: unless-stopped
-    env_file: ./config/faf-website/faf-website.env
-    volumes:
-      - ./config/faf-website/faf-website.env:/code/.env
-    networks:
-      - faf
-    ports:
-      - "127.0.0.1:8020:3000" # For internal testing only
-    labels:
-      - "loki_retention=long"
-      - "traefik.enable=true"
-      - "traefik.http.routers.faf-website.rule=Host(`www.${DOMAINNAME}`) || Host(`${DOMAINNAME}`) || Host(`clans.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-website.entryPoints=websecure"
-      - "traefik.http.services.faf-website.loadbalancer.server.port=3000"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
-
-  #
   # IRC for FAF chat.
   #
   ergochat:
