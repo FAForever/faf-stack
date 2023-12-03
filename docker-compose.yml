@@ -327,7 +327,8 @@ services:
       - "127.0.0.1:8030:8080" # only for testing
     labels:
       - "loki_retention=long"
-      - "traefik.enable=true"
+      # Traefik endpoint disabled (moved to K8s), only internal admin endpoint is required
+      - "traefik.enable=false"
       - "traefik.http.routers.faf-user-service.rule=Host(`user.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-user-service.entryPoints=websecure"
       - "traefik.http.routers.faf-user-service.tls.certresolver=default"
