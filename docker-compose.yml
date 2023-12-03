@@ -307,32 +307,12 @@ services:
       - "127.0.0.1:4445:4445" # only for testing
       - "127.0.0.1:4444:4444" # only for testing
     labels:
-      - "traefik.enable=true"
+      # Traefik endpoint disabled (moved to K8s), only internal admin endpoint is required
+      - "traefik.enable=false"
       - "traefik.http.routers.faf-ory-hydra.rule=Host(`hydra.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-ory-hydra.entryPoints=websecure"
       - "traefik.http.routers.faf-ory-hydra.tls.certresolver=default"
       - "traefik.http.services.faf-ory-hydra.loadbalancer.server.port=4444"
-
-  #
-  # FAF User Service
-  #
-  faf-user-service:
-    container_name: faf-user-service
-    image: faforever/faf-user-service:3.0.3.2
-    networks:
-      - faf
-    restart: unless-stopped
-    env_file: ./config/faf-user-service/faf-user-service.env
-    ports:
-      - "127.0.0.1:8030:8080" # only for testing
-    labels:
-      - "loki_retention=long"
-      # Traefik endpoint disabled (moved to K8s), only internal admin endpoint is required
-      - "traefik.enable=false"
-      - "traefik.http.routers.faf-user-service.rule=Host(`user.${DOMAINNAME}`)"
-      - "traefik.http.routers.faf-user-service.entryPoints=websecure"
-      - "traefik.http.routers.faf-user-service.tls.certresolver=default"
-      - "traefik.http.services.faf-user-service.loadbalancer.server.port=8080"
 
   #
   # FAF Telemetry Server collecting ICE adapter telemetry
