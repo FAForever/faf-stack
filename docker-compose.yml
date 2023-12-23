@@ -14,7 +14,7 @@ services:
     restart: unless-stopped
     env_file: ./config/faf-db/faf-db.env
     ports:
-        - "3306:3306"
+        - "127.0.0.1:3306:3306"
     volumes:
       - ./config/faf-db/mysqld.cnf:/etc/mysql/mariadb.conf.d/mysqld-custom.cnf
       - ./config/faf-db/mysql.cnf:/root/.my.cnf
