@@ -137,8 +137,7 @@ services:
     init: true
     image: ghcr.io/ergochat/ergo:v2.12.0
     volumes:
-      - ./config/ergochat/auth.sh:/ircd/auth.sh
-      - ./config/ergochat/ircd.yaml:/ircd/ircd.yaml
+      - ./config/ergochat:/ircd
       - ./data/ergochat:/data
     networks:
       - faf
