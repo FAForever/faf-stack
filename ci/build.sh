@@ -35,8 +35,8 @@ kill ${log_process_id}
 echo "Creating test-data in faf-db"
 docker exec -i faf-db mysql -uroot -pbanana faf < test-data.sql
 
-docker-compose up -d faf-website
-docker-compose logs -f faf-website &
+docker-compose -f k8s-archive/docker-compose.yml up -d faf-website
+docker-compose -f k8s-archive/docker-compose.yml logs -f faf-website &
 log_process_id=$!
 
 echo "Waiting for faf-website"
