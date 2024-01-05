@@ -59,6 +59,7 @@ create "faf-wordpress" "faf-wordpress" "${MYSQL_WORDPRESS_PASSWORD}"
 create "${LEAGUE_DATABASE}" "faf-java-api" "${MYSQL_JAVA_API_PASSWORD}"
 create "${LEAGUE_DATABASE}" "faf-league-service" "${LEAGUE_SERVICE_PASSWORD}"
 create "hydra" "hydra" "${HYDRA_PASSWORD}" "CHARSET utf8mb4 COLLATE utf8mb4_unicode_ci"
+create "ergochat" "ergochat" "${ERGOCHAT_PASSWORD}"
 
 # Allows faf-mysql-exporter to read metrics. It is recommended to set a max connection limit for the user to avoid
 # overloading the server with monitoring scrapes under heavy load.
