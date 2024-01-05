@@ -173,7 +173,7 @@ services:
   #
   faf-content:
     container_name: faf-content
-    image: nginx:1.20
+    image: nginx:1.25
     restart: unless-stopped
     volumes:
       - ./data/maps:/usr/share/nginx/html/maps
