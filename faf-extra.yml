@@ -9,7 +9,7 @@ services:
   # Static copy of the old phpbb3 forum (https://forums.faforever.com)
   #
   phpbb3-archive:
-    image: nginx:1.19
+    image: nginx:1.25
     restart: unless-stopped
     volumes:
       - ./config/extra/phpbb3-archive/:/etc/nginx/conf.d/
