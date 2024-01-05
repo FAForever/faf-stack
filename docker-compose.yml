@@ -237,7 +237,7 @@ services:
   # Advanced Message Queuing Protocol (AMQP).
   #
   faf-rabbitmq:
-    image: rabbitmq:3.9.16-management-alpine
+    image: rabbitmq:3.9.29-management-alpine
     container_name: faf-rabbitmq
     hostname: rabbitmq.${DOMAINNAME}
     ports:
