@@ -135,12 +135,13 @@ services:
   #
   ergochat:
     init: true
-    image: ghcr.io/ergochat/ergo:v2.12.0
+    image: ghcr.io/ergochat/ergo:v2.13.0-rc1
     volumes:
       - ./config/ergochat:/ircd
       - ./data/ergochat:/data
     networks:
       - faf
+    restart: unless-stopped
     ports:
       - "6667:6667/tcp"
       - "6697:6697/tcp"
