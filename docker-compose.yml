@@ -142,9 +142,16 @@ services:
     networks:
       - faf
     restart: unless-stopped
+    expose:
+      - "8097"
     ports:
       - "6667:6667/tcp"
       - "6697:6697/tcp"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ergochat.rule=Host(`chat.${DOMAINNAME}`)"
+      - "traefik.http.routers.ergochat.entryPoints=websecure"
+      - "traefik.http.services.ergochat.loadbalancer.server.port=8097"
 
   #
   # The content management system which is still being used as a backend for the website. The website accesses
