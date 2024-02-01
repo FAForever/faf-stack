@@ -19,15 +19,13 @@ sudo chown -R 1000:1000 ./config/extra/nodebb
 sudo chmod -R g+w ./config/extra/nodebb
 
 echo "Setting up nodebb data directories (using sudo)"
-sudo mkdir -p ./data/nodebb/build
-sudo mkdir -p ./data/nodebb/node_modules
 sudo mkdir -p ./data/nodebb/uploads
 sudo chown -R 1000:1000 ./data/nodebb
 
 #docker-compose run --rm faf-nodebb sh -c "npm install && npm cache clean --force"
-docker-compose -f faf-extra.yml run --rm -u node nodebb sh -c "./nodebb setup \
-&& npm install nodebb-plugin-sso-oauth-faforever \
-&& ./nodebb activate nodebb-plugin-sso-oauth-faforever \
+docker-compose -f faf-extra.yml run --rm -u node nodebb sh -c " echo Installing \
+&& npm install nodebb-plugin-dbsearch nodebb-plugin-sso-oauth-faforever nodebb-plugin-write-api \
+&& ./nodebb setup \
 && ./nodebb build"
 
 echo "NodeBB setup done! Don't forget to write down the admin accounts password!"

@@ -1,21 +1,29 @@
 {
-  "url": "http://localhost:4567",
-  "secret": "banana",
-  "database": "mongo",
-  "port": 4567,
-  "mongo": {
-    "host": "mongodb",
-    "port": "27017",
-    "username": "nodebb",
-    "password": "banana",
-    "database": "nodebb"
-  },
-  "oauth": {
-    "authorizationURL": "http://faf-ory-hydra:4444/oauth2/auth",
-    "tokenURL": "http://faf-ory-hydra:4444/oauth2/token",
-    "fafApiProfileURL": "http://faf-java-api:8010/me",
-    "id": "faf-forum",
-    "secret": "{tokenFromScripts-create-hydra-test-clients.sh}",
-    "scope": "public_profile"
-  }
+    "url": "http://localhost:4567",
+    "secret": "banana",
+    "database": "mongo",
+    "port": "4567",
+    "mongo": {
+        "host": "mongodb",
+        "port": "27017",
+        "username": "nodebb",
+        "password": "banana",
+        "database": "nodebb",
+        "uri": ""
+    },
+    "plugins": {
+        "active": [
+            "nodebb-plugin-dbsearch",
+            "nodebb-plugin-sso-oauth-faforever",
+            "nodebb-plugin-write-api"
+        ]
+    },
+    "oauth": {
+        "authorizationURL": "http://faf-ory-hydra:4444/oauth2/auth",
+        "tokenURL": "http://faf-ory-hydra:4444/oauth2/token",
+        "fafApiProfileURL": "http://faf-java-api:8010/me",
+        "id": "faf-forum",
+        "secret": "{tokenFromScripts-create-hydra-test-clients.sh}",
+        "scope": "public_profile"
+    }
 }
