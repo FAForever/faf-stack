@@ -248,9 +248,9 @@ services:
     image: rabbitmq:3.9.29-management-alpine
     container_name: faf-rabbitmq
     hostname: rabbitmq.${DOMAINNAME}
-    ports:
-    - "15692:15692"
-    - "5672:5672"
+    expose:
+    - "15692"
+    - "5672"
     env_file: ./config/faf-rabbitmq/faf-rabbitmq.env
     user: ${FAF_RABBITMQ_USER}
     restart: unless-stopped
@@ -284,9 +284,9 @@ services:
     volumes:
       - ./config/faf-ory-hydra/hydra.yaml:/hydra.yaml
     restart: unless-stopped
-    ports:
-      - "127.0.0.1:4445:4445" # only for testing
-      - "127.0.0.1:4444:4444" # only for testing
+    expose:
+      - "4445"
+      - "4444"
     labels:
       # Traefik endpoint disabled (moved to K8s), only internal admin endpoint is required
       - "traefik.enable=false"
