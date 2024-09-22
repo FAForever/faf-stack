@@ -4,6 +4,21 @@
 version: '3.7'
 
 services:
+  #
+  # Static copy of the old phpbb3 forum (https://forums.faforever.com)
+  #
+  phpbb3-archive:
+    image: nginx:1.25
+    restart: unless-stopped
+    volumes:
+      - ./config/extra/phpbb3-archive/:/etc/nginx/conf.d/
+      - ./data/phpbb3-archive/:/usr/share/nginx/html/
+    networks:
+      - faf-extra
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.faf-phpbb3-archive.rule=Host(`forums.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-phpbb3-archive.entryPoints=websecure"
 
   #
   # FAF unit database
@@ -40,6 +55,48 @@ services:
       - "traefik.http.routers.faf-voting.rule=Host(`voting.${DOMAINNAME}`)"
       - "traefik.http.routers.faf-voting.entryPoints=websecure"
       - "traefik.http.services.faf-voting.loadbalancer.server.port=3000"
+
+
+  #
+  # New Wiki software (not the same as Wikipedia)
+  #
+  wikijs:
+    image: requarks/wiki:2
+    restart: unless-stopped
+    networks:
+      - faf-extra
+    env_file: ./config/extra/wikijs/wikijs.env
+    volumes:
+      - ./data/wikijs/authentication/faf-hydra:/wiki/server/modules/authentication/faf-hydra:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wikijs.rule=Host(`wiki.${DOMAINNAME}`)"
+      - "traefik.http.routers.wikijs.entryPoints=websecure"
+      - "traefik.http.services.wikijs.loadbalancer.server.port=3000"
+
+  #
+  # Database used by Wiki.js
+  #
+  postgres-wikijs:
+    image: postgres:13-alpine
+    restart: unless-stopped
+    networks:
+      - faf-extra
+    env_file: ./config/extra/postgres-wikijs/postgres-wikijs.env
+    volumes:
+      - ./data/extra/postgres-wikijs:/var/lib/postgresql/data
+
+  #
+  # QAI & Dostya combined
+  #
+  qai:
+    image: faforever/faf-qai:main
+    restart: unless-stopped
+    networks:
+      - faf
+    env_file: ./config/extra/qai/qai.env
+    volumes:
+      - ./data/qai/Database:/app/Database
 
 networks:
   faf-extra:
