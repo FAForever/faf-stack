@@ -24,15 +24,13 @@ services:
   #
   nodebb:
     # for instructions how to initialize the setup check the readme in the config.template/faf-nodebb
-    image: nodebb/docker:1.18.5
+    image: nodebb/docker:2.8.2
     restart: unless-stopped
     networks:
       - faf-extra
       - faf # for interaction with the API (OAuth login and user synchronization)
     volumes:
       - ./config/extra/nodebb/config.json:/usr/src/app/config.json
-      - ./data/nodebb/node_modules:/usr/src/app/node_modules
-      - ./data/nodebb/build:/usr/src/app/build
       - ./data/nodebb/uploads/:/usr/src/app/public/uploads
     labels:
       - "traefik.enable=true"
