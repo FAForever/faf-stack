@@ -39,6 +39,25 @@ services:
       - "traefik.http.routers.faf-unitdb.middlewares=unitdb-stripprefix"
       - "traefik.http.middlewares.unitdb-stripprefix.stripprefix.prefixes=/faf/unitsDB"
 
+  #
+  # Forum software
+  #
+  nodebb:
+    # for instructions how to initialize the setup check the readme in the config.template/faf-nodebb
+    image: nodebb/docker:1.18.5
+    restart: unless-stopped
+    networks:
+      - faf-extra
+      - faf # for interaction with the API (OAuth login and user synchronization)
+    volumes:
+      - ./config/extra/nodebb/config.json:/usr/src/app/config.json
+      - ./data/nodebb/node_modules:/usr/src/app/node_modules
+      - ./data/nodebb/build:/usr/src/app/build
+      - ./data/nodebb/uploads/:/usr/src/app/public/uploads
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.faf-nodebb.rule=Host(`forum.${DOMAINNAME}`)"
+      - "traefik.http.routers.faf-nodebb.entryPoints=websecure"
 
   #
   # Web frontend for voting
