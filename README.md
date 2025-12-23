@@ -1,3 +1,9 @@
+> [!WARNING]
+> **FAF Stack is no longer in use.** We have moved to Kubernetes using the [gitops-stack](https://github.com/FAForever/gitops-stack).
+
+> [!IMPORTANT]
+> What you see here are leftovers from the migration to Kubernetes. The last full-blown standalone version was [tag v23.11.11](https://github.com/FAForever/faf-stack/tree/v23.11.11)
+
 # FAF Stack
 
 This repository aims to provide a ready-to-go Docker Compose setup for managing the complete FAF stack (or parts of it) with simple commands.
